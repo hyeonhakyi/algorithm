@@ -27,28 +27,29 @@ public class Main {
     public static void BFS(int n) {
         Queue<Integer> que = new LinkedList<>();
         que.offer(n);
-        check[n] = 1;
+        check[n] = 0;
 
         while (!que.isEmpty()) {
-            int x = que.poll();
+            int temp = que.poll();
 
             for (int i = 0; i < 3; i++) {
                 int next;
 
                 if (i == 0) {
-                    next = x + 1;
+                    next = temp + 1;
                 } else if (i == 1) {
-                    next = x - 1;
+                    next = temp - 1;
                 } else {
-                    next = x * 2;
+                    next = temp * 2;
                 }
-                if (next == k) {
-                    System.out.println(check[x]);
+
+                if (temp == k) {
+                    System.out.println(check[temp]);
                     return;
                 }
                 if (next >= 0 && next < check.length && check[next] == 0) {
                     que.offer(next);
-                    check[next] = check[x] + 1;
+                    check[next] = check[temp] + 1;
                 }
             }
         }

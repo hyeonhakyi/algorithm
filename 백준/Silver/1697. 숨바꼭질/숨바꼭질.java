@@ -1,0 +1,56 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+public class Main {
+    static int n, k;
+    static int[] check;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
+        check = new int[100001];
+
+        if (n == k) {
+            System.out.println(0);
+        } else {
+            BFS(n);
+        }
+    }
+
+    public static void BFS(int n) {
+        Queue<Integer> que = new LinkedList<>();
+        que.offer(n);
+        check[n] = 1;
+
+        while (!que.isEmpty()) {
+            int x = que.poll();
+
+            for (int i = 0; i < 3; i++) {
+                int next;
+
+                if (i == 0) {
+                    next = x + 1;
+                } else if (i == 1) {
+                    next = x - 1;
+                } else {
+                    next = x * 2;
+                }
+                if (next == k) {
+                    System.out.println(check[x]);
+                    return;
+                }
+                if (next >= 0 && next < check.length && check[next] == 0) {
+                    que.offer(next);
+                    check[next] = check[x] + 1;
+                }
+            }
+        }
+    }
+}

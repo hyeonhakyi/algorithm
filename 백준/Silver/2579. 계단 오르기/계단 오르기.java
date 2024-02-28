@@ -1,23 +1,25 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        int[] arr = new int[301];
+        int[] ans = new int[301];
 
-        int[] stair = new int[301];
-        int[] score = new int[301];
-        for (int i = 1; i <= N; i++)
-            stair[i] = sc.nextInt();
-
-        score[1] = stair[1];
-        score[2] = stair[1] + stair[2];
-        score[3] = Math.max(stair[1], stair[2]) + stair[3];
-
-        for (int n = 4; n <= N; n++) {
-            score[n] = Math.max(score[n - 3] + stair[n - 1], score[n - 2]) + stair[n];
+        for(int i = 1; i <= n; i++) {
+            arr[i] = Integer.parseInt(br.readLine());
         }
 
-        System.out.println(score[N]);
-    }
-}
+        ans[1] = arr[1];
+        ans[2] = arr[2] + arr[1];
+        ans[3] = Math.max(arr[2],arr[1]) + arr[3];
+
+        for(int i = 4; i <= n; i++){
+            ans[i] = Math.max(arr[i -1] + ans[i-3], ans[i-2]) + arr[i];
+        }
+        System.out.println(ans[n]);
+    }//main end
+}//class end

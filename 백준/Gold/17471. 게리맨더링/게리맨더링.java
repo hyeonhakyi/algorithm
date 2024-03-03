@@ -1,33 +1,36 @@
+
+import javax.swing.plaf.basic.BasicButtonUI;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.util.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 public class Main {
-    static int n;
-    static int[] person;
-    static ArrayList<Integer>[] list;
-    static boolean[] check;
-    static boolean[] visited;
-    static int min = Integer.MAX_VALUE;
+    private static int n,min;
+    private static int[] person;
+    private static boolean[] visited;
+    private static boolean[] check;
+    private static ArrayList<Integer>[] list;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
         person = new int[n+1];
+        visited = new boolean[n+1];
         list = new ArrayList[n+1];
-        check = new boolean[n+1];
+        min = Integer.MAX_VALUE;
 
         for(int i = 1; i <= n; i++){
             list[i] = new ArrayList<>();
         }
 
-
         StringTokenizer st = new StringTokenizer(br.readLine());
         for(int i = 1; i <= n; i++){
             person[i] = Integer.parseInt(st.nextToken());
         }
-
 
         for(int i = 1; i <= n; i++){
             st = new StringTokenizer(br.readLine());
@@ -40,26 +43,52 @@ public class Main {
         dfs(0);
         if(min == Integer.MAX_VALUE){
             System.out.println(-1);
-        }else {
+        }else{
             System.out.println(min);
         }
-    }
+    }//main end
 
+    private static void dfs(int count){
+        if(count == n) {
+            ArrayList<Integer> trueList = new ArrayList<>();
+            ArrayList<Integer> falseList = new ArrayList<>();
 
-    static boolean bfs(ArrayList<Integer> arr){
+            for(int i = 1; i <= n; i++){
+                if(visited[i]){
+                    trueList.add(i);
+                }else{
+                    falseList.add(i);
+                }
+            }
+
+            if(trueList.isEmpty() || falseList.isEmpty())return;
+
+            if(bfs(trueList) && bfs(falseList)){
+                diff();
+            }
+            return;
+        }
+
+        visited[count] = true;
+        dfs(count+1);
+        visited[count] = false;
+        dfs(count+1);
+    }//dfs end
+
+    private static boolean bfs(ArrayList<Integer> arr){
         Queue<Integer> que = new LinkedList<>();
-        visited = new boolean[n+1];
+        check = new boolean[n+1];
         que.offer(arr.get(0));
-        visited[arr.get(0)] = true;
+        check[arr.get(0)] = true;
 
-        int count =1;
+        int count = 1;
         while(!que.isEmpty()){
             int now = que.poll();
             for(int i = 0; i < list[now].size(); i++){
                 int next = list[now].get(i);
-                if(arr.contains(next) && !visited[next]){
+                if(arr.contains(next) && !check[next]){
+                    check[next] = true;
                     que.offer(next);
-                    visited[next] = true;
                     count++;
                 }
             }
@@ -69,46 +98,18 @@ public class Main {
         }else{
             return false;
         }
-    }
+    }//bfs end
 
-    static void dfs(int count){
-        if(count == n){
-            ArrayList<Integer> trueList = new ArrayList<>();
-            ArrayList<Integer> fasleList = new ArrayList<>();
-
-            for(int i = 1; i <= n; i++){
-                if(check[i]){
-                    trueList.add(i);
-                }else{
-                    fasleList.add(i);
-                }
-            }
-            if(trueList.size() == 0 || fasleList.size() == 0){
-                return;
-            }
-            if(bfs(trueList) && bfs(fasleList)){
-                diff();
-            }
-            return;
-        }
-
-        check[count] = true;
-        dfs(count+1);
-        check[count] = false;
-        dfs(count+1);
-    }
-
-    static void diff(){
-        int trueNum = 0;
-        int falseNume = 0;
+    private static void diff(){
+        int trueSum = 0;
+        int falseSum = 0;
         for(int i = 1; i <= n; i++){
-            if(visited[i]){
-                trueNum += person[i];
+            if(check[i]){
+                trueSum += person[i];
             }else{
-                falseNume += person[i];
+                falseSum += person[i];
             }
         }
-        int diff1 = Math.abs(trueNum-falseNume);
-        min = Math.min(min,diff1);
+        min = Math.min(min,Math.abs(trueSum - falseSum));
     }
-}
+}//class end

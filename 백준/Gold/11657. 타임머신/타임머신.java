@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,7 +28,7 @@ public class Main {
         m = Integer.parseInt(st.nextToken());
         ans = new long[n+1];
         list = new ArrayList<>();
-        INF = 500*100000;
+        INF = Integer.MAX_VALUE;
 
         Arrays.fill(ans,INF);
 

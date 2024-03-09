@@ -2,17 +2,17 @@ import java.util.*;
 
 public class Solution {
     public int solution(int n) {
-        int bettery = 0;
-        int currentPos = 0;
+        int current = 0;
+        int beterry = 0;
 
-        while(currentPos < n){
-            if((n - currentPos)%2 == 0){
-                currentPos += (n - currentPos)/2;
+        while(current < n){
+            if((n-current)%2 == 0){
+                current += (n-current)/2;
             }else {
-                currentPos += 1;
-                bettery++;
+                current += 1;
+                beterry++;
             }
         }
-        return bettery;
+        return beterry;
     }
 }

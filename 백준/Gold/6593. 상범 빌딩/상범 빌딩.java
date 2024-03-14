@@ -25,12 +25,13 @@ public class Main {
     private static int[] dx = {0,0,-1,1,0,0};
     private static int[] dy = {0,0,0,0,-1,1};
     private static StringBuilder sb = new StringBuilder();
-    private static Queue<Person> person = new LinkedList<>();
+    private static Queue<Person> person;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
         while(true){
+            person = new LinkedList<>();
             st = new StringTokenizer(br.readLine());
             l = Integer.parseInt(st.nextToken());
             r = Integer.parseInt(st.nextToken());
@@ -76,6 +77,7 @@ public class Main {
 
             if(map[nowZ][nowX][nowY] == 'E'){
                 result = Math.min(result,count);
+                return;
             }
 
             for(int d = 0; d < 6; d++){

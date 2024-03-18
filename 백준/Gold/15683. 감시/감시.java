@@ -2,52 +2,52 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 public class Main{
 
-    public static class Point{
+    private static class Point{
         int x;
         int y;
         int cctvNum;
 
-        public Point(int x,int y, int cctvNum){
+        public Point(int x,int y,int cctvNum){
             this.x = x;
             this.y = y;
             this.cctvNum = cctvNum;
         }
     }
-    static int n,m,min;
-    static int[][] arr;
+    private static int n,m,min;
+    private static int[][] map;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
-        arr = new int[n][m];
+        map = new int[n][m];
         min = Integer.MAX_VALUE;
         ArrayList<Point> list = new ArrayList<>();
+
 
         for(int i = 0; i < n; i++){
             st = new StringTokenizer(br.readLine());
             for(int j = 0; j < m; j++){
-                arr[i][j] = Integer.parseInt(st.nextToken());
+                map[i][j] = Integer.parseInt(st.nextToken());
 
-                if(arr[i][j] != 0 && arr[i][j] != 6){
-                    list.add(new Point(i,j,arr[i][j]));
+                if(map[i][j] != 0 && map[i][j] != 6){
+                    list.add(new Point(i,j,map[i][j]));
                 }
             }
         }
-        dfs(arr,0,list);
-        System.out.println(min);
-    }
 
-    private static void dfs(int[][] arr, int count, ArrayList<Point> list){
+        dfs(map,0,list);
+        System.out.println(min);
+    }//main end
+
+    private static void dfs(int[][] arr,int count, ArrayList<Point> list){
         if(count == list.size()){
-            min = Math.min(min,zeroCount(arr));
+            min = Math.min(min,Score(arr));
             return;
         }
 
@@ -125,17 +125,17 @@ public class Main{
             left(tmp,x,y);
             up(tmp,x,y);
             dfs(tmp,count+1,list);
-        }else if(cctvNum == 5){
+        }else{
             tmp = copyArr(arr);
+            left(tmp,x,y);
             up(tmp,x,y);
             right(tmp,x,y);
             down(tmp,x,y);
-            left(tmp,x,y);
             dfs(tmp,count+1,list);
         }
     }
 
-    private static void left(int[][] arr, int x, int y){
+    private static void left(int[][] arr,int x,int y){
         for(int i = y-1; i >= 0; i--){
             if(arr[x][i] == 6) return;
             if(arr[x][i] != 0) continue;
@@ -143,37 +143,40 @@ public class Main{
         }
     }
 
-    private static void right(int[][] arr, int x, int y){
+    private static void right(int[][] arr,int x,int y){
         for(int i = y+1; i < m; i++){
             if(arr[x][i] == 6) return;
             if(arr[x][i] != 0) continue;
             arr[x][i] = -1;
         }
     }
-    private static void up(int[][] arr, int x, int y){
+
+    private static void up(int[][] arr,int x,int y){
         for(int i = x-1; i >= 0; i--){
             if(arr[i][y] == 6) return;
             if(arr[i][y] != 0) continue;
             arr[i][y] = -1;
         }
     }
-    private static void down(int[][] arr, int x, int y){
+
+    private static void down(int[][] arr,int x,int y){
         for(int i = x+1; i < n; i++){
             if(arr[i][y] == 6) return;
             if(arr[i][y] != 0) continue;
             arr[i][y] = -1;
         }
     }
-    private static int zeroCount(int[][] arr){
-        int count = 0;
+
+    private static int Score(int[][] arr){
+        int result = 0;
         for(int i = 0; i < n; i++){
             for(int j = 0; j < m; j++){
                 if(arr[i][j] == 0){
-                    count++;
+                    result++;
                 }
             }
         }
-        return count;
+        return result;
     }
 
     private static int[][] copyArr(int[][] arr){
@@ -185,4 +188,4 @@ public class Main{
         }
         return temp;
     }
-}
+}//class end

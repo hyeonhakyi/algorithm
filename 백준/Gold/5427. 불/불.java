@@ -4,105 +4,108 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
- 
+
 public class Main {
-    
-    static class info{
-        int x, y , time;
- 
-        public info(int x, int y, int time) {
+    static class Person{
+        int x;
+        int y;
+        int time;
+        public Person(int x,int y,int time){
             this.x = x;
             this.y = y;
             this.time = time;
         }
     }
-    
-    static char [][]map;
-    static int w,h, answer;
-    static boolean [][] visited;
-    static Queue<info> fire;
-    static Queue<info> person;
-    static int [] dx = {-1,0,1,0}; 
-    static int [] dy = {0,1,0,-1};
- 
- 
-    public static void main(String[] args) throws NumberFormatException, IOException {
+    static int h,w,result;
+    static char[][] arr;
+    static Queue<Person> per;
+    static Queue<Person> fir;
+    static int[] dx = {-1,1,0,0};
+    static int[] dy = {0,0,-1,1};
+    public static void main(String[] args) throws NumberFormatException,IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
         StringTokenizer st;
-        
-        int T = Integer.parseInt(br.readLine());
-        
-        for(int tc=0;tc<T;tc++) {
+        StringBuilder sb = new StringBuilder();
+        int t = Integer.parseInt(br.readLine());
+
+        for(int tc = 0; tc < t; tc++){
             st = new StringTokenizer(br.readLine()," ");
-            w = Integer.parseInt(st.nextToken());
             h = Integer.parseInt(st.nextToken());
-            
-            map = new char[h][w];
-            visited = new boolean[h][w];
-            
-            fire = new LinkedList<>();
-            person = new LinkedList<>();
-            
-            for(int i=0;i<h;i++) {
-                String str = br.readLine();
-                for(int j=0;j<w;j++) {
-                    map[i][j]= str.charAt(j);
-                    if(map[i][j]=='@') person.offer(new info(i,j,0));
-                    else if(map[i][j]=='*') fire.offer(new info(i,j,0));
-                }
-            }
-            
-            answer =0;
-            bfs();
-            if(answer==0) sb.append("IMPOSSIBLE\n");
-            else sb.append(answer+"\n");
-        }
-        System.out.println(sb.toString());
-    }
-    
-    public static void bfs() {
-        
-        
-        while(!person.isEmpty()) {
-            int size = fire.size();
-            for(int i=0;i<size;i++) {
-                info temp = fire.poll();
-                for(int d=0;d<4;d++) {
-                    int nx = temp.x+dx[d];
-                    int ny = temp.y+dy[d];
- 
-                    if(range(nx,ny) && (map[nx][ny]=='.' || map[nx][ny]=='@')){
-                        map[nx][ny]='*';
-                        fire.offer(new info(nx,ny,0));
+            w = Integer.parseInt(st.nextToken());
+
+            arr = new char[w][h];
+
+            per = new LinkedList<>();
+            fir = new LinkedList<>();
+
+            for(int i = 0; i < w; i++){
+                String s = br.readLine();
+                for(int j = 0; j < h; j++){
+                    arr[i][j] = s.charAt(j);
+
+                    if(arr[i][j] == '@'){
+                        per.offer(new Person(i,j,0));
+                    }else if(arr[i][j] == '*'){
+                        fir.offer(new Person(i,j,0));
                     }
                 }
             }
-            
-            size = person.size();
-            for(int i=0;i<size;i++) {
-                info temp = person.poll();
-                for(int d=0;d<4;d++) {
-                    int nx = temp.x+dx[d];
-                    int ny = temp.y+dy[d];
-                    
-                    if(!range(nx,ny)) {
-                        answer = temp.time+1;
+
+            result = 0;
+            bfs();
+
+            if(result == 0){
+                sb.append("IMPOSSIBLE\n");
+            }else{
+                sb.append(result).append("\n");
+            }
+        }//testCase end
+        System.out.println(sb.toString());
+    }//main end
+
+    public static void bfs(){
+        while (!per.isEmpty()) {
+            fire();
+
+            int len = per.size();
+            for (int i = 0; i < len; i++) {
+                Person now = per.poll();
+
+                for (int d = 0; d < 4; d++) {
+                    int nx = now.x + dx[d];
+                    int ny = now.y + dy[d];
+
+                    if (!check(nx, ny)) {
+                        result = now.time+1;
                         return;
                     }
-                    
-                    if(map[nx][ny]=='.'){
-                        map[nx][ny]='@';
-                        person.offer(new info(nx,ny,temp.time+1));
+                    if (arr[nx][ny] == '.') {
+                        per.offer(new Person(nx, ny,now.time+1));
+                        arr[nx][ny] = '@';
                     }
-                    
                 }
             }
-        }    
+        }
+    }//bfs end
+
+    public static void fire(){
+        int len = fir.size();
+        for(int i = 0; i < len; i++){
+            Person now = fir.poll();
+
+            for(int d = 0; d < 4; d++){
+                int nx = now.x + dx[d];
+                int ny = now.y + dy[d];
+
+                if(check(nx,ny) && (arr[nx][ny] == '.' || arr[nx][ny] == '@')){
+                    arr[nx][ny] = '*';
+                    fir.offer(new Person(nx,ny,0));
+                }
+            }
+        }
+    }//fire end
+
+    public static boolean check(int x,int y){
+        return x >= 0 && y >= 0 && x < w && y < h ;
     }
-    
-    public static boolean range(int x, int y) {
-        return x>=0 && y>=0 && x<h && y<w;
-    }
- 
-}
+}//class end

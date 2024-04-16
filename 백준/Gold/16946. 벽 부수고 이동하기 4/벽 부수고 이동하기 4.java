@@ -26,10 +26,10 @@ public class Main {
 	private static int[] dy = { 0, 0, -1, 1 };
 	private static int[][] visited;
 	private static Map<Integer, Integer> map = new HashMap<>();
+	private static StringBuilder sb = new StringBuilder();
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		n = Integer.parseInt(st.nextToken());
 		m = Integer.parseInt(st.nextToken());
@@ -56,24 +56,7 @@ public class Main {
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
 				if (arr[i][j] == 1) {
-					int value = 1;
-					Set<Integer> set = new HashSet<>();
-					for (int d = 0; d < 4; d++) {
-						int nx = i + dx[d];
-						int ny = j + dy[d];
-
-						if (!check(nx, ny)) {
-							continue;
-						}
-						if (visited[nx][ny] == 0) {
-							continue;
-						}
-						set.add(visited[nx][ny]);
-					}
-					for (int key : set) {
-						value += map.get(key);
-					}
-					sb.append(value%10);
+					result(i, j);
 				}else {
 					sb.append("0");
 				}
@@ -130,7 +113,7 @@ public class Main {
 		for (int key : set) {
 			value += map.get(key);
 		}
-		arr[x][y] = value;
+		sb.append(value % 10);
 	}// result end
 
 	private static boolean check(int x, int y) {

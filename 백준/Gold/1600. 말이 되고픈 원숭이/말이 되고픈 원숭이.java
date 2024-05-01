@@ -6,22 +6,25 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    private static class Monkey{
+    private static class Node{
         int x;
         int y;
-        int k;
         int count;
-
-        public Monkey(int x,int y,int k, int count){
+        int k;
+        public Node(int x, int y,int count, int k) {
             this.x = x;
             this.y = y;
-            this.k = k;
             this.count = count;
+            this.k = k;
         }
     }
-    static int k,w,h;
-    static int[][] arr;
-    static boolean[][][] visited;
+    private static int k,w,h,result = Integer.MAX_VALUE;
+    private static int[][] arr;
+    private static boolean[][][] visited;
+    private static int[] dx = {-1,1,0,0};
+    private static int[] dy = {0,0,-1,1};
+    private static int[] hx = {-1,-2,-2,-1,1,2,2,1};
+    private static int[] hy = {-2,-1,1,2,2,1,-1,-2};
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         k = Integer.parseInt(br.readLine());
@@ -29,62 +32,58 @@ public class Main {
         w = Integer.parseInt(st.nextToken());
         h = Integer.parseInt(st.nextToken());
         arr = new int[h][w];
-        visited = new boolean[h][w][31];
+        visited = new boolean[h][w][k+1];
 
-        for(int i = 0; i < h; i++){
+        for(int i = 0; i < h; i++) {
             st = new StringTokenizer(br.readLine());
-            for(int j = 0; j < w; j++){
+            for(int j = 0; j < w; j++) {
                 arr[i][j] = Integer.parseInt(st.nextToken());
             }
         }
-
-        visited[0][0][0] = true;
-
-        bfs(0,0,k,0);
-
+        bfs();
+        if(result == Integer.MAX_VALUE) {
+            System.out.println(-1);
+        }else{
+            System.out.println(result);
+        }
     }//main end
 
-    private static int[] horseDx = {-1,-2,-2,-1,1,2,2,1};
-    private static int[] horseDy = {-2,-1,1,2,2,1,-1,-2};
-    private static int[] monkeyDx = {-1,1,0,0};
-    private static int[] monkeyDy = {0,0,-1,1};
-    private static void bfs(int newX, int newY, int newK, int newCount){
-        Queue<Monkey> que = new LinkedList<>();
-        que.offer(new Monkey(newX,newY,newK,newCount));
+    private static void bfs(){
+        Queue<Node> que = new LinkedList<>();
+        que.offer(new Node(0,0,0,0));
 
         while(!que.isEmpty()){
-            Monkey monkey = que.poll();
-            int x = monkey.x;
-            int y = monkey.y;
-            int k = monkey.k;
-            int count = monkey.count;
+            Node now = que.poll();
 
-            if(x == h-1 && y == w-1){
-                System.out.println(count);
+            if(now.x == h-1 && now.y == w-1){
+                result = now.count;
                 return;
             }
 
-            if(x < 0 || y < 0 || x >= h || y >= w) continue;
-            if(arr[x][y] == 1)continue;
-            if(visited[x][y][k])continue;
-            visited[x][y][k] = true;
+            if(!check(now.x,now.y))continue;
+            if(arr[now.x][now.y] == 1)continue;
+            if(visited[now.x][now.y][now.k])continue;
+            visited[now.x][now.y][now.k] = true;
 
             for(int d = 0; d < 4; d++){
-                int nx = x + monkeyDx[d];
-                int ny = y + monkeyDy[d];
+                int nx = now.x + dx[d];
+                int ny = now.y + dy[d];
 
-                que.offer(new Monkey(nx,ny,k,count+1));
+                que.offer(new Node(nx,ny,now.count+1,now.k));
             }
 
-            if(k == 0)continue;
+            if(now.k == k)continue;
 
             for(int d = 0; d < 8; d++){
-                int nx = x + horseDx[d];
-                int ny = y + horseDy[d];
+                int nx = now.x + hx[d];
+                int ny = now.y + hy[d];
 
-                que.offer(new Monkey(nx,ny,k-1,count+1));
+                que.offer(new Node(nx,ny,now.count+1,now.k+1));
             }
         }
-        System.out.println(-1);
-    }
+    }//bfs end
+
+    private static boolean check(int x,int y){
+        return x >= 0 && x < h && y >= 0 && y < w;
+    }//check end
 }//class end

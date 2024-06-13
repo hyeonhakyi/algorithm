@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -48,7 +49,11 @@ public class Main {
                     break;
                 }
                 case "empty": {
-                    sb.append(dq.isEmpty() ? "1" : "0").append("\n");
+                    if(dq.isEmpty()) {
+                        sb.append("1").append("\n");
+                    }else{
+                        sb.append("0").append("\n");
+                    }
                     break;
                 }
                 case "front": {

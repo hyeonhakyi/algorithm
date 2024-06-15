@@ -14,6 +14,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         PriorityQueue<Integer> pq = new PriorityQueue<Integer>(Collections.reverseOrder());
+        StringBuilder sb = new StringBuilder();
         int n = Integer.parseInt(br.readLine());
 
         for(int i = 0; i < n; i++) {
@@ -21,13 +22,14 @@ public class Main {
 
             if(m == 0){
                 if(pq.isEmpty()){
-                    System.out.println(0);
+                    sb.append(0).append("\n");
                 }else{
-                    System.out.println(pq.poll());
+                    sb.append(pq.poll()).append("\n");
                 }
             }else{
                 pq.add(m);
             }
         }
+        System.out.println(sb);
     }//main end
 }//class end

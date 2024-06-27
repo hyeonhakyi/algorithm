@@ -1,0 +1,8 @@
+SET @h = -1;
+
+SELECT (@h := @h + 1) as 'HOUR',
+    (SELECT COUNT(HOUR(DATETIME))
+    FROM ANIMAL_OUTS 
+    WHERE HOUR(DATETIME) = @h) AS COUNT
+    FROM ANIMAL_OUTS
+    WHERE @h < 23;

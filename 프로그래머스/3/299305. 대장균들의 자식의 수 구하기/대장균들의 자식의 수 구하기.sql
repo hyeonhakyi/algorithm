@@ -1,18 +1,5 @@
-SELECT
-    ID,
-    IFNULL(
-        (
-            SELECT
-                COUNT(*)
-            FROM
-                ECOLI_DATA
-            GROUP BY
-                PARENT_ID
-            HAVING
-                PARENT_ID = ID
-        ), 0
-    ) AS CHILD_COUNT
-FROM
-    ECOLI_DATA
-ORDER BY
-    ID
+select a.ID, count(b.id) as CHILD_COUNT
+from ECOLI_DATA as a
+left join ECOLI_DATA as b on a.ID = b.PARENT_ID
+group by a.ID
+order by a.ID 

@@ -1,7 +1,4 @@
--- 코드를 입력하세요
-SELECT DR_NAME,DR_ID,MCDP_CD,
-    date_format(HIRE_YMD,'%Y-%m-%d') as "HIRE_YMD"
-from DOCTOR
-where mcdp_cd = 'cs'
-or mcdp_cd = 'gs'
-order by HIRE_YMD desc , dr_name;
+select DR_NAME,DR_ID,MCDP_CD, date_format(HIRE_YMD,'%Y-%m-%d')
+from DOCTOR 
+where MCDP_CD like 'CS' or MCDP_CD like 'GS'
+order by HIRE_YMD desc , DR_NAME

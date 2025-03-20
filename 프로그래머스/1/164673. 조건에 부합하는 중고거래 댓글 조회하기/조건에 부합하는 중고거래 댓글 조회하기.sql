@@ -1,13 +1,10 @@
--- 코드를 입력하세요
-SELECT A.TITLE,
-        A.BOARD_ID,
-        B.REPLY_ID,
-        B.WRITER_ID,
-        B.CONTENTS,
-        DATE_FORMAT(B.CREATED_DATE,"%Y-%m-%d") as CREATED_DATE
-from USED_GOODS_BOARD AS A 
-INNER JOIN 
-USED_GOODS_REPLY AS B
-ON A.BOARD_ID = B.BOARD_ID
-where SUBSTR(A.CREATED_DATE,1,7) = '2022-10'
-order by B.CREATED_DATE, A.TITLE;
+select b.TITLE , 
+        b.BOARD_ID, 
+        r.REPLY_ID, 
+        r.WRITER_ID, 
+        r.CONTENTS, 
+        date_format(r.CREATED_DATE, '%Y-%m-%d') as CREATED_DATE
+from USED_GOODS_BOARD as b
+join USED_GOODS_REPLY as r on b.BOARD_ID = r.BOARD_ID
+where b.CREATED_DATE like '2022-10%'
+order by r.CREATED_DATE ,b.TITLE 

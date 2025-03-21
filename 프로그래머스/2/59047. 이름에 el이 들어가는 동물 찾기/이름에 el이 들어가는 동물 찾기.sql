@@ -1,5 +1,5 @@
-select ANIMAL_ID,NAME
-from ANIMAL_INS
+select ANIMAL_ID, NAME
+from ANIMAL_INS 
 where NAME like '%EL%'
-and ANIMAL_TYPE = 'Dog'
-order by NAME;
+and ANIMAL_TYPE like 'Dog'
+order by NAME

@@ -1,4 +1,4 @@
-select left(PRODUCT_CODE,2) as CATEGORY, 
-        count(PRODUCT_ID) as PRODUCTS
-from PRODUCT
-group by CATEGORY;
+select concat(substring(PRODUCT_CODE,1,2)) as CATEGORY, count(*) as PRODUCTS
+from PRODUCT 
+group by CATEGORY
+order by CATEGORY

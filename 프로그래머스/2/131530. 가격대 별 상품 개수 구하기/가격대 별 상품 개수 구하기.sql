@@ -1,4 +1,5 @@
-select truncate(price,-4) as PRICE_GROUP, count(*) as PRODUCTS
+select (PRICE DIV 10000) * 10000 AS PRICE_GROUP ,
+        count(*) as PRODUCTS
 from PRODUCT
 group by PRICE_GROUP
-order by PRICE_GROUP;
+order by PRICE_GROUP

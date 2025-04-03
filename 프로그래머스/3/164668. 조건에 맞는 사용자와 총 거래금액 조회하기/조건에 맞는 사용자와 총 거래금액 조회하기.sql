@@ -1,8 +1,7 @@
-SELECT u.USER_ID , u.NICKNAME, sum(b.PRICE) as TOTAL_SALES
+select u.USER_ID, u.NICKNAME, sum(b.PRICE) as TOTAL_SALES
 from USED_GOODS_BOARD as b
-join USED_GOODS_USER as u
-on b.WRITER_ID = u.USER_ID
+join USED_GOODS_USER as u on b.WRITER_ID = u.USER_ID
 where b.STATUS like 'DONE'
 group by u.USER_ID
 having TOTAL_SALES >= 700000
-order by TOTAL_SALES asc;
+order by TOTAL_SALES

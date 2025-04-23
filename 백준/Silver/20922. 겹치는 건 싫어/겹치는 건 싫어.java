@@ -12,22 +12,22 @@ public class Main {
         int[] arr = new int[n];
 
         st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < n; i++) {
+        for(int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
+        int left = 0;
+        int right = 0;
         int[] count = new int[100001];
-        int start = 0;
-        int end = 0;
         int answer = Integer.MIN_VALUE;
-        while (end < n) {
-            while(end < n && count[arr[end]] + 1 <= k){
-                count[arr[end++]]++;
+        while(right < n){
+            while(right < n && count[arr[right]] + 1 <= k){
+                count[arr[right++]]++;
             }
-            
-            int len = end - start;
+
+            int len = right - left;
             answer = Math.max(answer, len);
-            count[arr[start++]]--;
+            count[arr[left++]]--;
         }
         System.out.println(answer);
     }//main end

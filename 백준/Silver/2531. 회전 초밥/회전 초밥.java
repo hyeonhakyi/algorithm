@@ -12,32 +12,38 @@ public class Main {
         int k = Integer.parseInt(st.nextToken());
         int c = Integer.parseInt(st.nextToken());
         int[] arr = new int[n];
-        int[] check = new int[d+1];
 
-
-        for(int i = 0; i < n; i++){
+        for (int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(br.readLine());
         }
 
-        int res = 1;
-        check[c]++;
-        for(int i = 0; i < k; i++){
-            if(check[arr[i]] == 0){
-                res++;
+        int[] check = new int[d+1];
+        int kind = 0;
+        
+        for (int i = 0; i < k; i++) {
+            if(check[arr[i]] == 0) {
+                kind++;
             }
             check[arr[i]]++;
         }
 
-        int cnt = res;
+        int max = kind;
+        if(check[c] == 0) max++;
+
         for(int i = 1; i < n; i++){
-            check[arr[i-1]]--;
-            if(check[arr[i-1]] == 0) cnt--;
+            int out = arr[i - 1];
+            check[out]--;
+            if(check[out] == 0) kind--;
 
-            if(check[arr[(i+k-1)%n]] == 0) cnt++;
-            check[arr[(i+k-1)%n]]++;
+            int in = arr[(i + k - 1) % n];
+            if(check[in] == 0) kind++;
+            check[in]++;
 
-            res = Math.max(cnt,res);
+            int tmpMax = kind;
+            if(check[c] == 0) tmpMax++;
+
+            max = Math.max(tmpMax, max);
         }
-        System.out.println(res);
+        System.out.println(max);
     }//main end
 }//class end

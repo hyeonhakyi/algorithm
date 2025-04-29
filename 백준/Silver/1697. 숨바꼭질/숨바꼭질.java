@@ -6,52 +6,51 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int n, k;
     static int[] check;
-
+    static int k;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-
-        n = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
         check = new int[100001];
 
-        if (n == k) {
+        if(n == k){
             System.out.println(0);
-        } else {
-            BFS(n);
+        }else{
+            bfs(n);
         }
-    }
+    }//main end
 
-    public static void BFS(int n) {
-        Queue<Integer> que = new LinkedList<>();
-        que.offer(n);
+    private static void bfs(int n){
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(n);
         check[n] = 0;
 
-        while (!que.isEmpty()) {
-            int temp = que.poll();
+        while(!q.isEmpty()){
+            int temp = q.poll();
 
-            for (int i = 0; i < 3; i++) {
+            for(int i = 0; i < 3; i++){
                 int next;
-
-                if (i == 0) {
+                if(i == 0){
                     next = temp + 1;
-                } else if (i == 1) {
+                }else if(i == 1){
                     next = temp - 1;
-                } else {
+                }else{
                     next = temp * 2;
                 }
 
-                if (temp == k) {
+
+                if(temp == k){
                     System.out.println(check[temp]);
                     return;
                 }
-                if (next >= 0 && next < check.length && check[next] == 0) {
-                    que.offer(next);
+
+                if(next >= 0 && next < check.length && check[next] == 0){
+                    q.offer(next);
                     check[next] = check[temp] + 1;
                 }
             }
         }
-    }
-}
+    }//bfs end
+}//class end

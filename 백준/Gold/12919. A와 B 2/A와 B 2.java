@@ -3,39 +3,38 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
-    static int k;
-    static String s, t;
-    static int result;
-
+    static String s,t;
+    static int len;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         s = br.readLine();
         t = br.readLine();
-        k = t.length();
+        len = t.length();
 
-        result = dfs(s, t);
-        System.out.println(result);
+        int answer = dfs(s,t);
+        System.out.println(answer);
     }//main end
 
-    private static int dfs(String s, String t) {
-        if (s.length() == t.length()) {
-            if (s.equals(t)) {
+    private static int dfs(String s,String t) {
+        if(s.length() == t.length()) {
+            if(s.equals(t)){
                 return 1;
             }
             return 0;
         }
-
+        
         int ans = 0;
-        if (t.charAt(0) == 'B') {
+        if(t.charAt(0) == 'B'){
             String str = t.substring(1);
-            StringBuilder sb = new StringBuilder(str);
+            StringBuilder  sb = new StringBuilder(str);
             String string = sb.reverse().toString();
-            ans += dfs(s, string);
+            ans += dfs(s,string);
         }
-
-        if (t.charAt(t.length() - 1) == 'A') {
-            ans += dfs(s, t.substring(0, t.length() - 1));
+        
+        if(t.charAt(t.length() - 1) == 'A'){
+            ans += dfs(s,t.substring(0,t.length()-1));
         }
+        
         return ans > 0 ? 1 : 0;
-    }
+    }//dfs end
 }//class end

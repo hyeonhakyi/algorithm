@@ -2,13 +2,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    private static int result;
-    private static int[] arr;
+    static int[] arr;
+    static int answer;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -16,7 +15,7 @@ public class Main {
         int m = Integer.parseInt(st.nextToken());
         arr = new int[101];
 
-        for(int i = 1; i < 101; i++){
+        for(int i = 0; i < 101; i++){
             arr[i] = i;
         }
 
@@ -30,38 +29,39 @@ public class Main {
 
         for(int i = 0; i < m; i++){
             st = new StringTokenizer(br.readLine());
-            int u = Integer.parseInt(st.nextToken());
-            int v = Integer.parseInt(st.nextToken());
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
 
-            arr[u] = v;
+            arr[x] = y;
         }
+
         bfs();
-        System.out.println(result);
+        System.out.println(answer);
     }//main end
 
-    private static void bfs(){
-        Queue<Integer> que = new LinkedList<>();
-        que.offer(1);
+    private static void bfs() {
+        Queue<Integer> q = new LinkedList<>();
+        q.add(1);
         int[] check = new int[101];
         check[1] = 0;
 
         while(true){
-            int nowIdx = que.poll();
+            int now = q.poll();
 
             for(int i = 1; i < 7; i++){
-                int nextIdx = nowIdx + i;
+                int next = now + i;
 
-                if(nextIdx > 100){
+                if(next > 100){
                     continue;
                 }
 
-                if(check[arr[nextIdx]] == 0){
-                    que.offer(arr[nextIdx]);
-                    check[arr[nextIdx]] = check[arr[nowIdx]] + 1;
+                if(check[arr[next]] == 0){
+                    q.offer(arr[next]);
+                    check[arr[next]] = check[arr[now]] + 1;
                 }
 
-                if(arr[nextIdx] == 100){
-                    result = check[nextIdx];
+                if(arr[next] == 100){
+                    answer = check[next];
                     return;
                 }
             }

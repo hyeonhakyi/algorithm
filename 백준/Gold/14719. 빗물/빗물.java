@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,27 +10,27 @@ public class Main {
         int h = Integer.parseInt(st.nextToken());
         int w = Integer.parseInt(st.nextToken());
         int[] arr = new int[w];
-        int count = 0;
 
         st = new StringTokenizer(br.readLine());
-        for(int i = 0; i < w; i++){
+        for (int i = 0; i < w; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
+        int count = 0;
         for(int i = 1; i < w-1; i++){
             int left = 0;
             int right = 0;
 
             for(int j = 0; j < i; j++){
-                left = Math.max(arr[j],left);
+                left = Math.max(left, arr[j]);
             }
 
-            for(int j = (i+1); j < w; j++){
-                right = Math.max(arr[j],right);
+            for(int j = i + 1; j < w; j++){
+                right = Math.max(right, arr[j]);
             }
 
             if(arr[i] < left && arr[i] < right){
-                count += Math.min(left,right) - arr[i];
+                count += Math.min(left, right) - arr[i];
             }
         }
         System.out.println(count);

@@ -3,82 +3,79 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-	private static class Eat implements Comparable<Eat>{
-		int index;
-		int value;
-		public Eat(int index,int value) {
-			this.index = index;
-			this.value = value;
-		}
-		@Override
-		public int compareTo(Eat o) {
-			return Integer.compare(this.value, o.value);
-		}
-	}
-	private static int n,m;
-	private static int[] arr;
-	private static boolean[] check;
-	private static ArrayList<Eat>[] list;
-	public static void main(String[] args) throws IOException{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		n = Integer.parseInt(st.nextToken());
-		m = Integer.parseInt(st.nextToken());
-		arr = new int[n+1];
-		check = new boolean[n+1];
-		list = new ArrayList[n+1];
-		int INF = Integer.MAX_VALUE;
-		
-		for(int i = 1; i < n+1; i++) {
-			list[i] = new ArrayList<>();
-		}
-		
-		Arrays.fill(arr, INF);
-		arr[1] = 0;
-		
-		for(int i = 0; i < m; i++) {
-			st = new StringTokenizer(br.readLine());
-			int a = Integer.parseInt(st.nextToken());
-			int b = Integer.parseInt(st.nextToken());
-			int c = Integer.parseInt(st.nextToken());
-			
-			list[a].add(new Eat(b, c));
-			list[b].add(new Eat(a, c));
-		}
-		
-		
-		bfs();
-		
-		System.out.println(arr[n]);
-	}//main end
-	
-	private static void bfs() {
-		PriorityQueue<Eat> que = new PriorityQueue<>();
-		que.offer(new Eat(1, 0));
-		
-		while(!que.isEmpty()) {
-			Eat eat = que.poll();
-			int vertex = eat.index;
-			
-			if(check[vertex]) {
-				continue;
-			}
-			
-			check[vertex] = true;
-			
-			for(Eat next : list[vertex]) {
-				if(arr[next.index] > arr[vertex] + next.value) {
-					arr[next.index] = arr[vertex] + next.value;
-					
-					que.offer(new Eat(next.index, arr[next.index]));
-				}
-			}
-		}
-	}//bfs end
+    static class Node implements Comparable<Node> {
+        int index;
+        int weight;
+        public Node(int index, int weight) {
+            this.index = index;
+            this.weight = weight;
+        }
+
+        @Override
+        public int compareTo(Node o) {
+            return Integer.compare(this.weight, o.weight);
+        }
+    }
+    static int n,m;
+    static ArrayList<Node>[] list;
+    static int[] arr;
+    static boolean[] visited;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+        arr = new int[n+1];
+        visited = new boolean[n+1];
+        list = new ArrayList[n+1];
+
+        for (int i = 1; i < n+1; i++) {
+            list[i] = new ArrayList<>();
+        }
+
+        Arrays.fill(arr,Integer.MAX_VALUE);
+        arr[1] = 0;
+
+        for(int i = 0; i < m; i++){
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            int c = Integer.parseInt(st.nextToken());
+
+            list[a].add(new Node(b,c));
+            list[b].add(new Node(a,c));
+        }
+
+        diskstr();
+
+        System.out.println(arr[n]);
+    }//main end
+
+    static void diskstr(){
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.add(new Node(1,0));
+
+        while(!pq.isEmpty()){
+            Node node = pq.poll();
+            int vertex = node.index;
+
+            if(visited[vertex]){
+                continue;
+            }
+
+            visited[vertex] = true;
+
+            for(Node n : list[vertex]){
+                if(arr[n.index] > arr[vertex] + n.weight){
+                    arr[n.index] = arr[vertex] + n.weight;
+
+                    pq.offer(new Node(n.index,arr[n.index]));
+                }
+            }
+        }
+    }
 }//class end

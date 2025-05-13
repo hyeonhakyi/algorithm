@@ -1,18 +1,17 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class Main{
+public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
         int[] arr = new int[n];
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for(int i = 0; i < n; i++){
+        for (int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
@@ -20,17 +19,18 @@ public class Main{
 
         int left = 0;
         int right = n-1;
-        int min = Integer.MAX_VALUE;
-        int ansS = 0;
-        int ansE = 0;
-        while(left < right){
-            int value = Math.abs(arr[right] + arr[left]);
-            if(min > value){
-                min = value;
-                ansS = left;
-                ansE = right;
-            }
+        int answerLeft = 0;
+        int answerRight = 0;
+        int answer = Integer.MAX_VALUE;
 
+        while (left < right) {
+            int value = Math.abs(arr[left] + arr[right]);
+
+            if(answer > value){
+                answer = value;
+                answerLeft = left;
+                answerRight = right;
+            }
             if(value == 0){
                 break;
             }
@@ -42,6 +42,6 @@ public class Main{
             }
         }
 
-        System.out.println(arr[ansS] + " " + arr[ansE]);
+        System.out.println(arr[answerLeft] + " " + arr[answerRight]);
     }//main end
 }//class end

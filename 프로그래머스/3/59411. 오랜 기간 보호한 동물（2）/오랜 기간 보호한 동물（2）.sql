@@ -2,5 +2,5 @@
 SELECT i.ANIMAL_ID, i.NAME
 from ANIMAL_INS as i
 join ANIMAL_OUTS as o on i.ANIMAL_ID = o.ANIMAL_ID
-order by datediff(o.DATETIME,i.DATETIME) desc
-limit 2;
+order by datediff(o.DATETIME, i.DATETIME) desc
+limit 2

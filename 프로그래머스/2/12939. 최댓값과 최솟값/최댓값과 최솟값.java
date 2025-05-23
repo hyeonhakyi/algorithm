@@ -2,22 +2,20 @@ import java.util.*;
 
 class Solution {
     public String solution(String s) {
-        String[] sArr = s.split(" ");
+        String[] arr = s.split(" ");
         
-        int max = Integer.parseInt(sArr[0]);
-        int min = Integer.parseInt(sArr[0]);
+        StringBuilder sb = new StringBuilder();
         
-        for(String arr : sArr){
-            int temp = Integer.parseInt(arr);
-            
-            if(max < temp){
-                max = temp;
-            }
-            
-            if(min > temp){
-                min = temp;
-            }
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        for(int i = 0; i < arr.length; i++){
+            max = Math.max(max,Integer.parseInt(arr[i]));
+            min = Math.min(min,Integer.parseInt(arr[i]));
         }
-        return min + " " + max;
+        sb.append(min);
+        sb.append(" ");
+        sb.append(max);
+        
+        return sb.toString();
     }
 }

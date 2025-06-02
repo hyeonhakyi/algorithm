@@ -1,5 +1,3 @@
-import java.util.*;
-
 class Solution {
     public int[] solution(String s) {
         int[] answer = new int[2];
@@ -14,9 +12,11 @@ class Solution {
                     answer[1]++;
                 }
             }
+            
             s = Integer.toBinaryString(s.replaceAll("0","").length());
-            answer[0]++;   
+            answer[0]++;
         }
+        
         return answer;
     }
 }

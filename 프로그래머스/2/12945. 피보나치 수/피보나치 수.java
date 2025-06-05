@@ -1,13 +1,13 @@
 class Solution {
     public int solution(int n) {
-        int[] answer = new int[n+1];
-        answer[0] = 0;
-        answer[1] = 1;
+        int[] arr = new int[100001];
+        arr[0] = 0;
+        arr[1] = 1;
         
-        for(int i = 2; i <= n; i++){
-            answer[i] = (answer[i-1] + answer[i-2])%1234567;
+        for(int i = 2; i < 100001; i++){
+            arr[i] = (arr[i-1] + arr[i-2])%1234567;
         }
         
-        return answer[n]%12345667;
+        return arr[n]%1234567;
     }
 }

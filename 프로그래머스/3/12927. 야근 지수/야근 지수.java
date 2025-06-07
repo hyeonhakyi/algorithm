@@ -10,17 +10,20 @@ class Solution {
         }
         
         while(n > 0){
-            int num = pq.poll();
-            if(num == 0) break;
-            num--;
+            int now = pq.poll();
+            if(now == 0){
+                break;
+            }
             n--;
-            pq.offer(num);
+            pq.offer(now - 1);
         }
         
         while(!pq.isEmpty()){
-            int num = pq.poll();
-            answer += num*num;
+            int now = pq.poll();
+            
+            answer += now * now;
         }
+        
         
         return answer;
     }

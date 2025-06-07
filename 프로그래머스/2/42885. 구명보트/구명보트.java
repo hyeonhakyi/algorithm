@@ -5,6 +5,7 @@ class Solution {
         int answer = 0;
         
         Arrays.sort(people);
+        
         int left = 0;
         int right = people.length - 1;
         
@@ -17,6 +18,7 @@ class Solution {
             }
             answer++;
         }
+        
         return answer;
     }
 }

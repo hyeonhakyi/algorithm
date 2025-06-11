@@ -7,24 +7,25 @@ class Solution {
         }
         
         int answer = 0;
-        Queue<String> cache = new LinkedList<>();
+        Queue<String> q = new LinkedList<>();
         
         for(int i = 0; i < cities.length; i++){
             String city = cities[i].toUpperCase();
             
-            if(cache.remove(city)){
-                cache.add(city);
+            if(q.remove(city)){
+                q.offer(city);
                 answer++;
             }else{
-                if(cache.size() == cacheSize){
-                    cache.poll();
-                    cache.add(city);
+                if(q.size() == cacheSize){
+                    q.poll();
+                    q.add(city);
                 }else{
-                    cache.add(city);
+                    q.add(city);
                 }
                 answer += 5;
             }
         }
+        
         
         return answer;
     }

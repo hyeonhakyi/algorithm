@@ -3,8 +3,8 @@ import java.util.*;
 class Solution {
     public int solution(int n, int[] stations, int w) {
         int answer = 0;
-        int coverage = 2 * w +1;
         int now = 1;
+        int cover = 2 * w + 1;
         int idx = 0;
         
         while(now <= n){
@@ -12,10 +12,13 @@ class Solution {
                 now = stations[idx] + w + 1;
                 idx++;
             }else{
+                now += cover;
                 answer++;
-                now += coverage;
             }
         }
+        
+        
+        
 
         return answer;
     }

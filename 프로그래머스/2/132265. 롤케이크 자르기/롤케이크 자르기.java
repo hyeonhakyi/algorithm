@@ -5,22 +5,22 @@ class Solution {
         int answer = 0;
         
         Map<Integer, Integer> order = new HashMap<>();
-        Map<Integer, Integer> young = new HashMap<>();
+        Map<Integer, Integer> younger = new HashMap<>();
         
         for(int i : topping){
-            young.put(i, young.getOrDefault(i,0) +1);
+            younger.put(i,younger.getOrDefault(i,0) + 1);
         }
         
         for(int i : topping){
-            order.put(i, order.getOrDefault(i,0) +1);
+            order.put(i,order.getOrDefault(i,0) + 1);
             
-            if(young.get(i) - 1 == 0){
-                young.remove(i);
+            if(younger.get(i) - 1 == 0){
+                younger.remove(i);
             }else{
-                young.put(i,young.get(i) -1);
+                younger.put(i,younger.get(i) - 1);
             }
             
-            if(order.size() == young.size()){
+            if(order.size() == younger.size()){
                 answer++;
             }
         }

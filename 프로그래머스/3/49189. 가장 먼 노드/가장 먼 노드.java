@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Solution {
+class Solution { 
     public int solution(int n, int[][] edge) {
         ArrayList<List<Integer>> list = new ArrayList<>();
         
@@ -8,9 +8,9 @@ class Solution {
             list.add(new ArrayList<>());
         }
         
-        for(int[] e : edge){
-            list.get(e[0]).add(e[1]);
-            list.get(e[1]).add(e[0]);
+        for(int[] i : edge){
+            list.get(i[0]).add(i[1]);
+            list.get(i[1]).add(i[0]);
         }
         
         int[] d = new int[n+1];
@@ -31,17 +31,17 @@ class Solution {
         }
         
         int max = 0;
-        for(int i = 0; i < n + 1; i++){
+        for(int i = 0; i <= n; i++){
             max = Math.max(d[i],max);
         }
         
         int answer = 0;
-        for(int i = 0; i < n + 1; i++){
-            if(d[i] == max){
+        for(int i = 0; i <= n; i++){
+            if(max == d[i]){
                 answer++;
             }
         }
         
         return answer;
-    }
-}
+    }//main end
+}//class end

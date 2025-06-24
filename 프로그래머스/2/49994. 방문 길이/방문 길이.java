@@ -5,48 +5,46 @@ class Solution {
         int x = 0;
         int y = 0;
         
-        // 방문한 경로를 저장할 Set
-        Set<String> visitedPaths = new HashSet<>();
+        Set<String> set = new HashSet<>();
         
         int answer = 0;
         
         for(char s : dirs.toCharArray()){
-            int nextx = x;
-            int nexty = y;
+            int nextX = x;
+            int nextY = y;
             
             switch(s){
                 case 'U':
-                    nexty += 1;
+                    nextX += 1;
                     break;
                 case 'D':
-                    nexty -= 1;
+                    nextX -= 1;
                     break;
                 case 'R':
-                    nextx += 1;
+                    nextY += 1;
                     break;
                 case 'L':
-                    nextx -= 1;
+                    nextY -= 1;
                     break;
             }
             
-            if(nextx > 5 || nextx < -5 || nexty > 5 || nexty < -5){
+            if(nextX > 5 || nextX < -5 || nextY > 5 || nextY < -5){
                 continue;
             }
             
-            String path1 = x + "," + y + "," + nextx + "," + nexty;
-            String path2 = nextx + "," + nexty + "," + x + "," + y;
+            String path1 = x + "," + y + "," + nextX + "," + nextY;
+            String path2 = nextX + "," + nextY + "," + x + "," + y;
             
-            
-            // 두 방향 중 하나로 저장 (이미 방문한 경로인지 확인)
-            if(!visitedPaths.contains(path1) && !visitedPaths.contains(path2)) {
+            if(!set.contains(path1) && !set.contains(path2)){
                 answer++;
-                visitedPaths.add(path1);
-                visitedPaths.add(path2);
+                set.add(path1);
+                set.add(path2);
             }
             
-            x = nextx;
-            y = nexty;
-        }       
+            x = nextX;
+            y = nextY;
+        }
+        
         
         return answer;
     }

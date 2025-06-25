@@ -17,7 +17,6 @@ class Solution {
             answer[stack.pop()] = -1;
         }
         
-        
         return answer;
     }
 }

@@ -17,6 +17,7 @@ class Solution {
             answer[stack.peek()] = prices.length - stack.peek() - 1;
             stack.pop();
         }
+        
         return answer;
     }
 }

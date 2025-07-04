@@ -8,7 +8,8 @@ class Solution {
             number[i] = String.valueOf(numbers[i]);
         }
         
-        Arrays.sort(number, (s1, s2) -> (s2+s1).compareTo(s1+s2));
+        
+        Arrays.sort(number, (s1,s2) -> (s2+s1).compareTo(s1 + s2));
         
         if(number[0].equals("0")){
             return "0";

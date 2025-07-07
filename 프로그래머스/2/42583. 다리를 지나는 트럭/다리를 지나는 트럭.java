@@ -4,28 +4,27 @@ class Solution {
     public int solution(int bridge_length, int weight, int[] truck_weights) {
         int answer = 0;
         
-        Queue<Integer> bridge = new LinkedList<>();
+        Queue<Integer> q = new LinkedList<>();
         
         for(int i = 0; i < bridge_length; i++){
-            bridge.offer(0);
+            q.offer(0);
         }
         
-        int idx = 0;
-        int nowCur = 0;
-        
-        if(bridge_length == 1) return truck_weights.length + 1;
+        if(bridge_length == 1) return truck_weights.length;
         if(truck_weights.length == 1) return bridge_length + 1;
         
+        int idx = 0;
+        int sum = 0;
+        
         while(idx < truck_weights.length){
-            
-            nowCur -= bridge.poll();
+            sum -= q.poll();
             answer++;
             
-            if(nowCur + truck_weights[idx] <= weight){
-                bridge.offer(truck_weights[idx]);
-                nowCur += truck_weights[idx++];
+            if(sum + truck_weights[idx] <= weight){
+                q.offer(truck_weights[idx]);
+                sum += truck_weights[idx++];
             }else{
-                bridge.offer(0);
+                q.offer(0);
             }
         }
         

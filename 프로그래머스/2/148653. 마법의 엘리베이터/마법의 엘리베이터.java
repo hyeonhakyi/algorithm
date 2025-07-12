@@ -5,21 +5,21 @@ class Solution {
         int answer = 0;
         
         while(storey > 0){
-            int digit = storey % 10;
+            int dist = storey % 10;
             storey = storey / 10;
             
-            if(digit == 5){
+            if(dist == 5){
                 if(storey % 10 >= 5){
-                    answer += (10 - digit);
-                    storey++;
+                    answer += dist;
+                    storey += 1;
                 }else{
-                    answer += digit;
+                    answer += dist;
                 }
-            }else if (digit >= 5){
-                answer += (10 - digit);
-                storey++;
+            }else if(dist >= 5){
+                answer += 10 - dist;
+                storey += 1;
             }else{
-                answer += digit;
+                answer += dist;
             }
         }
         

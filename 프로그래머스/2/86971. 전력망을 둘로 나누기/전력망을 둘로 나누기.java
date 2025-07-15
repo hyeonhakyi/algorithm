@@ -2,48 +2,47 @@ import java.util.*;
 
 class Solution {
     int answer = Integer.MAX_VALUE;
-    ArrayList<Integer>[] graph;
-    
+    ArrayList<Integer>[] g;
     public int solution(int n, int[][] wires) {
-        graph = new ArrayList[n+1];
+        g = new ArrayList[n+1];
         
         for(int i = 1; i <= n; i++){
-            graph[i] = new ArrayList<>();   
+            g[i] = new ArrayList<>();
         }
         
         for(int i = 0; i < wires.length; i++){
             int s = wires[i][0];
-            int e = wires[i][1];
-            graph[s].add(e);
-            graph[e].add(s);
+            int v = wires[i][1];
+            
+            g[s].add(v);
+            g[v].add(s);
         }
         
         for(int i = 0; i < wires.length; i++){
+            boolean[] visited = new boolean[n + 1];
             int v1 = wires[i][0];
             int v2 = wires[i][1];
             
-            boolean[] visited = new boolean[n + 1];
-            
-            graph[v1].remove(Integer.valueOf(v2));
-            graph[v2].remove(Integer.valueOf(v1));
+            g[v1].remove(Integer.valueOf(v2));
+            g[v2].remove(Integer.valueOf(v1));
             
             int cnt = dfs(1,visited);
-            int diff = Math.abs(cnt - (n - cnt));
-            answer = Math.min(answer,diff);
+            int num = Math.abs(cnt - (n - cnt));
+            answer = Math.min(answer,num);
             
-            graph[v1].add(v2);
-            graph[v2].add(v1);
+            g[v1].add(v2);
+            g[v2].add(v1);
         }
         
         return answer;
     }
     
-    int dfs(int v,boolean[] visited){
+    public int dfs(int v, boolean[] visited){
         visited[v] = true;
         int cnt = 1;
-        for (int next : graph[v]){
-            if(visited[next])continue;
-            cnt += dfs(next, visited);
+        for(int next : g[v]){
+            if(visited[next]) continue;
+            cnt += dfs(next,visited);
         }
         return cnt;
     }

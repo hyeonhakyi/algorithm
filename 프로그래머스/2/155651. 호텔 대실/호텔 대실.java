@@ -1,34 +1,33 @@
 import java.util.*;
 
 class Solution {
-    private static final int MAX_TIME = 24*60 + 10;
-    
+    private static final int max_time = 24 * 60 + 10;
     public int solution(String[][] book_time) {
         int answer = 0;
         
-        int[] rooms = new int[MAX_TIME];
+        int[] time = new int[max_time];
         
-        for(String[] room:book_time){
+        for(String[] room: book_time){
             String start = room[0];
             String end = room[1];
             
-            rooms[calcTime(start)] += 1;
-            rooms[calcTime(end) + 10] -= 1;
+            time[calcul(start)] += 1;
+            time[calcul(end) + 10] -=1; 
         }
         
-        for(int i = 1; i < rooms.length; i++){
-            rooms[i] += rooms[i - 1];
-            answer = Math.max(answer, rooms[i]);
+        for(int i = 1; i < time.length; i++){
+            time[i] += time[i - 1];
+            answer = Math.max(answer, time[i]);
         }
         
         return answer;
     }
     
-    private static int calcTime(String time){
+    public int calcul(String time){
         String[] t = time.split(":");
-        String hh = t[0];
-        String mm = t[1];
+        String h = t[0];
+        String m = t[1];
         
-        return ((Integer.parseInt(hh) * 60) + Integer.parseInt(mm));
+        return ((Integer.parseInt(h) * 60) + Integer.parseInt(m));
     }
 }

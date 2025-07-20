@@ -1,7 +1,7 @@
 class Solution {
     public String solution(int n) {
         StringBuilder answer = new StringBuilder();
-        String[] numbers = {"4", "1", "2"};
+        String[] number = {"4","1","2"};
         
         while(n > 0){
             int num = n % 3;
@@ -11,7 +11,7 @@ class Solution {
                 n -= 1;
             }
             
-            answer.insert(0, numbers[num]);
+            answer.insert(0,number[num]);
         }
         
         return answer.toString();

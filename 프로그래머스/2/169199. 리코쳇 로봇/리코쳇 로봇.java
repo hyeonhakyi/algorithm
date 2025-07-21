@@ -31,12 +31,13 @@ class Solution {
                 }
             }
         }
+        
         answer = bfs();
         
         return answer;
-    }//solution end
+    }
     
-    public static int bfs(){
+    public int bfs(){
         Queue<Node> q = new LinkedList<>();
         boolean[][] visited = new boolean[n][m];
         
@@ -65,16 +66,16 @@ class Solution {
                     ny = ty;
                 }
                 
-                if(!visited[nx][ny]) {
+                if(!visited[nx][ny]){
                     visited[nx][ny] = true;
-                    q.offer(new Node(nx,ny,now.cnt + 1));   
+                    q.offer(new Node(nx,ny,now.cnt + 1));
                 }
             }
         }
         return -1;
-    }//bfs end
+    }
     
-    public static boolean check(int x, int y){
-        return x >= 0 && x < n && y >= 0 && y < m;
+    public boolean check(int x,int y){
+        return x >= 0 && x < n && y >=0 && y < m;
     }
 }

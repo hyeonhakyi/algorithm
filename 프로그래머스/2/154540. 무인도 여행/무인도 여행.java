@@ -4,6 +4,7 @@ class Node{
     int x;
     int y;
     int day;
+    
     public Node(int x,int y,int day){
         this.x = x;
         this.y = y;
@@ -12,11 +13,11 @@ class Node{
 }
 
 class Solution {
-    static char[][] arr;
-    static boolean[][] visited;
-    static int n,m;
     static int[] dx = {-1,1,0,0};
     static int[] dy = {0,0,-1,1};
+    static int n,m;
+    static char[][] arr;
+    static boolean[][] visited;
     static List<Integer> list = new ArrayList<>();
     public int[] solution(String[] maps) {
         n = maps.length;
@@ -36,16 +37,19 @@ class Solution {
                 }
             }
         }
+        
         if(list.isEmpty()){
             return new int[]{-1};
         }
         
         int[] answer = new int[list.size()];
+        
         Collections.sort(list);
         
         for(int i = 0; i < list.size(); i++){
             answer[i] = list.get(i);
-        }
+        }        
+        
         return answer;
     }
     
@@ -53,12 +57,12 @@ class Solution {
         Queue<Node> q = new LinkedList<>();
         q.offer(new Node(x,y,day));
         visited[x][y] = true;
-        int totalDays = 0;
+        int totalDay = 0;
         
         while(!q.isEmpty()){
             Node now = q.poll();
-            totalDays += now.day;
-                
+            totalDay += now.day;
+            
             for(int d = 0; d < 4; d++){
                 int nx = now.x + dx[d];
                 int ny = now.y + dy[d];
@@ -68,15 +72,14 @@ class Solution {
                 if(arr[nx][ny] == 'X') continue;
                 
                 visited[nx][ny] = true;
-                int nextDay = Integer.parseInt(String.valueOf(arr[nx][ny]));
-                q.offer(new Node(nx,ny,nextDay));
+                int nd = Integer.parseInt(String.valueOf(arr[nx][ny]));
+                q.offer(new Node(nx,ny,nd));
             }
         }
-        
-        return totalDays;
-    }//bfs end
+        return totalDay;
+    }
     
     public boolean check(int x,int y){
         return x >= 0 && x < n && y >= 0 && y < m;
-    }//check end
-}//class end
+    }
+}

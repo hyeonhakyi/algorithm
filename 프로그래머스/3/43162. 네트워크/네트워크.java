@@ -15,19 +15,20 @@ class Solution {
         
         return answer;
     }
-    private static void dfs(int x,int[][] computers,int n){
+    
+    public void dfs(int x,int[][] computers,int n){
         Queue<Integer> q = new LinkedList<>();
         q.offer(x);
         
         while(!q.isEmpty()){
-            int value = q.poll();
+            int now = q.poll();
             
             for(int i = 0; i < n; i++){
-                if(!visited[i] && computers[value][i] == 1){
+                if(!visited[i] && computers[now][i] == 1){
                     visited[i] = true;
                     q.offer(i);
                 }
             }
         }
     }//dfs end
-}//class end
+}

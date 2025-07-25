@@ -10,6 +10,7 @@ public class Main {
         int n = Integer.parseInt(st.nextToken());
         int k = Integer.parseInt(st.nextToken());
         int[] arr = new int[n];
+        int[] visited  = new int[100001];
 
         st = new StringTokenizer(br.readLine());
         for(int i = 0; i < n; i++) {
@@ -18,17 +19,17 @@ public class Main {
 
         int left = 0;
         int right = 0;
-        int[] count = new int[100001];
         int answer = Integer.MIN_VALUE;
         while(right < n){
-            while(right < n && count[arr[right]] + 1 <= k){
-                count[arr[right++]]++;
+            while(right < n && visited[arr[right]] + 1 <= k){
+                visited[arr[right++]]++;
             }
 
             int len = right - left;
             answer = Math.max(answer, len);
-            count[arr[left++]]--;
+            visited[arr[left++]]--;
         }
+
         System.out.println(answer);
     }//main end
 }//class end

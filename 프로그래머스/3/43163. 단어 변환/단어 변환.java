@@ -1,43 +1,40 @@
 import java.util.*;
 
-class Word{
+class Node{
     String word;
-    int step;
-    
-    public Word(String word,int step){
+    int count;
+    public Node(String word,int count){
         this.word = word;
-        this.step = step;
+        this.count = count;
     }
 }
 
 class Solution {
     public int solution(String begin, String target, String[] words) {
         if(!Arrays.asList(words).contains(target)) return 0;
-        
-        Queue<Word> q = new LinkedList<>();
+        Queue<Node> q = new LinkedList<>();
         boolean[] visited = new boolean[words.length];
         
-        q.offer(new Word(begin,0));
+        q.offer(new Node(begin,0));
         
         while(!q.isEmpty()){
-            Word now = q.poll();
+            Node now = q.poll();
             
             if(now.word.equals(target)){
-                return now.step;
+                return now.count;
             }
             
             for(int i = 0; i < words.length; i++){
-                if(!visited[i] && canCover(now.word,words[i])){
+                if(!visited[i] && canCov(words[i],now.word)){
+                    q.offer(new Node(words[i],now.count+1));
                     visited[i] = true;
-                    q.offer(new Word(words[i],now.step + 1));
                 }
             }
         }
-        
         return 0;
     }
     
-    private static boolean canCover(String a,String b){
+    public static boolean canCov(String a,String b){
         int diff = 0;
         for(int i = 0; i < a.length(); i++){
             if(a.charAt(i) != b.charAt(i)){
@@ -45,7 +42,7 @@ class Solution {
             }
             if(diff > 1){
                 return false;
-            }
+            } 
         }
         return diff == 1;
     }

@@ -13,8 +13,8 @@ class Solution {
         while(j != B.length){
             if(A[i] < B[j]){
                 answer++;
-                i++;
                 j++;
+                i++;
             }else{
                 j++;
             }

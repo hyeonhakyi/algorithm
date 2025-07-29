@@ -12,38 +12,38 @@ public class Main {
         int k = Integer.parseInt(st.nextToken());
         int c = Integer.parseInt(st.nextToken());
         int[] arr = new int[n];
+        int[] check = new int[d+1];
 
-        for (int i = 0; i < n; i++) {
+        for(int i = 0; i < n; i++){
             arr[i] = Integer.parseInt(br.readLine());
         }
 
-        int[] check = new int[d+1];
-        int kind = 0;
-        
-        for (int i = 0; i < k; i++) {
-            if(check[arr[i]] == 0) {
+        int kind = 1;
+        check[c]++;
+        for(int i = 0; i < k; i++){
+            if(check[arr[i]] == 0){
                 kind++;
             }
             check[arr[i]]++;
         }
 
-        int max = kind;
-        if(check[c] == 0) max++;
-
+        int count = kind;
         for(int i = 1; i < n; i++){
-            int out = arr[i - 1];
+            int out = arr[i-1];
             check[out]--;
-            if(check[out] == 0) kind--;
+            if(check[out] == 0){
+                count--;
+            }
 
             int in = arr[(i + k - 1) % n];
-            if(check[in] == 0) kind++;
+            if(check[in] == 0){
+                count++;
+            }
             check[in]++;
 
-            int tmpMax = kind;
-            if(check[c] == 0) tmpMax++;
-
-            max = Math.max(tmpMax, max);
+            kind = Math.max(kind, count);
         }
-        System.out.println(max);
+
+        System.out.println(kind);
     }//main end
 }//class end

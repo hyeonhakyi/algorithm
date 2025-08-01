@@ -1,16 +1,16 @@
 import java.util.*;
 
-class Solution { 
+class Solution {
     public int solution(int n, int[][] edge) {
-        ArrayList<List<Integer>> list = new ArrayList<>();
+        List<List<Integer>> list = new ArrayList<>();
         
         for(int i = 0; i <= n; i++){
             list.add(new ArrayList<>());
         }
         
-        for(int[] i : edge){
-            list.get(i[0]).add(i[1]);
-            list.get(i[1]).add(i[0]);
+        for(int[] r : edge){
+            list.get(r[0]).add(r[1]);
+            list.get(r[1]).add(r[0]);
         }
         
         int[] d = new int[n+1];
@@ -32,7 +32,7 @@ class Solution {
         
         int max = 0;
         for(int i = 0; i <= n; i++){
-            max = Math.max(d[i],max);
+            max = Math.max(max,d[i]);
         }
         
         int answer = 0;
@@ -43,5 +43,5 @@ class Solution {
         }
         
         return answer;
-    }//main end
-}//class end
+    }
+}

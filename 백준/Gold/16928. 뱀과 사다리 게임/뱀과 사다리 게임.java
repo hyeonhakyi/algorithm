@@ -2,21 +2,30 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int[] arr;
-    static int answer;
+    static class Node{
+        int idx;
+        int count;
+        public Node(int idx, int count){
+            this.idx = idx;
+            this.count = count;
+        }
+    }
+    static int n,m;
+    static List<Integer>[] list;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
-        arr = new int[101];
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+        list = new List[101];
 
-        for(int i = 0; i < 101; i++){
-            arr[i] = i;
+        for(int i = 1; i <= 100; i++){
+            list[i] = new LinkedList<>();
         }
 
         for(int i = 0; i < n; i++){
@@ -24,47 +33,47 @@ public class Main {
             int x = Integer.parseInt(st.nextToken());
             int y = Integer.parseInt(st.nextToken());
 
-            arr[x] = y;
+            list[x].add(y);
         }
 
         for(int i = 0; i < m; i++){
             st = new StringTokenizer(br.readLine());
-            int x = Integer.parseInt(st.nextToken());
-            int y = Integer.parseInt(st.nextToken());
+            int u = Integer.parseInt(st.nextToken());
+            int v = Integer.parseInt(st.nextToken());
 
-            arr[x] = y;
+            list[u].add(v);
         }
 
-        bfs();
+        int answer = bfs();
+
         System.out.println(answer);
     }//main end
 
-    private static void bfs() {
-        Queue<Integer> q = new LinkedList<>();
-        q.add(1);
-        int[] check = new int[101];
-        check[1] = 0;
+    static int bfs(){
+        Queue<Node> q = new LinkedList<>();
+        q.add(new Node(1,0));
+        boolean[] visited = new boolean[101];
+        visited[1] = true;
 
-        while(true){
-            int now = q.poll();
+        while(!q.isEmpty()){
+            Node now = q.poll();
 
-            for(int i = 1; i < 7; i++){
-                int next = now + i;
+            if(now.idx == 100){
+                return now.count;
+            }
 
-                if(next > 100){
-                    continue;
-                }
+            for(int i = 1; i <= 6; i++){
+                int next = now.idx + i;
+                if(next > 100) continue;
 
-                if(check[arr[next]] == 0){
-                    q.offer(arr[next]);
-                    check[arr[next]] = check[arr[now]] + 1;
-                }
+                int dest = list[next].isEmpty() ? next : list[next].get(0);
 
-                if(arr[next] == 100){
-                    answer = check[next];
-                    return;
+                if(!visited[dest]){
+                    visited[dest] = true;
+                    q.offer(new Node(dest,now.count + 1));
                 }
             }
         }
-    }//bfs end
+        return -1;
+    }
 }//class end

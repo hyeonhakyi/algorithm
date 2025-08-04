@@ -3,13 +3,14 @@ import java.util.*;
 class Solution {
     public int solution(int[] stones, int k) {
         int answer = 0;
+        
         int left = 1;
         int right = 200000000;
         
         while(left <= right){
             int mid = (left + right) / 2;
             
-            if(canCross(stones,k,mid)){
+            if(canCover(stones,k,mid)){
                 answer = mid;
                 left = mid + 1;
             }else{
@@ -20,10 +21,11 @@ class Solution {
         return answer;
     }
     
-    private static boolean canCross(int[] stones,int k,int people){
+    public boolean canCover(int[] stones,int k,int people){
         int count = 0;
-        for(int stone : stones){
-            if(stone - people < 0){
+        
+        for(int i : stones){
+            if(i - people < 0){
                 count++;
                 if(count >= k){
                     return false;
@@ -32,6 +34,7 @@ class Solution {
                 count = 0;
             }
         }
+        
         return true;
-    } 
+    }
 }

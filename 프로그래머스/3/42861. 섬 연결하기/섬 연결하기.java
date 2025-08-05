@@ -1,14 +1,13 @@
 import java.util.*;
 
 class Node{
-    int end;
+    int idx;
     int weight;
-    public Node(int end,int weight){
-        this.end = end;
+    public Node(int idx,int weight){
+        this.idx = idx;
         this.weight = weight;
     }
 }
-
 
 class Solution {
     public int solution(int n, int[][] costs) {
@@ -20,10 +19,10 @@ class Solution {
             list.add(new ArrayList<>());
         }
         
-        for(int[] cost: costs){
-            int start = cost[0];
-            int end = cost[1];
-            int weight = cost[2];
+        for(int[] c : costs){
+            int start = c[0];
+            int end = c[1];
+            int weight = c[2];
             
             list.get(start).add(new Node(end,weight));
             list.get(end).add(new Node(start,weight));
@@ -32,25 +31,23 @@ class Solution {
         PriorityQueue<Node> q = new PriorityQueue<>((o1,o2) -> o1.weight - o2.weight);
         
         visited[0] = true;
-        for(Node next : list.get(0)){
-            q.offer(next);
+        for(Node i : list.get(0)){
+            q.offer(i);   
         }
         
         while(!q.isEmpty()){
             Node now = q.poll();
             
-            if(visited[now.end]) continue;
-            
-            visited[now.end] = true;
+            if(visited[now.idx]) continue;
             answer += now.weight;
+            visited[now.idx] = true;
             
-            for(Node next : list.get(now.end)){
-                if(!visited[next.end]){
-                    q.offer(next);
+            for(Node i : list.get(now.idx)){
+                if(!visited[i.idx]){
+                    q.offer(i);   
                 }
             }
         }
-        
         
         return answer;
     }

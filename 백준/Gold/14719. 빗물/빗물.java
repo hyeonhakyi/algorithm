@@ -11,28 +11,42 @@ public class Main {
         int w = Integer.parseInt(st.nextToken());
         int[] arr = new int[w];
 
+        int maxHeight = 0;
+        int idx = 0;
         st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < w; i++) {
+        for(int i = 0; i < w; i++){
             arr[i] = Integer.parseInt(st.nextToken());
-        }
 
-        int count = 0;
-        for(int i = 1; i < w-1; i++){
-            int left = 0;
-            int right = 0;
-
-            for(int j = 0; j < i; j++){
-                left = Math.max(left, arr[j]);
-            }
-
-            for(int j = i + 1; j < w; j++){
-                right = Math.max(right, arr[j]);
-            }
-
-            if(arr[i] < left && arr[i] < right){
-                count += Math.min(left, right) - arr[i];
+            if(arr[i] > maxHeight){
+                maxHeight = arr[i];
+                idx = i;
             }
         }
-        System.out.println(count);
+
+        int answer = 0;
+
+        int max = 0;
+        for(int i = 0; i < idx; i++){
+            if(max == 0){
+                max = arr[i];
+            }else if(arr[i] > max){
+                max = arr[i];
+            }else if(arr[i] < max){
+                answer += (max - arr[i]);
+            }
+        }
+
+        max = 0;
+        for(int i = w - 1; i > idx; i--){
+            if(max == 0){
+                max = arr[i];
+            }else if(arr[i] > max){
+                max = arr[i];
+            }else if(arr[i] < max){
+                answer += (max - arr[i]);
+            }
+        }
+
+        System.out.println(answer);
     }//main end
 }//class end

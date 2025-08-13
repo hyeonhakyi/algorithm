@@ -1,80 +1,85 @@
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
-class Solution {
-    private static class Car{
-        int x;
-        int y;
-        int dir;
-        int value;
-        public Car(int x,int y,int dir,int value){
-            this.x = x;
-            this.y = y;
-            this.dir = dir;
-            this.value = value;
-        }
-    }
-    private static int[] dx = {-1,1,0,0};
-    private static int[] dy = {0,0,-1,1};
-    private static int min,n;
-    private static int[][][] arr;
-    public int solution(int[][] board){
-        min = Integer.MAX_VALUE;
-        n = board.length;
-        boolean[][] visited = new boolean[n][n];
-        arr = new int[4][n][n];
+import java.util.*;
 
+class Node{
+    int x;
+    int y;
+    int dir;
+    int value;
+    public Node(int x,int y,int dir,int value){
+        this.x = x;
+        this.y = y;
+        this.dir = dir;
+        this.value = value;
+    }
+}
+
+class Solution {
+    static int[] dx = {-1,1,0,0};
+    static int[] dy = {0,0,-1,1};
+    static int n,m,answer;
+    static int[][][] arr;
+    static boolean[][] visited;
+    public int solution(int[][] board) {
+        answer = Integer.MAX_VALUE;
+        n = board.length;
+        m = board.length;
+        visited = new boolean[n][m];
+        arr = new int[4][n][m];
+        
         for(int x = 0; x < 4; x++){
             for(int i = 0; i < n; i++){
-                for(int j = 0; j < n; j++){
+                for(int j = 0; j < m; j++){
                     arr[x][i][j] = Integer.MAX_VALUE;
                 }
             }
         }
-
-        bfs(visited,board);
-
-        return min;
-    }//main end
-
-    private static void bfs(boolean[][] visited,int[][] board){
-        Queue<Car> que = new LinkedList<>();
-        que.offer(new Car(0,0,-1,0));
+        
+        bfs(board);
+        
+        return answer;
+    }
+    
+    public void bfs(int[][] board){
+        Queue<Node> q = new LinkedList<>();
+        q.offer(new Node(0,0,-1,0));
         visited[0][0] = true;
-
-        while(!que.isEmpty()){
-            Car car = que.poll();
-            int nowX = car.x;
-            int nowY = car.y;
-            int dir = car.dir;
-            int value = car.value;
-
-            if(nowX == n-1 && nowY == n-1){
-                min = Math.min(min,value);
+        
+        while(!q.isEmpty()){
+            Node now = q.poll();
+            int nowX = now.x;
+            int nowY = now.y;
+            int nowDir = now.dir;
+            int nowValue = now.value;
+            
+            if(nowX == n - 1 && nowY == m - 1){
+                answer = Math.min(answer,nowValue);
             }
-
+            
             for(int d = 0; d < 4; d++){
                 int nx = nowX + dx[d];
                 int ny = nowY + dy[d];
-                int nextValue = value;
-
-                if(dir == -1){
+                int nextValue = nowValue;
+                
+                if(nowDir == -1){
                     nextValue += 100;
-                }else if(dir == d){
+                }else if(nowDir == d){
                     nextValue += 100;
                 }else{
                     nextValue += 600;
                 }
-
-                if(nx >= 0 && ny >= 0 && nx < n && ny < n && board[nx][ny] != 1){
-                    if(!visited[nx][ny] || arr[d][nx][ny] >= nextValue) {
-                        visited[nx][ny] = true;
-                        arr[d][nx][ny] = nextValue;
-                        que.offer(new Car(nx, ny, d, nextValue));
-                    }
-                }
+                
+                if(!check(nx,ny)) continue;
+                if(board[nx][ny] == 1) continue;
+                if(!visited[nx][ny] || arr[d][nx][ny] >= nextValue){
+                    visited[nx][ny] = true;
+                    arr[d][nx][ny] = nextValue;
+                    q.offer(new Node(nx,ny,d,nextValue));  
+                } 
             }
         }
-    }//bfs end
-}//class end
-
+    }
+    
+    public boolean check(int x,int y){
+        return x >= 0 && x < n && y >= 0 && y < m;
+    }
+}

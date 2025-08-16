@@ -1,30 +1,30 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int[][] jobs) {
-        int answer = 0;
-        
+    public int solution(int[][] jobs) {        
         Arrays.sort(jobs, (a,b) -> a[0] - b[0]);
         
-        PriorityQueue<int[]> que = new PriorityQueue<>((o1,o2) -> o1[1] - o2[1]);
+        PriorityQueue<int[]> q = new PriorityQueue<>((o1,o2) -> o1[1] - o2[1]);
         
-        int index = 0;
+        int idx = 0;
         int count = 0;
         int total = 0;
         int end = 0;
-        while(count < jobs.length) {
-            while(index < jobs.length && jobs[index][0] <= end){
-                que.add(jobs[index++]);
+        
+        while(count < jobs.length){
+            while(idx < jobs.length && jobs[idx][0] <= end){
+                q.offer(jobs[idx++]);
             }
             
-            if(que.isEmpty()){
-                end = jobs[index][0];
+            if(q.isEmpty()){
+                end = jobs[idx][0];
             }else{
-                int[] cur = que.poll();
-                total += cur[1] + end - cur[0];
-                end += cur[1];
+                int[] now = q.poll();
+                total += now[1] + end - now[0];
+                end += now[1];
                 count++;
             }
+            
         }
         return total / jobs.length;
     }

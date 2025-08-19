@@ -1,10 +1,11 @@
 -- 코드를 입력하세요
-SELECT 
-    i.NAME, i.DATETIME
+SELECT
+    NAME,
+    DATETIME
 from
-    ANIMAL_INS as i
+    ANIMAL_INS 
 where
-    i.ANIMAL_ID not in (select ANIMAL_ID
-                       from ANIMAL_OUTS)
-order by i.DATETIME
-limit 3
+    ANIMAL_ID not in (select ANIMAL_ID
+                     from ANIMAL_OUTS)
+order by
+    DATETIME limit 3

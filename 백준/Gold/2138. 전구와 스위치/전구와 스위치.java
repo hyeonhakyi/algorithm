@@ -4,61 +4,52 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 
 public class Main {
-    static int n,ans,ans1;
-    static String aStr,bStr;
-    static int[] a;
-    static int[] b;
-    static int[] c;
+    static int n;
+    static char[] target;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
-        aStr = br.readLine();
-        bStr = br.readLine();
-        a = new int[n];
-        b = new int[n];
 
-        for(int i = 0; i < aStr.length(); i++){
-            a[i] = aStr.charAt(i) - '0';
-        }
+        char[] arr = br.readLine().toCharArray();
+        target = br.readLine().toCharArray();
 
-        for(int i = 0; i < bStr.length(); i++){
-            b[i] = bStr.charAt(i) - '0';
-        }
+        int ans1 = simulate(arr.clone(),true);
+        int ans2 = simulate(arr.clone(),false);
 
-        c = Arrays.copyOf(a,n);
-        c[0] = 1 - c[0];
-        c[1] = 1 - c[1];
-
-        ans = result(n,a,b);
-        ans1 = result(n,c,b);
-        if(ans1 != -1)ans1++;
-
-        if(ans == -1){
+        if(ans1 == -1 && ans2 == -1){
+            System.out.println(-1);
+        }else if (ans1 == -1){
+            System.out.println(ans2);
+        }else if(ans2 == -1){
             System.out.println(ans1);
-        }else if(ans1 == -1){
-            System.out.println(ans);
         }else{
-            System.out.println(Math.min(ans,ans1));
+            System.out.println(Math.min(ans1,ans2));
         }
     }
 
-    public static int result(int n, int[] a, int[] b){
-        int count = 0;
+    static int simulate(char[] arr,boolean flag){
+        int cnt = 0;
 
-        for(int i = 0; i < n-1; i++){
-            if(a[i] != b[i]){
-                count++;
-                a[i] = 1- a[i];
-                a[i+1] = 1 - a[i+1];
-                if(i != n-2){
-                    a[i+2] = 1 - a[i+2];
-                }
+        if(flag){
+            cnt++;
+            press(arr,0);
+            press(arr,1);
+        }
+
+        for(int i = 1; i < n; i++){
+            if(arr[i - 1] != target[i - 1]){
+                cnt++;
+                press(arr,i - 1);
+                press(arr,i);
+                if(i +1 < n) press(arr,i+1);
             }
         }
-        if(a[n-1] != b[n-1]){
-            return -1;
-        }else {
-            return count;
-        }
+
+        if(Arrays.equals(arr,target)) return cnt;
+        return -1;
     }
-}
+
+    static void press(char[] arr,int idx){
+        arr[idx] = arr[idx] == '0' ? '1' : '0';
+    }
+}//class end

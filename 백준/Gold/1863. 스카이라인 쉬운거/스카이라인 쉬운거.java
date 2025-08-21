@@ -8,28 +8,34 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
-        Stack<Integer> stack = new Stack<Integer>();
-        int answer = 0;
+        Stack<Integer> stack = new Stack<>();
 
+
+        int answer = 0;
         StringTokenizer st;
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
-            int x = Integer.parseInt(st.nextToken());
-            int y = Integer.parseInt(st.nextToken());
 
-            while(!stack.isEmpty() && stack.peek() > y) {
+            int idx = Integer.parseInt(st.nextToken());
+            int height = Integer.parseInt(st.nextToken());
+
+            while(!stack.isEmpty() && stack.peek() > height) {
                 stack.pop();
                 answer++;
             }
 
-            if(stack.isEmpty() || stack.peek() < y){
-                if(y != 0){
-                    stack.push(y);
+            if(stack.isEmpty() || stack.peek() < height){
+                if(height != 0){
+                    stack.push(height);
                 }
             }
         }
 
-        answer += stack.size();
+
+        while(!stack.isEmpty()){
+            stack.pop();
+            answer++;
+        }
 
         System.out.println(answer);
     }//main end

@@ -15,17 +15,16 @@ class Solution {
         
         int maxB = 0;
         List<Integer> list = new ArrayList<>();
-        
-        for(int[] score : scores){
-            int a = score[0];
-            int b = score[1];
+        for(int[] s : scores){
+            int a = s[0];
+            int b = s[1];
             
-            if(a > wan[0] && b > wan[1]){
+            if(wan[0] < a && wan[1] < b){
                 return -1;
             }
             
             if(b >= maxB){
-                maxB = Math.max(maxB, b);
+                maxB = Math.max(b,maxB);
                 list.add(a + b);
             }
         }
@@ -33,10 +32,10 @@ class Solution {
         list.sort(Collections.reverseOrder());
         
         int rank = 1;
-        for(int sum : list){
-            if(sum > wanSum){
+        for(int r : list){
+            if(r > wanSum){
                 rank++;
-            }else if(sum == wanSum){
+            }else if(r == wanSum){
                 return rank;
             }
         }

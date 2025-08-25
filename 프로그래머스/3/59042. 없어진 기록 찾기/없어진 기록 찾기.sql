@@ -1,4 +1,4 @@
-SELECT
+select
     ANIMAL_ID,
     NAME
 from
@@ -6,5 +6,6 @@ from
 where
     ANIMAL_ID not in (select ANIMAL_ID
                      from ANIMAL_INS)
-order by 
-    ANIMAL_ID
+order by
+    ANIMAL_ID,
+    NAME

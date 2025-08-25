@@ -1,5 +1,4 @@
--- 코드를 입력하세요
-SELECT
+select
     distinct CAR_ID,
     case 
         when CAR_ID in (select CAR_ID
@@ -9,5 +8,5 @@ SELECT
     end as AVAILABILITY
 from
     CAR_RENTAL_COMPANY_RENTAL_HISTORY 
-order by 
-    CAR_ID desc 
+order by
+    CAR_ID desc

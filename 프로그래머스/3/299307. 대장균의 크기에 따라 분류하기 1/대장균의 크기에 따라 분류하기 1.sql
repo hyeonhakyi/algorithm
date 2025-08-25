@@ -7,5 +7,5 @@ select
     end as SIZE
 from
     ECOLI_DATA 
-order by 
+order by
     ID

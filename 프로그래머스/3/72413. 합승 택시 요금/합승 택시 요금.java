@@ -3,13 +3,15 @@ import java.util.*;
 class Node implements Comparable<Node>{
     int idx;
     int weight;
+    
     public Node(int idx,int weight){
         this.idx = idx;
         this.weight = weight;
     }
+    
     @Override
     public int compareTo(Node o){
-        return Integer.compare(this.weight,o.weight);
+        return this.weight - o.weight;
     }
 }
 
@@ -18,31 +20,35 @@ class Solution {
     static ArrayList<Node>[] list;
     public int solution(int n, int s, int a, int b, int[][] fares) {
         int answer = max;
-        list = new ArrayList[n+1];
+        list = new ArrayList[n + 1];
         
         for(int i = 0; i <= n; i++){
             list[i] = new ArrayList<>();
         }
         
-        for(int[] fare : fares){
-            list[fare[0]].add(new Node(fare[1],fare[2]));
-            list[fare[1]].add(new Node(fare[0],fare[2]));
+        for(int[] i : fares){
+            int start = i[0];
+            int end = i[1];
+            int weight = i[2];
+            
+            list[start].add(new Node(end,weight));
+            list[end].add(new Node(start,weight));
         }
         
-        int[] startA = dijkstra(a,n);
-        int[] startB = dijkstra(b,n);
-        int[] startS = dijkstra(s,n);
+        int[] sDist = dijkstra(s,n);
+        int[] aDist = dijkstra(a,n);
+        int[] bDist = dijkstra(b,n);
         
         for(int i = 1; i <= n; i++){
-            answer = Math.min(answer,startS[i] + startA[i] + startB[i]);
+            answer = Math.min(answer,sDist[i] + aDist[i] + bDist[i]);
         }
         
         return answer;
-    }
+    }//main end
     
     public static int[] dijkstra(int start,int n){
-        int[] dist = new int[n+1];
-        boolean[] visited = new boolean[n+1];
+        int[] dist = new int[n + 1];
+        boolean[] visited = new boolean[n + 1];
         Arrays.fill(dist,max);
         PriorityQueue<Node> q = new PriorityQueue<>();
         q.offer(new Node(start,0));
@@ -51,16 +57,16 @@ class Solution {
         while(!q.isEmpty()){
             Node now = q.poll();
             
-            if(visited[now.idx])continue;
-            visited[now.idx] = true;   
+            if(visited[now.idx]) continue;
+            visited[now.idx] = true;
             
             for(Node next : list[now.idx]){
                 if(dist[next.idx] > now.weight + next.weight){
                     dist[next.idx] = now.weight + next.weight;
-                    q.offer(new Node(next.idx, dist[next.idx]));
-                }   
+                    q.offer(new Node(next.idx,dist[next.idx]));
+                }
             }
         }
         return dist;
-    }
+    }//dijkstra end
 }

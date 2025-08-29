@@ -1,44 +1,43 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class Main{
-    private static int n,s;
-    private static int[] num;
+public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        s = Integer.parseInt(st.nextToken());
-        num = new int[n];
+        int n = Integer.parseInt(st.nextToken());
+        int s = Integer.parseInt(st.nextToken());
 
+        int[] arr = new int[n];
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++) {
-            num[i] = Integer.parseInt(st.nextToken());
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        int start = 0;
-        int end = 0;
-        int result = 100001;
+        int answer = Integer.MAX_VALUE;
+        int left = 0;
+        int right = 0;
         int sum = 0;
-        while(true) {
+
+        while(true){
             if(sum >= s){
-                sum -= num[start];
-                result = Math.min(result, end - start);
-                start++;
-            }else if(end == n){
+                sum -= arr[left];
+                answer = Math.min(answer, right - left);
+                left++;
+            } else if (right == n) {
                 break;
-            }else{
-                sum += num[end++];
+            }else {
+                sum += arr[right];
+                right++;
             }
         }
-        if(result == 100001){
+
+        if(answer == Integer.MAX_VALUE){
             System.out.println(0);
         }else{
-            System.out.println(result);
+            System.out.println(answer);
         }
     }//main end
 }//class end

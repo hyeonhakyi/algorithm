@@ -1,14 +1,13 @@
--- 코드를 작성해주세요
-select
-    a.ID,
-    case
-        when a.per <= 0.25 then 'CRITICAL'
-        when a.per <= 0.5 then 'HIGH'
-        when a.per <= 0.75 then 'MEDIUM'
-        else 'LOW'
-    end as COLONY_NAME
-from 
-    (select ID, percent_rank() over (order by SIZE_OF_COLONY desc) as per
-     from ECOLI_DATA ) as a
-order by 
-    a.ID
+SELECT A.ID,
+    CASE
+        WHEN A.PER <= 0.25 THEN 'CRITICAL'
+        WHEN A.PER <= 0.5 THEN 'HIGH'
+        WHEN A.PER <= 0.75 THEN 'MEDIUM'
+        ELSE 'LOW'
+    END AS COLONY_NAME
+FROM(
+    SELECT ID,
+    PERCENT_RANK() OVER (ORDER BY SIZE_OF_COLONY DESC) AS PER
+    FROM ECOLI_DATA
+) AS A
+ORDER BY A.ID

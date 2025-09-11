@@ -1,5 +1,4 @@
--- 코드를 입력하세요
-SELECT
+select
     i.REST_ID,
     i.REST_NAME,
     i.FOOD_TYPE,
@@ -17,8 +16,7 @@ group by
     i.REST_NAME,
     i.FOOD_TYPE,
     i.FAVORITES,
-    i.ADDRESS        
+    i.ADDRESS
 order by
     SCORE desc,
-    i.FAVORITES desc 
-    
+    i.FAVORITES desc

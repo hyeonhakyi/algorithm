@@ -8,7 +8,7 @@ class Solution {
         
         for(int i = 0; i < a.length; i++){
             if(!map.containsKey(a[i])){
-                map.put(a[i], 1);
+                map.put(a[i],1);
             }else{
                 map.put(a[i],map.get(a[i]) + 1);
             }
@@ -18,15 +18,17 @@ class Solution {
             if(map.get(key) <= answer){
                 continue;
             }
-            int count = 0;
             
+            int count = 0;
             for(int i = 0; i < a.length - 1; i++){
                 if(a[i] != key && a[i + 1] != key){
                     continue;
                 }
+                
                 if(a[i] == a[i + 1]){
                     continue;
                 }
+                
                 count++;
                 i++;
             }

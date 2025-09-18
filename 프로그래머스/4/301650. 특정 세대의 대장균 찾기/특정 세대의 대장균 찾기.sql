@@ -8,5 +8,5 @@ join
     ECOLI_DATA as e3 on e2.ID = e3.PARENT_ID
 where
     e1.PARENT_ID is null
-order by 
-    e3.ID
+order by
+    ID

@@ -1,25 +1,27 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
 public class Main {
-    private static class Node implements Comparable<Node> {
-        int idx;
-        int value;
-        public Node(int idx,int value){
-            this.idx = idx;
-            this.value = value;
+    static class Node implements Comparable<Node> {
+        int end;
+        int weight;
+        public Node(int end, int weight) {
+            this.end = end;
+            this.weight = weight;
         }
-
         @Override
-        public int compareTo(Node o) {
-            return Integer.compare(this.value,o.value);
+        public int compareTo(Node o){
+            return this.weight - o.weight;
         }
     }
-    private static int n,m,x;
-    private static ArrayList<Node>[] list,r_list;
-    private static int[] dist,r_dist;
+    static int n,m,x;
+    static ArrayList<Node>[] list;
+    static ArrayList<Node>[] rList;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -27,52 +29,56 @@ public class Main {
         m = Integer.parseInt(st.nextToken());
         x = Integer.parseInt(st.nextToken());
 
-
-        dist = new int[n+1];
-        r_dist = new int[n+1];
-        Arrays.fill(dist,Integer.MAX_VALUE);
-        Arrays.fill(r_dist,Integer.MAX_VALUE);
-        list = new ArrayList[n+1];
-        r_list = new ArrayList[n+1];
-
-        for(int i = 1; i <= n; i++){
+        list = new ArrayList[n + 1];
+        rList = new ArrayList[n + 1];
+        for(int i = 1; i <= n; i++) {
             list[i] = new ArrayList<>();
-            r_list[i] = new ArrayList<>();
+            rList[i] = new ArrayList<>();
         }
+
         for(int i = 0; i < m; i++){
             st = new StringTokenizer(br.readLine());
-            int from = Integer.parseInt(st.nextToken());
-            int to = Integer.parseInt(st.nextToken());
-            int value = Integer.parseInt(st.nextToken());
+            int start = Integer.parseInt(st.nextToken());
+            int end = Integer.parseInt(st.nextToken());
+            int weight = Integer.parseInt(st.nextToken());
 
-            list[from].add(new Node(to,value));
-            r_list[to].add(new Node(from,value));
+            list[start].add(new Node(end, weight));
+            rList[end].add(new Node(start,weight));
         }
 
-        djkstr(list,dist,x);
-        djkstr(r_list,r_dist,x);
+        int[] distFrom = dijkstr(list,x);
+        int[] distTox = dijkstr(rList,x);
 
-        int max = 0;
+        int answer = 0;
         for(int i = 1; i <= n; i++){
-            max = Math.max(max,dist[i] + r_dist[i]);
+            answer = Math.max(answer, distTox[i] + distFrom[i]);
         }
 
-        System.out.println(max);
+        System.out.println(answer);
     }//main end
 
-    private static void djkstr(ArrayList<Node>[] list,int[] dist,int start){
-        PriorityQueue<Node> que = new PriorityQueue<>();
-        que.offer(new Node(start,0));
-        dist[start] = 0;
+    static int[] dijkstr(ArrayList<Node>[] list,int x){
+        int[] dist = new int[n + 1];
+        Arrays.fill(dist,Integer.MAX_VALUE);
+        dist[x] =0;
 
-        while(!que.isEmpty()){
-            Node now = que.poll();
-            for(Node next : list[now.idx]){
-                if(dist[next.idx] > dist[now.idx] + next.value){
-                    dist[next.idx] = dist[now.idx] + next.value;
-                    que.offer(new Node(next.idx,dist[next.idx]));
+        PriorityQueue<Node> q = new PriorityQueue<>();
+        q.add(new Node(x,0));
+
+        while(!q.isEmpty()){
+            Node now = q.poll();
+            int idx = now.end;
+            int weight = now.weight;
+
+            if(weight > dist[idx]) continue;
+
+            for(Node next : list[idx]){
+                if(dist[next.end] > weight + next.weight){
+                    dist[next.end] = weight + next.weight;
+                    q.add(new Node(next.end,dist[next.end]));
                 }
             }
         }
-    }//djkstr end
+        return dist;
+    }//dijkstr end
 }//class end

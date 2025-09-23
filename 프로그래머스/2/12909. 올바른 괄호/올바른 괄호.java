@@ -10,14 +10,19 @@ class Solution {
             
             if(c == '('){
                 stack.push(c);
-            }else{
-                if(stack.isEmpty()){
-                    return false;  
+            }else if(c == ')'){
+                if(!stack.isEmpty()){
+                    stack.pop();
+                }else{
+                    return false;
                 }
-                stack.pop();
             }
         }
         
-        return stack.isEmpty();
+        if(!stack.isEmpty()){
+             return false;
+        }else{
+            return true;
+        }
     }
 }

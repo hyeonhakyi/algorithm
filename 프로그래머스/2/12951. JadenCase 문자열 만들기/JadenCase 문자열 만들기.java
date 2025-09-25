@@ -1,23 +1,26 @@
+import java.util.*;
+
 class Solution {
     public String solution(String s) {
-        String answer = "";
-        String[] arr = s.split(" ");
+        StringBuilder sb = new StringBuilder();
+        boolean check = true;
         
-        for(int i = 0; i < arr.length; i++){
-            if(arr[i].length() == 0){
-                answer += " ";
+        for(int i = 0; i < s.length(); i++){
+            char c = s.charAt(i);
+            
+            if(c == ' '){
+                sb.append(c);
+                check = true;
             }else{
-                answer += arr[i].substring(0,1).toUpperCase();
-                answer += arr[i].substring(1).toLowerCase();
-                answer += " ";
+                if(check){
+                    sb.append(Character.toUpperCase(c));
+                    check = false;
+                }else{
+                    sb.append(Character.toLowerCase(c));
+                }
             }
         }
         
-        if(s.substring(s.length() - 1, s.length()).equals(" ")){
-            return answer;
-        }
-        
-        
-        return answer = answer.substring(0,answer.length() - 1);
+        return sb.toString();
     }
 }

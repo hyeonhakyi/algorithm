@@ -1,15 +1,18 @@
+import java.util.*;
+
 class Solution {
     public int solution(int n) {
-        int answer = 0;
+        int answer = 1;
+        
+        int sum = 0;
         for(int i = 1; i <= n; i++){
-            int sum = 0;
-            for(int j = i; j <= n; j++){
+            sum = i;
+            for(int j = i+1; j < n; j++){
                 sum += j;
                 
-                if(sum >= n){
-                    if(sum == n){
-                        answer++;
-                    }
+                if(sum == n){
+                    answer++;
+                }else if(sum > n){
                     break;
                 }
             }

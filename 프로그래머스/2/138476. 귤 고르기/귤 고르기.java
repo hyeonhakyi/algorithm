@@ -4,7 +4,7 @@ class Solution {
     public int solution(int k, int[] tangerine) {
         int answer = 0;
         
-        HashMap<Integer,Integer> map = new HashMap<>();
+        HashMap<Integer, Integer> map = new HashMap<>();
         
         for(int i : tangerine){
             map.put(i, map.getOrDefault(i,0) + 1);
@@ -16,9 +16,10 @@ class Solution {
         for(int i : list){
             if(k <= 0){
                 break;
+            }else{
+                k -= map.get(i);
+                answer++;
             }
-            answer++;
-            k -= map.get(i);
         }
         
         return answer;

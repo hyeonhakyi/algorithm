@@ -2,6 +2,7 @@ import java.util.*;
 
 class Solution {
     public long solution(int n) {
+        
         int[] dp = new int[2001];
         dp[1] = 1;
         dp[2] = 2;

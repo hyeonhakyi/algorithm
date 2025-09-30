@@ -3,28 +3,32 @@ import java.util.*;
 class Solution {
     public int solution(String s) {
         int answer = 0;
+        
         for(int i = 0; i < s.length(); i++){
             Stack<Character> stack = new Stack<>();
             String str = s.substring(i,s.length()) + s.substring(0,i);
             
             for(int j = 0; j < str.length(); j++){
-                char ch = str.charAt(j);
+                char c = str.charAt(j);
+                
                 if(stack.isEmpty()){
-                    stack.push(ch);
-                } else if(ch == ')' && stack.peek() == '('){
+                    stack.push(c);
+                }else if(c == ']' && stack.peek() == '['){
+                    stack.pop();        
+                }else if(c == '}' && stack.peek() == '{'){
                     stack.pop();
-                } else if(ch == ']' && stack.peek() == '['){
+                }else if(c == ')' && stack.peek() == '('){
                     stack.pop();
-                } else if(ch == '}' && stack.peek() == '{'){
-                    stack.pop();
-                } else {
-                    stack.push(ch);
+                }else{
+                    stack.push(c);
                 }
             }
+            
             if(stack.isEmpty()){
-                    answer++;
+                answer++;
             }
         }
+        
         return answer;
     }
 }

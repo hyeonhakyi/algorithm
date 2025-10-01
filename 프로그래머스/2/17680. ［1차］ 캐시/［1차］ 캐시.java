@@ -5,27 +5,26 @@ class Solution {
         if(cacheSize == 0){
             return cities.length * 5;
         }
-        
         int answer = 0;
+        
         Queue<String> q = new LinkedList<>();
         
         for(int i = 0; i < cities.length; i++){
-            String city = cities[i].toUpperCase();
+            String citiy = cities[i].toUpperCase();
             
-            if(q.remove(city)){
-                q.offer(city);
+            if(q.remove(citiy)){
+                q.offer(citiy);
                 answer++;
             }else{
-                if(q.size() == cacheSize){
+                if(cacheSize == q.size()){
                     q.poll();
-                    q.add(city);
+                    q.add(citiy);
                 }else{
-                    q.add(city);
+                    q.add(citiy);
                 }
-                answer += 5;
+                answer = answer + 5;
             }
         }
-        
         
         return answer;
     }

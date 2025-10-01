@@ -1,8 +1,8 @@
 import java.util.*;
 
 class Solution {
-    static boolean[] visited;
     static int answer;
+    static boolean[] visited;
     public int solution(int k, int[][] dungeons) {
         answer = 0;
         
@@ -13,14 +13,14 @@ class Solution {
         return answer;
     }
     
-    static void dfs(int[][] dungeons,int k,int count){
-        answer = Math.max(answer,count);
+    public static void dfs(int[][] d,int k,int cnt){
+        answer = Math.max(cnt,answer);
         
-        for(int i = 0; i < dungeons.length; i++){
+        for(int i = 0; i < d.length; i++){
             if(!visited[i]){
-                if(dungeons[i][0] <= k){
+                if(d[i][0] <= k){
                     visited[i] = true;
-                    dfs(dungeons,k - dungeons[i][1],count+1);
+                    dfs(d,k - d[i][1],cnt + 1);
                     visited[i] = false;
                 }
             }

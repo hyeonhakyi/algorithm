@@ -11,19 +11,19 @@ class Solution {
         
         Stack<Integer> stack = new Stack<>();
         
-        int target = 0;
-        
-        for(int i = 0; i < arr.length; i++){
-            if(arr[i] == target){
-                target++;
+        for(int i = 0; i < order.length; i++){
+            if(arr[i] == answer){
+                answer++;
             }else{
                 stack.push(arr[i]);
             }
-            while(!stack.isEmpty() && stack.peek() == target){
+            
+            while(!stack.isEmpty() && stack.peek() == answer){
+                answer++;
                 stack.pop();
-                target++;
             }
         }
-        return target;
+        
+        return answer;
     }
 }

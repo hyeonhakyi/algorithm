@@ -1,4 +1,3 @@
--- 코드를 작성해주세요
 select
     d.DEPT_ID,
     d.DEPT_NAME_EN,

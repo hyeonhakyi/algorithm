@@ -6,6 +6,7 @@ select
         else 'LOW'
     end as SIZE
 from
-    ECOLI_DATA 
+    ECOLI_DATA
 order by
     ID
+    

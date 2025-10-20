@@ -2,12 +2,9 @@ import java.util.*;
 
 class Solution {
     public String solution(String number, int k) {
-        String answer = "";
-        StringBuilder answerBuilder = new StringBuilder();
-        
+        StringBuilder answer = new StringBuilder();
         char[] arr = number.toCharArray();
-        
-        int len = arr.length - k;
+        int len = number.length() - k;
         
         int start = 0;
         for(int i = 0; i < len; i++){
@@ -18,10 +15,9 @@ class Solution {
                     start = j + 1;
                 }
             }
-            answerBuilder.append(Character.toString(max));
+            answer.append(max);
         }
         
-        answer = answerBuilder.toString();
-        return answer;
+        return answer.toString();
     }
 }

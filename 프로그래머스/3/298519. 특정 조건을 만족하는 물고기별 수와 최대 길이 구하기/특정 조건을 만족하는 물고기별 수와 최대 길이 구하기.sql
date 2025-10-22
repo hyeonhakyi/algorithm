@@ -3,10 +3,10 @@ select
     max(LENGTH) as MAX_LENGTH,
     FISH_TYPE
 from
-    FISH_INFO 
+    FISH_INFO
 group by
     FISH_TYPE
 having
-    avg(LENGTH) >= 33
+    avg(ifnull(LENGTH,10)) >= 33
 order by
     FISH_TYPE

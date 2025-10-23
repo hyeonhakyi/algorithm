@@ -1,12 +1,14 @@
-select
-    ITEM_ID,
-    ITEM_NAME,
-    RARITY
-from
-    ITEM_INFO 
-where
-    ITEM_ID not in (select PARENT_ITEM_ID
-                   from ITEM_TREE 
-                   where PARENT_ITEM_ID is not null)
-order by
-    ITEM_ID desc
+SELECT
+    i.ITEM_ID,
+    i.ITEM_NAME,
+    i.RARITY
+FROM 
+    ITEM_INFO i
+JOIN 
+    ITEM_TREE t ON t.ITEM_ID = i.ITEM_ID
+LEFT JOIN 
+    ITEM_TREE c ON c.PARENT_ITEM_ID = t.ITEM_ID
+WHERE 
+    c.ITEM_ID IS NULL     
+ORDER BY 
+    i.ITEM_ID DESC;

@@ -10,18 +10,18 @@ class Solution {
             
             if(dist == 5){
                 if(storey % 10 >= 5){
-                    answer += dist;
+                    answer += 10 - dist;
                     storey += 1;
                 }else{
                     answer += dist;
                 }
             }else if(dist >= 5){
-                answer += 10 - dist;
+                answer += (10- dist);
                 storey += 1;
             }else{
                 answer += dist;
             }
-        }
+        } 
         
         return answer;
     }

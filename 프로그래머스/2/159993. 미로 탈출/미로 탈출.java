@@ -3,30 +3,30 @@ import java.util.*;
 class Node{
     int x;
     int y;
-    int cnt;
     boolean check;
-    public Node(int x,int y,int cnt,boolean check){
+    int cnt;
+    public Node(int x,int y,boolean check,int cnt){
         this.x = x;
         this.y = y;
-        this.cnt = cnt;
         this.check = check;
+        this.cnt = cnt;
     }
 }
 
 class Solution {
+    static int n,m,sx,sy,lx,ly,ex,ey;
     static int[] dx = {-1,1,0,0};
     static int[] dy = {0,0,-1,1};
     static char[][] arr;
-    static int n,m,sx,sy,lx,ly,ex,ey;
     public int solution(String[] maps) {
         int answer = 0;
         n = maps.length;
         m = maps[0].length();
         arr = new char[n][m];
         
-        for(int i = 0; i < n; i++){
+        for(int i = 0; i < maps.length; i++){
             arr[i] = maps[i].toCharArray();
-            for(int j = 0; j < m; j++){
+            for(int j = 0; j < maps[i].length(); j++){
                 if(arr[i][j] == 'S'){
                     sx = i;
                     sy = j;
@@ -39,53 +39,46 @@ class Solution {
                 }
             }
         }
-        answer = cal();
+        
+        answer = bfs();
         
         return answer;
     }
     
-    public int cal(){
+    public static int bfs(){
         Queue<Node> q = new LinkedList<>();
-        q.offer(new Node(sx,sy,0,false));
+        q.offer(new Node(sx,sy,false,0));
         boolean[][][] visited = new boolean[n][m][2];
         visited[sx][sy][0] = true;
         
         while(!q.isEmpty()){
             Node now = q.poll();
-            int nowX = now.x;
-            int nowY = now.y;
-        
             
+            if(now.x == ex && now.y == ey && now.check == true){
+                return now.cnt;
+            }
             
             for(int d = 0; d < 4; d++){
-                int nx = nowX + dx[d];
-                int ny = nowY + dy[d];
-                int cnt = now.cnt + 1;
-                boolean nowCheck = now.check;
-                int checkL = 0;
+                int nx = now.x + dx[d];
+                int ny = now.y + dy[d];
                 
-                if(nowCheck == true && nx == ex && ny == ey){
-                    return cnt;
-                }
-                
-                if(!check(nx,ny)) continue;
-                
-                if(arr[nx][ny] == 'L' || nowCheck){
-                    nowCheck = true;
-                    checkL = 1;
-                }
-                
-                if(visited[nx][ny][checkL]) continue;
+                if(!che(nx,ny)) continue;
+                if(visited[nx][ny][now.check ? 1 : 0]) continue;
                 if(arr[nx][ny] == 'X') continue;
                 
-                visited[nx][ny][checkL] = true;
-                q.offer(new Node(nx,ny,cnt,nowCheck));
+                if(nx == lx && ny == ly){
+                    q.offer(new Node(nx,ny,true,now.cnt + 1));
+                    visited[nx][ny][1] = true;
+                }else{
+                    q.offer(new Node(nx,ny,now.check,now.cnt + 1));
+                    visited[nx][ny][now.check ? 1 : 0] = true;
+                }
             }
         }
         return -1;
-    }//cal end
+    }//bfs end
     
-    public boolean check(int x, int y){
+    public static boolean che(int x, int y){
         return x >= 0 && x < n && y >= 0 && y < m;
     }
 }

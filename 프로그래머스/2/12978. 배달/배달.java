@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Node implements Comparable<Node>{
+class Node implements Comparable<Node> {
     int idx;
     int weight;
     
@@ -11,47 +11,52 @@ class Node implements Comparable<Node>{
     
     @Override
     public int compareTo(Node o){
-        return Integer.compare(this.weight,o.weight);
+        return this.weight - o.weight;
     }
 }
 
 class Solution {
+    static ArrayList<Node>[] list;
+    static int k,n;
+    static int[] dist;
     public int solution(int N, int[][] road, int K) {
-        int answer = 1;
-        
-        ArrayList<Node>[] list = new ArrayList[N+1];
+        int answer = 0;
+        k = K;
+        n = N;
+        list = new ArrayList[N + 1];
         
         for(int i = 1; i <= N; i++){
-            list[i] = new ArrayList();
+            list[i] = new ArrayList<>();
         }
+        
+        dist = new int[N + 1];
+        Arrays.fill(dist,Integer.MAX_VALUE);
+        dist[1] = 0;
         
         for(int[] r : road){
-            int s = r[0];
-            int e = r[1];
-            int w = r[2];
+            int start = r[0];
+            int end = r[1];
+            int weight = r[2];
             
-            list[s].add(new Node(e,w));
-            list[e].add(new Node(s,w));
+            list[start].add(new Node(end,weight));
+            list[end].add(new Node(start,weight));
         }
         
-        int[] dist = cal(1,N,list,K);
+        dijkstra();
         
-        for(int i = 2; i <= N; i++){
+        for(int i = 1; i <= N; i++){
             if(dist[i] <= K){
                 answer++;
             }
         }
-
+        
         return answer;
-    }
+    }//main end
     
-    public int[] cal(int start,int n,ArrayList<Node>[] list,int k){
+    public static void dijkstra(){
         PriorityQueue<Node> q = new PriorityQueue<>();
-        q.offer(new Node(start,0));
-        boolean[] visited = new boolean[n+1];
-        int[] dist = new int[n+1];
-        Arrays.fill(dist,Integer.MAX_VALUE);
-        dist[start] = 0;
+        q.offer(new Node(1,0));
+        boolean[] visited = new boolean[n + 1];
         
         while(!q.isEmpty()){
             Node now = q.poll();
@@ -66,6 +71,5 @@ class Solution {
                 }
             }
         }
-        return dist;
-    }//cal end
+    }//dijkstra end
 }

@@ -4,7 +4,7 @@ class Solution {
     public int solution(int n, int k, int[] enemy) {
         int answer = 0;
         
-        PriorityQueue<Integer> q = new PriorityQueue<Integer>((a,b) -> b - a);
+        PriorityQueue<Integer> q = new PriorityQueue<>((a,b) -> b - a);
         
         for(int i : enemy){
             q.offer(i);
@@ -20,7 +20,6 @@ class Solution {
             }
             answer++;
         }
-        
         
         return answer;
     }

@@ -3,65 +3,60 @@ import java.util.*;
 class Node{
     int x;
     int y;
-    int day;
-    
-    public Node(int x,int y,int day){
+    public Node(int x,int y){
         this.x = x;
         this.y = y;
-        this.day = day;
     }
 }
 
 class Solution {
+    static int n,m;
     static int[] dx = {-1,1,0,0};
     static int[] dy = {0,0,-1,1};
-    static int n,m;
+    static ArrayList<Integer> list;
     static char[][] arr;
     static boolean[][] visited;
-    static List<Integer> list = new ArrayList<>();
     public int[] solution(String[] maps) {
+        list = new ArrayList<>();
         n = maps.length;
         m = maps[0].length();
         arr = new char[n][m];
         visited = new boolean[n][m];
         
-        for(int i = 0; i < n; i++){
+        for(int i = 0; i < maps.length; i++){
             arr[i] = maps[i].toCharArray();
         }
         
         for(int i = 0; i < n; i++){
             for(int j = 0; j < m; j++){
                 if(arr[i][j] != 'X' && !visited[i][j]){
-                    int day = Integer.parseInt(String.valueOf(arr[i][j]));
-                    list.add(bfs(i,j,day));
+                    list.add(bfs(i,j));
                 }
             }
         }
         
-        if(list.isEmpty()){
-            return new int[]{-1};
+        if(list.size() == 0){
+            return new int[] {-1};
+        }else{
+            int[] answer = new int[list.size()];
+            for(int i = 0; i < list.size(); i++){
+                answer[i] = list.get(i);
+            }
+            
+            Arrays.sort(answer);
+            
+            return answer;
         }
-        
-        int[] answer = new int[list.size()];
-        
-        Collections.sort(list);
-        
-        for(int i = 0; i < list.size(); i++){
-            answer[i] = list.get(i);
-        }        
-        
-        return answer;
-    }
+    }//main end
     
-    public int bfs(int x,int y,int day){
+    private static int bfs(int x,int y){
         Queue<Node> q = new LinkedList<>();
-        q.offer(new Node(x,y,day));
+        q.offer(new Node(x,y));
         visited[x][y] = true;
-        int totalDay = 0;
         
+        int sum = arr[x][y] - '0';
         while(!q.isEmpty()){
             Node now = q.poll();
-            totalDay += now.day;
             
             for(int d = 0; d < 4; d++){
                 int nx = now.x + dx[d];
@@ -71,15 +66,16 @@ class Solution {
                 if(visited[nx][ny]) continue;
                 if(arr[nx][ny] == 'X') continue;
                 
+                q.offer(new Node(nx,ny));
                 visited[nx][ny] = true;
-                int nd = Integer.parseInt(String.valueOf(arr[nx][ny]));
-                q.offer(new Node(nx,ny,nd));
+                sum += arr[nx][ny] - '0';
             }
         }
-        return totalDay;
-    }
+        
+        return sum;
+    }//bfs end
     
-    public boolean check(int x,int y){
+    private static boolean check(int x,int y){
         return x >= 0 && x < n && y >= 0 && y < m;
-    }
-}
+    }//check end
+}//class end

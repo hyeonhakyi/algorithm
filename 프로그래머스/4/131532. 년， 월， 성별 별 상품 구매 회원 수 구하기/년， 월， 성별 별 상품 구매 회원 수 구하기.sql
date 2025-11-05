@@ -1,8 +1,8 @@
 select
     year(s.SALES_DATE) as YEAR,
     month(s.SALES_DATE) as MONTH,
-    i.GENDER as GENDER,
-    count(distinct s.USER_ID) as USERS
+    i.GENDER,
+    count(distinct i.USER_ID) as USERS
 from
     USER_INFO as i
 join
@@ -12,8 +12,8 @@ where
 group by
     YEAR,
     MONTH,
-    GENDER
+    i.GENDER
 order by
     YEAR,
     MONTH,
-    GENDER
+    i.GENDER

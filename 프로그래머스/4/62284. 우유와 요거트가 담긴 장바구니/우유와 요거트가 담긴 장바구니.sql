@@ -8,4 +8,4 @@ where
     p1.NAME like 'Milk'
     and p2.NAME like 'Yogurt'
 order by
-    p1.CART_ID
+    CART_ID

@@ -1,13 +1,15 @@
+import java.util.*;
+
 class Solution {
     public int solution(int[] diffs, int[] times, long limit) {
         int answer = 0;
         int left = 1;
-        int right = 100_000;
+        int right = 100000;
         
         while(left <= right){
-            int mid = (left+right) / 2;
+            int mid = (left + right) / 2;
             
-            if(overCount(diffs,times,limit,mid)){
+            if(canCount(diffs,times,limit,mid)){
                 answer = mid;
                 right = mid - 1;
             }else{
@@ -15,33 +17,36 @@ class Solution {
             }
         }
         
+        
         return answer;
-    }
+    }//main end
     
-    public boolean overCount(int[] diffs,int[] timeCur,long limit,int level){
+    private static boolean canCount(int[] diffs,int[] times, long limit,int level){
         long timeSum = 0;
+        
         for(int i = 0; i < diffs.length; i++){
             int diff = diffs[i];
-            int time = timeCur[i];
-            int timePre;
+            int time = times[i];
+            int timePrev;
             
             if(i == 0){
-                timePre = 0;
+                timePrev = 0;
             }else{
-                timePre = timeCur[i-1];
+                timePrev = times[i - 1];
             }
             
             if(diff <= level){
                 timeSum += time;
-            }else{
+            }else if(diff > level){
                 int cnt = diff - level;
-                timeSum += (time + timePre) * (long) cnt + time;
+                timeSum += (time + timePrev) * (long) cnt + time;
             }
+            
             if(limit < timeSum){
                 return false;
             }
         }
         
         return true;
-    }
+    }//canCount end
 }

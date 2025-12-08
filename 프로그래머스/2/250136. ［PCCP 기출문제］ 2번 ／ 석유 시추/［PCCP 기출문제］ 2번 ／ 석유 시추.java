@@ -1,87 +1,91 @@
 import java.util.*;
 
-class Solution {
-    private static class Node {
-        int x;
-        int y;
-
-        public Node(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
+class Node{
+    int x;
+    int y;
+    public Node(int x,int y){
+        this.x = x;
+        this.y = y;
     }
+}
 
-    private static int[] dx = {-1, 1, 0, 0};
-    private static int[] dy = {0, 0, -1, 1};
-    private static int xSize;
-    private static int ySize;
-    static int[][] oil;
-    static int size = 1;
-    static Map<Integer,Integer> sizeInfo = new HashMap<>();
+class Solution {
+    static int[] dx = {-1,1,0,0};
+    static int[] dy = {0,0,-1,1};
+    static int n,m;
     static boolean[][] visited;
-
+    static int[][] arr;
+    static ArrayList<Integer> sizes;
     public int solution(int[][] land) {
         int answer = 0;
-        xSize = land.length; 
-        ySize = land[0].length; 
-        visited = new boolean[xSize][ySize];
-        oil = new int[xSize][ySize];
-
+        n = land.length;
+        m = land[0].length;
+        visited = new boolean[n][m];
+        arr = new int[n][m];
         
-        for (int x = 0; x < xSize; x++) {
-            for (int y = 0; y < ySize; y++) {
-                if (land[x][y] == 1 && !visited[x][y]) {
-                    bfs(land, x, y);
+        for(int i = 0; i < n; i++){
+            Arrays.fill(arr[i],-1);
+        }
+        
+        sizes = new ArrayList<>();
+        int compId = 0;
+        
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(land[i][j] == 1 && !visited[i][j]){
+                    int size = bfs(land,i,j,compId);
+                    sizes.add(size);
+                    compId++;
                 }
             }
         }
-
-
-        for (int y = 0; y < ySize; y++) {
-            int columnOil = 0;
-            Set<Integer> set = new HashSet<>();
-
-            for (int x = 0; x < xSize; x++) {
-                if (oil[x][y] > 0) {
-                    set.add(oil[x][y]);
+        
+        for(int j = 0; j < m; j++){
+            int total = 0;
+            HashSet<Integer> set = new HashSet<>();
+            for(int i = 0; i < n; i++){
+                if(land[i][j] == 1){
+                    int id = arr[i][j];
+                    if(set.add(id)){
+                        total += sizes.get(id);
+                    }
                 }
             }
-            
-            for(Integer val : set){
-                columnOil += sizeInfo.get(val);
-            }
-            answer = Math.max(answer, columnOil);
+            answer = Math.max(answer,total);
         }
-
+        
         return answer;
-    }
-
-    private static void bfs(int[][] land, int x, int y) {
-        Queue<Node> queue = new LinkedList<>();
-        queue.offer(new Node(x, y));
+    }//main end
+    
+    private static int bfs(int[][] land,int x,int y,int compId){
+        Queue<Node> q = new LinkedList<>();
+        q.offer(new Node(x,y));
         visited[x][y] = true;
-        oil[x][y] = size;
-        int oilSize = 0;
-
-        while (!queue.isEmpty()) {
-            Node now = queue.poll();
-            oilSize++;
-
-            for (int d = 0; d < 4; d++) {
+        arr[x][y] = compId;
+        int size = 1;
+        
+        while(!q.isEmpty()){
+            Node now = q.poll();
+            
+            for(int d = 0; d < 4; d++){
                 int nx = now.x + dx[d];
                 int ny = now.y + dy[d];
-
-                if (!isValid(nx, ny) || visited[nx][ny] || land[nx][ny] == 0) continue;
-
-                queue.offer(new Node(nx, ny));
-                oil[nx][ny] = size;
+                
+                if(!check(nx,ny)) continue;
+                if(visited[nx][ny]) continue;
+                if(land[nx][ny] != 1) continue;
+                
                 visited[nx][ny] = true;
+                arr[nx][ny] = compId;
+                q.offer(new Node(nx,ny));
+                size++;
             }
         }
-        sizeInfo.put(size++,oilSize);
+        
+        return size;
     }//bfs end
-
-    private static boolean isValid(int x, int y) {
-        return x >= 0 && x < xSize && y >= 0 && y < ySize;
-    }
+    
+    private static boolean check(int x,int y){
+        return x >= 0 && x < n && y >= 0 && y < m;
+    }//visited end
 }

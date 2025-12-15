@@ -1,10 +1,12 @@
+import java.util.*;
+
 class Solution {
     public int solution(int[][] triangle) {
         int height = triangle.length;
         
-        for(int i = height - 2; i >= 0; i--){
-            for(int j = 0; j < triangle[i].length; j++){
-                triangle[i][j] += Math.max(triangle[i+1][j], triangle[i+1][j+1]);
+        for(int j = height - 2; j >= 0; j--){
+            for(int i = 0; i < triangle[j].length; i++){
+                triangle[j][i] += Math.max(triangle[j+1][i],triangle[j+1][i+1]);
             }
         }
         

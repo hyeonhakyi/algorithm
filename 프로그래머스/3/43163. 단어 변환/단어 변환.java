@@ -1,9 +1,9 @@
 import java.util.*;
 
-class Node{
+class Word{
     String word;
     int count;
-    public Node(String word,int count){
+    public Word(String word,int count){
         this.word = word;
         this.count = count;
     }
@@ -11,14 +11,15 @@ class Node{
 
 class Solution {
     public int solution(String begin, String target, String[] words) {
+        int answer = 0;
         if(!Arrays.asList(words).contains(target)) return 0;
-        Queue<Node> q = new LinkedList<>();
+        Queue<Word> q = new LinkedList<>();
         boolean[] visited = new boolean[words.length];
         
-        q.offer(new Node(begin,0));
+        q.offer(new Word(begin,0));
         
         while(!q.isEmpty()){
-            Node now = q.poll();
+            Word now = q.poll();
             
             if(now.word.equals(target)){
                 return now.count;
@@ -26,24 +27,26 @@ class Solution {
             
             for(int i = 0; i < words.length; i++){
                 if(!visited[i] && canCov(words[i],now.word)){
-                    q.offer(new Node(words[i],now.count+1));
+                    q.offer(new Word(words[i],now.count + 1));
                     visited[i] = true;
                 }
             }
         }
+        
         return 0;
-    }
+    }//main end
     
-    public static boolean canCov(String a,String b){
+    private static boolean canCov(String word,String target){
         int diff = 0;
-        for(int i = 0; i < a.length(); i++){
-            if(a.charAt(i) != b.charAt(i)){
+        for(int i = 0; i < word.length(); i++){
+            if(word.charAt(i) != target.charAt(i)){
                 diff++;
             }
+            
             if(diff > 1){
                 return false;
-            } 
+            }
         }
         return diff == 1;
-    }
+    }//canCov end
 }

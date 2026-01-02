@@ -9,16 +9,15 @@ class Solution {
         
         int i = 0;
         int j = 0;
-        
         while(j != B.length){
             if(A[i] < B[j]){
                 answer++;
-                j++;
                 i++;
+                j++;
             }else{
                 j++;
             }
-        }
+        } 
         
         return answer;
     }

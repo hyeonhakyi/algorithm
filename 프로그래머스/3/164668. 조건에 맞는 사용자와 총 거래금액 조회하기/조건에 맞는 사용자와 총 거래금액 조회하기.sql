@@ -9,7 +9,7 @@ join
 where
     b.STATUS like 'DONE'
 group by
-    b.WRITER_ID
+    u.USER_ID
 having 
     TOTAL_SALES >= 700000
 order by

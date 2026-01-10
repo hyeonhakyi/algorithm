@@ -2,49 +2,44 @@ import java.util.*;
 
 class Solution {
     static Set<Set<String>> result = new HashSet<>();
-    static List<List<String>> candidates = new ArrayList<>();
-    static Set<String> current = new HashSet<>();
+    static boolean[] visited;
     public int solution(String[] user_id, String[] banned_id) {
-        for(String ban:banned_id){
-            List<String> mached = new ArrayList<>();
-            for(String user : user_id){
-                if(isMatch(user,ban)){
-                    mached.add(user);
-                }
-            }
-            candidates.add(mached);
-        }
-        
-        dfs(0);
-        
+        visited = new boolean[user_id.length];
+        dfs(0,user_id,banned_id,new HashSet<>());
         return result.size();
-    }
+    }//main end
     
-    public static void dfs(int depth){
-        if(depth == candidates.size()){
-            result.add(new HashSet<>(current));
+    static void dfs(int idx,String[] user,String[] banned,Set<String> set){
+        if(idx == banned.length){
+            result.add(new HashSet<>(set));
             return;
         }
         
-        for(String user : candidates.get(depth)){
-            if(!current.contains(user)){
-                current.add(user);
-                dfs(depth + 1);
-                current.remove(user);
+        for(int i = 0; i < user.length; i++){
+            if(visited[i]) continue;
+            
+            if(isMathch(user[i],banned[idx])){
+                visited[i] = true;
+                set.add(user[i]);
+                
+                dfs(idx + 1,user,banned,set);
+                
+                visited[i] = false;
+                set.remove(user[i]);
             }
         }
     }//dfs end
     
-    public boolean isMatch(String user, String ban){
-        if(user.length() != ban.length()){
+    static boolean isMathch(String user,String banned){
+        if(user.length() != banned.length()){
             return false;
         }
         
         for(int i = 0; i < user.length(); i++){
-            if(ban.charAt(i) == '*') continue;
-            if(user.charAt(i) != ban.charAt(i)) return false;
+            if(banned.charAt(i) == '*') continue;
+            if(user.charAt(i) != banned.charAt(i)) return false;
         }
         
         return true;
-    }//isMatch end
-}
+    }//isMAthch end
+}//class end

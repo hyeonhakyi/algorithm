@@ -8,16 +8,16 @@ class Solution {
         int totalKinds = gemKinds.size();
         int left = 0;
         int right = 0;
-        int minLen  = Integer.MAX_VALUE;
+        int minLen = Integer.MAX_VALUE;
         int[] answer = new int[2];
         
         while(right < gems.length){
-            gemMap.put(gems[right], gemMap.getOrDefault(gems[right], 0) + 1);
+            gemMap.put(gems[right],gemMap.getOrDefault(gems[right], 0) + 1);
             right++;
             
             while(gemMap.size() == totalKinds){
-                if(right - left < minLen ){
-                    minLen  = right - left;
+                if(right - left < minLen){
+                    minLen = right - left;
                     answer[0] = left + 1;
                     answer[1] = right;
                 }
@@ -27,7 +27,7 @@ class Solution {
                     gemMap.remove(gems[left]);
                 }
                 left++;
-            }
+            }   
         }
         
         return answer;

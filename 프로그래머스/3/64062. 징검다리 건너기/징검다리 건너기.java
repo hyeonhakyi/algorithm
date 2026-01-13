@@ -5,8 +5,7 @@ class Solution {
         int answer = 0;
         
         int left = 1;
-        int right = 200000000;
-        
+        int right = 200_000_000;
         while(left <= right){
             int mid = (left + right) / 2;
             
@@ -19,13 +18,12 @@ class Solution {
         }
         
         return answer;
-    }
+    }//main end
     
-    public boolean canCover(int[] stones,int k,int people){
+    private static boolean canCover(int[] stones, int k,int people){
         int count = 0;
-        
-        for(int i : stones){
-            if(i - people < 0){
+        for(int s : stones){
+            if(s - people < 0){
                 count++;
                 if(count >= k){
                     return false;
@@ -34,7 +32,6 @@ class Solution {
                 count = 0;
             }
         }
-        
         return true;
-    }
-}
+    }//canCover end
+}//class end

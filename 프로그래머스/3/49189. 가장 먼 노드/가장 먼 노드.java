@@ -2,46 +2,51 @@ import java.util.*;
 
 class Solution {
     public int solution(int n, int[][] edge) {
-        List<List<Integer>> list = new ArrayList<>();
+        int answer = 0;
         
-        for(int i = 0; i <= n; i++){
-            list.add(new ArrayList<>());
+        List<Integer>[] list = new ArrayList[n + 1];
+        
+        for(int i = 1; i <= n; i++){
+            list[i] = new ArrayList<>();
         }
         
-        for(int[] r : edge){
-            list.get(r[0]).add(r[1]);
-            list.get(r[1]).add(r[0]);
+        
+        for(int[] e : edge){
+            int v = e[0];
+            int t = e[1];
+            
+            list[v].add(t);
+            list[t].add(v);
         }
         
-        int[] d = new int[n+1];
-        Arrays.fill(d,-1);
+        int[] dist = new int[n + 1];
+        Arrays.fill(dist,-1);
         Queue<Integer> q = new LinkedList<>();
-        q.add(1);
-        d[1] = 0;
+        q.offer(1);
+        dist[1] = 0;
         
         while(!q.isEmpty()){
             int now = q.poll();
             
-            for(int next : list.get(now)){
-                if(d[next] == -1){
-                    d[next] = d[now] + 1;
-                    q.add(next);
+            for(int next : list[now]){
+                if(dist[next] == -1){
+                    dist[next] = dist[now] + 1;
+                    q.offer(next);
                 }
             }
         }
         
         int max = 0;
-        for(int i = 0; i <= n; i++){
-            max = Math.max(max,d[i]);
+        for(int i = 1; i <= n; i++){
+            max = Math.max(dist[i],max);
         }
         
-        int answer = 0;
-        for(int i = 0; i <= n; i++){
-            if(max == d[i]){
+        for(int i = 1; i <= n; i++){
+            if(max == dist[i]){
                 answer++;
             }
         }
         
         return answer;
-    }
-}
+    }//main end
+}//class end

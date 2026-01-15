@@ -8,5 +8,5 @@ select
     end as AVAILABILITY
 from
     CAR_RENTAL_COMPANY_RENTAL_HISTORY 
-order by
-    CAR_ID desc 
+order by 
+    CAR_ID desc

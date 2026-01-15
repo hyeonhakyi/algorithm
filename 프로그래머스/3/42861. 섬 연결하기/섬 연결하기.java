@@ -1,54 +1,62 @@
 import java.util.*;
 
-class Node{
+class Node implements Comparable<Node>{
     int idx;
     int weight;
+
     public Node(int idx,int weight){
         this.idx = idx;
         this.weight = weight;
     }
+    
+    @Override
+    public int compareTo(Node o){
+        return this.weight - o.weight;
+    }
 }
 
 class Solution {
+    static List<Node>[] list;
+    static boolean[] visited;
     public int solution(int n, int[][] costs) {
-        int answer = 0;
-        List<List<Node>> list = new ArrayList<>();
-        boolean[] visited = new boolean[n];
+        list = new ArrayList[n];
+        visited = new boolean[n];
         
         for(int i = 0; i < n; i++){
-            list.add(new ArrayList<>());
+            list[i] = new ArrayList<>();
         }
         
-        for(int[] c : costs){
-            int start = c[0];
-            int end = c[1];
-            int weight = c[2];
+        for(int[] cost : costs){
+            int s = cost[0];
+            int e = cost[1];
+            int w = cost[2];
             
-            list.get(start).add(new Node(end,weight));
-            list.get(end).add(new Node(start,weight));
+            list[s].add(new Node(e,w));
+            list[e].add(new Node(s,w));
         }
         
-        PriorityQueue<Node> q = new PriorityQueue<>((o1,o2) -> o1.weight - o2.weight);
+        int answer = bfs(1);
         
-        visited[0] = true;
-        for(Node i : list.get(0)){
-            q.offer(i);   
-        }
+        return answer;
+    }//main end
+    
+    private static int bfs(int idx){
+        PriorityQueue<Node> q = new PriorityQueue<>();
+        q.offer(new Node(idx,0));
+        int sum = 0;
         
         while(!q.isEmpty()){
             Node now = q.poll();
-            
             if(visited[now.idx]) continue;
-            answer += now.weight;
             visited[now.idx] = true;
-            
-            for(Node i : list.get(now.idx)){
-                if(!visited[i.idx]){
-                    q.offer(i);   
+            sum += now.weight;
+                        
+            for(Node next : list[now.idx]){
+                if(!visited[next.idx]){
+                    q.offer(new Node(next.idx,next.weight));
                 }
             }
         }
-        
-        return answer;
-    }
-}
+        return sum;
+    }//bfs end
+}//class end

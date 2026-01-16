@@ -1,24 +1,22 @@
 import java.util.*;
 
 class Solution {
-    static List<String> answer;
+    static List<String> answer = new ArrayList<>();
     static boolean[] visited;
     public String[] solution(String[][] tickets) {
-        answer = new ArrayList<>();
         visited = new boolean[tickets.length];
         
         Arrays.sort(tickets, (a,b) -> a[1].compareTo(b[1]));
         
-        List<String> path = new LinkedList<>();
+        List<String> path = new ArrayList<>();
         path.add("ICN");
         
-        bfs("ICN",path,tickets,0);
-        
+        dfs("ICN",path,tickets,0);
         
         return answer.toArray(new String[0]);
-    }
+    }//main end
     
-    static void bfs(String start,List<String> path,String[][] tickets,int use){
+    private static void dfs(String start,List<String> path,String[][] tickets,int use){
         if(use == tickets.length){
             if(answer.isEmpty()){
                 answer = new LinkedList<>(path);
@@ -31,13 +29,11 @@ class Solution {
                 visited[i] = true;
                 path.add(tickets[i][1]);
                 
-                bfs(tickets[i][1],path,tickets,use+1);
+                dfs(tickets[i][1],path,tickets,use+1);
                 
                 visited[i] = false;
                 path.remove(path.size() - 1);
             }
         }
-        
-        
-    }//bfs end
-}
+    }//dfs end
+}//class end

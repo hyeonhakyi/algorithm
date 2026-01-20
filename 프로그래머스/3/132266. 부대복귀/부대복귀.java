@@ -1,25 +1,19 @@
 import java.util.*;
 
 class Solution {
-    public int[] solution(int n, int[][] roads, int[] sources, int destination) {
-        int[] answer = new int[sources.length];
+    public int[] solution(int n, int[][] roads, int[] sources, int destination) {        
+        List<Integer>[] list = new ArrayList[n + 1];
         
-        ArrayList<Integer>[] list = new ArrayList[n+1];
-        
-        for(int i = 0; i <= n; i++){
+        for(int i = 1; i <= n; i++){
             list[i] = new ArrayList<>();
         }
         
-        for(int[] i : roads){
-            int start = i[0];
-            int end = i[1];
-            
-            list[start].add(end);
-            list[end].add(start);
+        for(int[] r : roads){
+            list[r[0]].add(r[1]);
+            list[r[1]].add(r[0]);
         }
         
         int[] dist = new int[n + 1];
-        
         Arrays.fill(dist,-1);
         dist[destination] = 0;
         
@@ -31,16 +25,18 @@ class Solution {
             
             for(int next : list[now]){
                 if(dist[next] == -1){
-                    q.offer(next);
                     dist[next] = dist[now] + 1;
+                    q.offer(next);
                 }
             }
         }
+        
+        int[] answer = new int[sources.length];
         
         for(int i = 0; i < sources.length; i++){
             answer[i] = dist[sources[i]];
         }
         
         return answer;
-    }
-}
+    }//main end
+}//class end

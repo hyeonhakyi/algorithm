@@ -1,30 +1,29 @@
 import java.util.*;
 
 class Solution {
-    static long answer;
     public long solution(int n, int[] times) {
-        long maxTime = (long)1000000000 * (long)1000000000;
-        long minTime = 1;
-        answer = maxTime;
-        search(n,times,minTime,maxTime);
-        return answer;
-    }
-    
-    static void search(int n,int[] times,long start,long end){
-        while(start <= end){
-            long mid = (start + end) / 2;
-            long timeCnt = 0;
+        long answer = 0;
+        
+        long left = 1;
+        long right = (long) 1_000_000_000 * (long) 1_000_000_000;
+        
+        while(left <= right){
+            long mid = (left + right) / 2;
             
-            for(int t : times){
-                timeCnt += (mid / t);
+            long sum = 0;
+            for(int i : times){
+                sum += mid / i;
+                if(sum >= n) break;
             }
             
-            if(n <= timeCnt){
-                answer = Math.min(answer,mid);
-                end = mid - 1;
+            if(sum >= n){
+                answer = mid;
+                right = mid - 1;
             }else{
-                start = mid + 1;
+                left = mid + 1;
             }
         }
-    }//search end
-}
+        
+        return answer;
+    }//main end
+}//class end

@@ -1,9 +1,9 @@
 select
     month(START_DATE) as MONTH,
     CAR_ID,
-    count(*) as RECORDS
+    count(CAR_ID) as RECORDS
 from
-    CAR_RENTAL_COMPANY_RENTAL_HISTORY 
+    CAR_RENTAL_COMPANY_RENTAL_HISTORY
 where
     date_format(START_DATE,'%Y-%m') between '2022-08' and '2022-10'
     and CAR_ID in (select CAR_ID
@@ -16,4 +16,4 @@ group by
     CAR_ID
 order by
     MONTH,
-    CAR_ID desc
+    CAR_ID desc 

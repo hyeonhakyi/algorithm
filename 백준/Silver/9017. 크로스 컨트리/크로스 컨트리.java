@@ -1,72 +1,63 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int test = Integer.parseInt(br.readLine());
-        int[] answer = new int[test];
+        int T = Integer.parseInt(br.readLine());
 
-        for(int t = 0; t < test; t++) {
+        StringBuilder sb = new StringBuilder();
+        while(T --> 0){
             int n = Integer.parseInt(br.readLine());
+            int[] arr = new int[n];
 
-            int[] rank = new int[n];
-            HashMap<Integer, Integer> cntMap = new HashMap<>();
-            int teamNum = Integer.MIN_VALUE;
+            Map<Integer,Integer> map = new HashMap<>();
 
             StringTokenizer st = new StringTokenizer(br.readLine());
-            for(int i = 0; i < n; i++) {
-                int x = Integer.parseInt(st.nextToken());
-
-                cntMap.put(x, cntMap.getOrDefault(x, 0) + 1);
-                rank[i] = x;
-                teamNum = Math.max(teamNum, x);
+            for(int i = 0; i < n; i++){
+                int num = Integer.parseInt(st.nextToken());
+                arr[i] = num;
+                map.put(num,map.getOrDefault(num,0) + 1);
             }
 
-            int[] five = new int[teamNum + 1];
-            HashMap<Integer, Integer> scoreMap = new HashMap<>();
-            HashMap<Integer, Integer> tmpMap = new HashMap<>();
+            Map<Integer, List<Integer>> total = new HashMap<>();
+
             int score = 1;
+            for(int i = 0; i < n; i++){
+                int team = arr[i];
 
-            for(int r : rank) {
-                if (cntMap.get(r) == 6) {
-                    tmpMap.put(r, tmpMap.getOrDefault(r, 0) + 1);
+                if(map.get(team) < 6) continue;
 
-                    if(tmpMap.get(r) <= 4) {
-                        scoreMap.put(r, scoreMap.getOrDefault(r, 0) + score);
-                    }
+                total.putIfAbsent(team, new ArrayList<>());
+                total.get(team).add(score++);
+            }
 
-                    if(tmpMap.get(r) == 5) {
-                        five[r] = score;
-                    }
+            int winner = -1;
+            int minSum = Integer.MAX_VALUE;
+            int minFifth = Integer.MAX_VALUE;
 
-                    score++;
+            for(int team : total.keySet()){
+                List<Integer> scores = total.get(team);
+
+                int sum = 0;
+                for(int i = 0; i < 4; i++){
+                    sum += scores.get(i);
+                }
+
+                int fifth = scores.get(4);
+
+                if(sum < minSum || (sum == minSum && fifth < minFifth)){
+                    minSum = sum;
+                    minFifth = fifth;
+                    winner = team;
                 }
             }
 
-            int result = Integer.MAX_VALUE;
-            int fiveScore = Integer.MAX_VALUE;
-
-            for(Integer key : scoreMap.keySet()) {
-                int tmp = scoreMap.get(key);
-
-                if (tmp < result) {
-                    result = tmp;
-                    fiveScore = five[key];
-                    answer[t] = key;
-                } else if (tmp == result) {
-                    if (fiveScore > five[key]) {
-                        answer[t] = key;
-                    }
-                }
-            }
+            sb.append(winner).append("\n");
         }//testCase end
-        for(int i = 0; i < test; i++) {
-            System.out.println(answer[i]);
-        }
+
+        System.out.println(sb.toString());
     }//main end
 }//class end

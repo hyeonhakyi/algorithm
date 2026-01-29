@@ -1,4 +1,6 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
@@ -7,33 +9,36 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
-        Map<String,Integer> map = new HashMap<>();
 
-        for(int i=0;i<n;i++){
+        Map<String, Integer> map = new HashMap<>();
+
+        for(int i = 0; i < n; i++){
             String str = br.readLine();
-            if(str.length() >= m){
-                map.put(str,map.getOrDefault(str,0)+1);
-            }
+
+            if(str.length() < m) continue;
+
+            map.put(str,map.getOrDefault(str,0) + 1);
         }
 
-        List<String> list = new ArrayList<>(map.keySet());
+        List<String> words = new ArrayList<>(map.keySet());
 
-        list.sort((w1, w2) -> {
-            if(!map.get(w1).equals(map.get(w2))){
-                return map.get(w2) - map.get(w1);
+        words.sort((a,b) -> {
+            if(!map.get(a).equals(map.get(b))){
+                return map.get(b) - map.get(a);
             }
-            if(w1.length() != w2.length()){
-                return w2.length()-w1.length();
+
+            if(a.length() != b.length()){
+                return b.length() - a.length();
             }
-            return w1.compareTo(w2);
+
+            return a.compareTo(b);
         });
-        
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        for(String word : list){
-            bw.write(word);
-            bw.newLine();
+
+        StringBuilder sb = new StringBuilder();
+        for(String s : words){
+            sb.append(s).append("\n");
         }
-        bw.flush();
-        bw.close();
+
+        System.out.println(sb);
     }//main end
 }//class end

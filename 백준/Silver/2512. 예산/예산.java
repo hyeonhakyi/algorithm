@@ -7,31 +7,31 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
         int[] arr = new int[n];
-        int maxValue = Integer.MIN_VALUE;
 
-        for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
-            maxValue = Math.max(maxValue, arr[i]);
+        int numMax = 0;
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < n; i++){
+            int num = Integer.parseInt(st.nextToken());
+            arr[i] = num;
+            numMax = Math.max(numMax,num);
         }
 
-        int m = Integer.parseInt(br.readLine());
+        int max = Integer.parseInt(br.readLine());
 
         int left = 0;
-        int right = maxValue;
+        int right = numMax;
         int answer = 0;
 
-        while(left <= right) {
+        while(left <= right){
             int mid = (left + right) / 2;
 
-            long total = 0;
-            for(int r : arr){
-                total += Math.min(r,mid);
+            int sum = 0;
+            for(int i : arr){
+                sum += Math.min(i,mid);
             }
 
-            if(total <= m){
+            if(sum <= max){
                 answer = mid;
                 left = mid + 1;
             }else{

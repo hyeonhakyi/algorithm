@@ -5,11 +5,11 @@ class Solution {
         int[] wan = scores[0];
         int wanSum = wan[0] + wan[1];
         
-        Arrays.sort(scores, (o1,o2) -> {
-            if(o1[0] != o2[0]){
-                return o2[0] - o1[0];
+        Arrays.sort(scores, (a,b) ->{
+            if(a[0] != b[0]){
+                return b[0] - a[0];
             }else{
-                return o1[1] - o2[1];
+                return a[1] - b[1];
             }
         });
         
@@ -24,22 +24,17 @@ class Solution {
             }
             
             if(b >= maxB){
-                maxB = Math.max(b,maxB);
                 list.add(a + b);
+                maxB = b;
             }
         }
         
-        list.sort(Collections.reverseOrder());
-        
-        int rank = 1;
-        for(int r : list){
-            if(r > wanSum){
-                rank++;
-            }else if(r == wanSum){
-                return rank;
+        int answer = 1;
+        for(int i : list){
+            if(i > wanSum){
+                answer++;
             }
-        }
-        
-        return rank;
+        }        
+        return answer;
     }
 }

@@ -9,7 +9,9 @@ join
 where
     date_format(o.PRODUCE_DATE,'%Y-%m-%d') like '2022-05%'
 group by
+    p.PRODUCT_ID,
     p.PRODUCT_NAME
 order by
     TOTAL_SALES desc,
     p.PRODUCT_ID
+    

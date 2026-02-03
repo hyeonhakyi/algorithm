@@ -16,10 +16,9 @@ class Node implements Comparable<Node>{
 }
 
 class Solution {
-    static final int max = 20000001;
-    static ArrayList<Node>[] list;
+    static List<Node>[] list;
     public int solution(int n, int s, int a, int b, int[][] fares) {
-        int answer = max;
+        int answer = Integer.MAX_VALUE;
         list = new ArrayList[n + 1];
         
         for(int i = 0; i <= n; i++){
@@ -27,17 +26,17 @@ class Solution {
         }
         
         for(int[] i : fares){
-            int start = i[0];
-            int end = i[1];
-            int weight = i[2];
+            int st = i[0];
+            int e = i[1];
+            int w = i[2];
             
-            list[start].add(new Node(end,weight));
-            list[end].add(new Node(start,weight));
+            list[st].add(new Node(e,w));
+            list[e].add(new Node(st,w));
         }
         
-        int[] sDist = dijkstra(s,n);
-        int[] aDist = dijkstra(a,n);
-        int[] bDist = dijkstra(b,n);
+        int[] sDist = dijkstr(s,n);
+        int[] aDist = dijkstr(a,n);
+        int[] bDist = dijkstr(b,n);
         
         for(int i = 1; i <= n; i++){
             answer = Math.min(answer,sDist[i] + aDist[i] + bDist[i]);
@@ -46,13 +45,13 @@ class Solution {
         return answer;
     }//main end
     
-    public static int[] dijkstra(int start,int n){
-        int[] dist = new int[n + 1];
-        boolean[] visited = new boolean[n + 1];
-        Arrays.fill(dist,max);
+    private static int[] dijkstr(int s,int n){
+        int[] dist = new int[n+1];
+        boolean[] visited = new boolean[n+1];
         PriorityQueue<Node> q = new PriorityQueue<>();
-        q.offer(new Node(start,0));
-        dist[start] = 0;
+        q.offer(new Node(s,0));
+        Arrays.fill(dist,Integer.MAX_VALUE);
+        dist[s] = 0;
         
         while(!q.isEmpty()){
             Node now = q.poll();
@@ -61,12 +60,13 @@ class Solution {
             visited[now.idx] = true;
             
             for(Node next : list[now.idx]){
-                if(dist[next.idx] > now.weight + next.weight){
-                    dist[next.idx] = now.weight + next.weight;
+                if(dist[next.idx] > next.weight + now.weight){
+                    dist[next.idx] = next.weight + now.weight;
                     q.offer(new Node(next.idx,dist[next.idx]));
                 }
             }
         }
+        
         return dist;
-    }//dijkstra end
-}
+    }//dijkstr end
+}//class end

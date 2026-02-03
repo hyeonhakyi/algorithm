@@ -13,7 +13,8 @@ join
     DOCTOR as d on a.MDDR_ID = d.DR_ID
 where
     date_format(a.APNT_YMD,'%Y-%m-%d') like '2022-04-13'
-    and a.APNT_CNCL_YMD is null
     and a.MCDP_CD like 'CS'
+    and a.APNT_CNCL_YN like 'N'
+    and a.APNT_CNCL_YMD is null
 order by
     a.APNT_YMD

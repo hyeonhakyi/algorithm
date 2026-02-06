@@ -1,101 +1,82 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-    static int T,n,k,t,m;
-    static int[][] logs;
-    static List<Info> list;
-    static StringBuilder sb = new StringBuilder();
-
-    static class Info implements Comparable<Info>{
+    static class Node implements Comparable<Node> {
         int id;
         int score;
-        int cnt;
+        int count;
         int time;
-        public Info(int id, int score, int cnt, int time){
+        public Node(int id,int score,int count,int time){
             this.id = id;
             this.score = score;
-            this.cnt = cnt;
+            this.count = count;
             this.time = time;
         }
 
         @Override
-        public int compareTo(Info o) {
-            if(this.score == o.score){
-                if(this.cnt == o.cnt){
+        public int compareTo(Node o){
+            if(o.score == this.score){
+                if(o.count == this.count){
                     return this.time - o.time;
                 }
-                return this.cnt - o.cnt;
+                return this.count - o.count;
             }
             return o.score - this.score;
         }
     }
+
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        T = Integer.parseInt(br.readLine());
+        int T = Integer.parseInt(br.readLine());
+        StringBuilder sb = new StringBuilder();
 
-        StringTokenizer st;
-        for(int test = 0; test < T; test++) {
-            st = new StringTokenizer(br.readLine(), " ");
-            n = Integer.parseInt(st.nextToken());
-            k = Integer.parseInt(st.nextToken());
-            t = Integer.parseInt(st.nextToken());
-            m = Integer.parseInt(st.nextToken());
+        while(T --> 0){
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int n = Integer.parseInt(st.nextToken());
+            int k = Integer.parseInt(st.nextToken());
+            int t = Integer.parseInt(st.nextToken());
+            int m = Integer.parseInt(st.nextToken());
 
-            logs = new int[m][3];
+            int[][] best = new int[n+1][k+1];
+            int[] sum = new int[n+1];
+            int[] cnt = new int[n+1];
+            int[] last = new int[n + 1];
 
-            for(int x = 0; x < m; x++){
-                st = new StringTokenizer(br.readLine()," ");
-                int i = Integer.parseInt(st.nextToken());
-                int j = Integer.parseInt(st.nextToken());
-                int s = Integer.parseInt(st.nextToken());
+            for(int i = 1; i <= m; i++){
+                st = new StringTokenizer(br.readLine());
+                int team = Integer.parseInt(st.nextToken());
+                int prob = Integer.parseInt(st.nextToken());
+                int sc = Integer.parseInt(st.nextToken());
 
-                logs[x][0] = i;
-                logs[x][1] = j;
-                logs[x][2] = s;
-            }
+                cnt[team]++;
+                last[team] = i;
 
-            int[][] saveScore = new int[n + 1][k + 1];
-            int[] cntSubmit = new int[n + 1];
-            int[] time = new int[n + 1];
-
-            for(int i = 0; i < m; i++){
-                int nowId = logs[i][0];
-                int nowNum = logs[i][1];
-                int nowScore = logs[i][2];
-
-                cntSubmit[nowId]++;
-                time[nowId] = i;
-
-                if(nowScore > saveScore[nowId][nowNum]){
-                    saveScore[nowId][nowNum] = nowScore;
+                if(sc > best[team][prob]){
+                    sum[team] += (sc - best[team][prob]);
+                    best[team][prob] = sc;
                 }
             }
 
-            list = new ArrayList<>();
+            List<Node> list = new ArrayList<>();
             for(int i = 1; i <= n; i++){
-                int sum = 0;
-                for(int j = 1; j <= k; j++){
-                    sum += saveScore[i][j];
-                }
-
-                list.add(new Info(i, sum, cntSubmit[i], time[i]));
+                list.add(new Node(i,sum[i],cnt[i],last[i]));
             }
 
             Collections.sort(list);
 
-            for(int i = 0; i < n; i++){
-                if(list.get(i).id == t){
-                    sb.append((i+1) + "\n");
+            int rank = 1;
+            for(Node team : list){
+                if(team.id == t){
+                    break;
                 }
+                rank++;
             }
-        }//test end
+            sb.append(rank).append("\n");
+        }
         System.out.println(sb.toString());
     }//main end
 }//class end

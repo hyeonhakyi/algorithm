@@ -1,13 +1,12 @@
-SELECT
-    f.FLAVOR
+select
+    j.FLAVOR as FLAVOR
 from
-    FIRST_HALF as f
+    FIRST_HALF as h
 join
     (select FLAVOR, sum(TOTAL_ORDER) as TOTAL_ORDER
         from JULY
-        group by FLAVOR) as j on f.FLAVOR = j.FLAVOR
+        group by FLAVOR) as j on h.FLAVOR = j.FLAVOR
 group by
-    f.FLAVOR
+    FLAVOR
 order by
-    sum(f.TOTAL_ORDER + j.TOTAL_ORDER) desc
-limit 3
+    sum(h.TOTAL_ORDER+ j.TOTAL_ORDER) desc limit 3

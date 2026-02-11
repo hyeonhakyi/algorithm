@@ -7,7 +7,7 @@ select
         when avg(g.SCORE) >= 80 then 'B'
         else 'C'
     end as GRADE,
-    case 
+    case
         when avg(g.SCORE) >= 96 then e.SAL * 0.2
         when avg(g.SCORE) >= 90 then e.SAL * 0.15
         when avg(g.SCORE) >= 80 then e.SAL * 0.1
@@ -16,8 +16,11 @@ select
 from
     HR_EMPLOYEES as e
 join
+    HR_DEPARTMENT as d on e.DEPT_ID = d.DEPT_ID
+join
     HR_GRADE as g on e.EMP_NO = g.EMP_NO
 group by
-    e.EMP_NO
+    e.EMP_NO,
+    e.EMP_NAME
 order by
     e.EMP_NO

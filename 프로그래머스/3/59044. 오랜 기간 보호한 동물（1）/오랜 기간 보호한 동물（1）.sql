@@ -1,10 +1,10 @@
 select
-    i.NAME,
-    i.DATETIME
+    NAME,
+    DATETIME
 from
-    ANIMAL_INS as i
+    ANIMAL_INS
 where
-    i.ANIMAL_ID not in(select ANIMAL_ID
-                      from ANIMAL_OUTS)
+    ANIMAL_ID not in (select ANIMAL_ID
+                     from ANIMAL_OUTS)
 order by
-    i.DATETIME limit 3
+    DATETIME limit 3

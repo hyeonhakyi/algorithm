@@ -9,8 +9,9 @@ join
 where
     b.STATUS like 'DONE'
 group by
-    u.USER_ID
-having 
+    u.USER_ID,
+    u.NICKNAME
+having
     TOTAL_SALES >= 700000
 order by
     TOTAL_SALES

@@ -6,11 +6,11 @@ select
 from
     REST_INFO
 where
-    (FOOD_TYPE,FAVORITES) in (select 
-                                FOOD_TYPE,
-                                max(FAVORITES)
-                             from REST_INFO
-                             group by
-                                FOOD_TYPE)
+    (FOOD_TYPE,FAVORITES) in (select FOOD_TYPE, max(FAVORITES)
+                               from REST_INFO
+                               group by FOOD_TYPE)
+group by
+    FOOD_TYPE
 order by
     FOOD_TYPE desc
+    

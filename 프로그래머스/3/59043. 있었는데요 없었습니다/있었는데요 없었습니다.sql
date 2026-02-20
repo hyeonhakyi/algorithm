@@ -6,6 +6,6 @@ from
 join
     ANIMAL_OUTS as o on i.ANIMAL_ID = o.ANIMAL_ID
 where
-    o.DATETIME < i.DATETIME
-order by    
+    i.DATETIME > o.DATETIME
+order by
     i.DATETIME

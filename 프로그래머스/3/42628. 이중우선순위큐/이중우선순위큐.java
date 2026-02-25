@@ -2,29 +2,42 @@ import java.util.*;
 
 class Solution {
     public int[] solution(String[] operations) {
-        PriorityQueue<Integer> maxQ = new PriorityQueue<>(Comparator.reverseOrder());
-        PriorityQueue<Integer> minQ = new PriorityQueue<>();
         
-        for(int i = 0; i < operations.length; i++){
-            String[] s = operations[i].split(" ");
+        TreeMap<Integer,Integer> map = new TreeMap<>();
+        
+        for(String str : operations){
+            String[] arr = str.split(" ");
+            String s = arr[0];
+            int num = Integer.parseInt(arr[1]);
             
-            if(maxQ.isEmpty() && s[0].equals("D")){
-                continue;
-            }
-            
-            if(s[0].equals("I")){
-                maxQ.offer(Integer.parseInt(s[1]));
-                minQ.offer(Integer.parseInt(s[1]));
-            } else if(s[0].equals("D") && s[1].equals("-1")){
-                int min = minQ.poll();
-                maxQ.remove(min);
-            } else if(s[0].equals("D") && s[1].equals("1")){
-                int max = maxQ.poll();
-                minQ.remove(max);
+            if(s.equals("I")){
+                map.put(num,map.getOrDefault(num,0) + 1);
+            }else{
+                if(map.isEmpty()) continue;
+                
+                if(num == 1){
+                    int key = map.lastKey();
+                    int cnt = map.get(key);
+                    if(cnt == 1) {
+                        map.remove(key);
+                    }else{
+                        map.put(key,cnt-1);
+                    }
+                }else{
+                    int key = map.firstKey();
+                    int cnt = map.get(key);
+                    if(cnt == 1){
+                        map.remove(key);
+                    }else{
+                        map.put(key,cnt - 1);
+                    }
+                }
             }
         }
-        
-        if(maxQ.isEmpty()) return new int[] {0,0};
-        return new int[] {maxQ.poll(),minQ.poll()};
-    }
-}
+        if(map.isEmpty()){
+            return new int[]{0,0};
+        }
+            
+        return new int[]{map.lastKey(),map.firstKey()};
+    }//solution end
+}//class end

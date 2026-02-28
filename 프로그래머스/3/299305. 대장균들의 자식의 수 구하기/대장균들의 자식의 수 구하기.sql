@@ -1,11 +1,11 @@
 select
-    e.ID,
-    count(e1.PARENT_ID) as CHILD_COUNT
+    e1.ID,
+    count(e2.PARENT_ID) as CHILD_COUNT
 from
-    ECOLI_DATA as e
+    ECOLI_DATA as e1
 left join
-    ECOLI_DATA as e1 on e.ID = e1.PARENT_ID
+    ECOLI_DATA as e2 on e1.ID = e2.PARENT_ID
 group by
-    e.ID
+    e1.ID
 order by
-    e.ID
+    e1.ID

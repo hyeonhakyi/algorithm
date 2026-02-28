@@ -1,19 +1,18 @@
 select
-    fi.ID,
-    fn.FISH_NAME,
-    fi.LENGTH
+    i.ID,
+    n.FISH_NAME,
+    i.LENGTH
 from
-    FISH_INFO as fi
+    FISH_INFO as i
 join
-    FISH_NAME_INFO as fn on fi.FISH_TYPE = fn.FISH_TYPE
+    FISH_NAME_INFO as n on i.FISH_TYPE = n.FISH_TYPE
 where
-    (fi.FISH_TYPE,fi.LENGTH) in (select FISH_TYPE,max(LENGTH)
-                         from FISH_INFO 
-                         group by
-                            FISH_TYPE)
+    (i.FISH_TYPE,i.LENGTH) in (select FISH_TYPE, max(LENGTH)
+                              from FISH_INFO
+                              group by FISH_TYPE)
 group by
-    fi.ID,
-    fn.FISH_NAME,
-    fi.LENGTH
+    i.ID,
+    n.FISH_NAME,
+    i.LENGTH
 order by
-    fi.ID
+    i.ID

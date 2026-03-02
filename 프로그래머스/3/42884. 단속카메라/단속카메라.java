@@ -2,20 +2,23 @@ import java.util.*;
 
 class Solution {
     public int solution(int[][] routes) {
-        int answer = 0;
-        
+        int answer = 1;
+        int n = routes.length;
         Arrays.sort(routes, (a,b) -> Integer.compare(a[1],b[1]));
         
-        int prev = Integer.MIN_VALUE;
-        for(int[] route : routes){
-            int now = route[0];
+        int prev = routes[0][1];
+        int idx = 1;
+        while(idx < n){
+            int now = routes[idx][0];
             
             if(prev < now){
                 answer++;
-                prev = route[1];
+                prev = routes[idx][1];
             }
+            
+            idx++;
         }
         
         return answer;
-    }
-}
+    }//solution end
+}//class end

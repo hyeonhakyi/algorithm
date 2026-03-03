@@ -2,20 +2,21 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int n, int s) {
-        if(s < n) return new int[] {-1};
-        int[] answer = new int[n];
-        
-        int first = s / n;
-        int second = s % n;
-        
-        for(int i = 0; i < n; i++){
-            answer[i] = first;
+        if(s < n){
+            return new int[]{-1};
         }
         
-        for(int i = n - 1; i >= n - second; i--){
+        int[] answer = new int[n];
+        
+        int q = s/n;
+        int r = s%n;
+        
+        Arrays.fill(answer,q);
+        
+        for(int i = n - 1; i >= n - r; i--){
             answer[i]++;
         }
         
         return answer;
-    }
-}
+    }//solution end
+}//class end

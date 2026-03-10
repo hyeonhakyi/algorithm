@@ -7,9 +7,9 @@ class Solution {
         visited = new boolean[user_id.length];
         dfs(0,user_id,banned_id,new HashSet<>());
         return result.size();
-    }//main end
+    }//solution end
     
-    static void dfs(int idx,String[] user,String[] banned,Set<String> set){
+    private static void dfs(int idx,String[] user,String[] banned,Set<String> set){
         if(idx == banned.length){
             result.add(new HashSet<>(set));
             return;
@@ -30,16 +30,16 @@ class Solution {
         }
     }//dfs end
     
-    static boolean isMathch(String user,String banned){
-        if(user.length() != banned.length()){
+    private static boolean isMathch(String user,String ban){
+        if(user.length() != ban.length()){
             return false;
         }
         
         for(int i = 0; i < user.length(); i++){
-            if(banned.charAt(i) == '*') continue;
-            if(user.charAt(i) != banned.charAt(i)) return false;
+            if(ban.charAt(i) == '*') continue;
+            if(user.charAt(i) != ban.charAt(i)) return false;
         }
         
         return true;
-    }//isMAthch end
+    }//isMathch end
 }//class end

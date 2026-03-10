@@ -1,8 +1,8 @@
 select
-    distinct b.AUTHOR_ID,
+    a.AUTHOR_ID,
     a.AUTHOR_NAME,
     b.CATEGORY,
-    sum(bs.SALES * b.PRICE) as TOTAL_SALES
+    sum(b.PRICE * bs.SALES) as TOTAL_SALES
 from
     BOOK as b
 join
@@ -12,9 +12,9 @@ join
 where
     date_format(bs.SALES_DATE,'%Y-%m-%d') like '2022-01%'
 group by
-    b.AUTHOR_ID,
+    a.AUTHOR_ID,
     a.AUTHOR_NAME,
     b.CATEGORY
 order by
-    b.AUTHOR_ID,
-    b.CATEGORY desc 
+    a.AUTHOR_ID,
+     b.CATEGORY desc

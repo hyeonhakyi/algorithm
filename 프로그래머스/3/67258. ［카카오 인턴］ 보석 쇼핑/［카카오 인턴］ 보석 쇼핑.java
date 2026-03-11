@@ -2,34 +2,42 @@ import java.util.*;
 
 class Solution {
     public int[] solution(String[] gems) {
-        Set<String> gemKinds = new HashSet<>(Arrays.asList(gems));
-        Map<String,Integer> gemMap = new HashMap<>();
         
-        int totalKinds = gemKinds.size();
+        Set<String> set = new HashSet<>();
+        for(String s : gems){
+            set.add(s);
+        }
+        int total = set.size();
+        
+        HashMap<String,Integer> map = new HashMap<>();
         int left = 0;
-        int right = 0;
-        int minLen = Integer.MAX_VALUE;
-        int[] answer = new int[2];
+        int bestL = 0;
+        int bestR = gems.length - 1;
+        int bestLen = bestR - bestL + 1;
         
-        while(right < gems.length){
-            gemMap.put(gems[right],gemMap.getOrDefault(gems[right], 0) + 1);
-            right++;
+        for(int right = 0; right < gems.length; right++){
+            map.put(gems[right],map.getOrDefault(gems[right],0) + 1);
             
-            while(gemMap.size() == totalKinds){
-                if(right - left < minLen){
-                    minLen = right - left;
-                    answer[0] = left + 1;
-                    answer[1] = right;
+            while(map.size() == total){
+                int len = right - left + 1;
+                
+                if(len < bestLen){
+                    bestLen = len;
+                    bestL = left;
+                    bestR = right;
                 }
                 
-                gemMap.put(gems[left], gemMap.get(gems[left]) - 1);
-                if(gemMap.get(gems[left]) == 0){
-                    gemMap.remove(gems[left]);
+                String s = gems[left];
+                int c = map.get(s) - 1;
+                if(c == 0){
+                    map.remove(s);   
+                }else{
+                    map.put(s,c);
                 }
                 left++;
-            }   
+            }
         }
         
-        return answer;
-    }
-}
+        return new int[]{bestL + 1, bestR + 1};
+    }//solution end
+}//class end

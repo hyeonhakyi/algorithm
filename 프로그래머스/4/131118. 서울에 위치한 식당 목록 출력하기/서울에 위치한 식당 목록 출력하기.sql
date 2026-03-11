@@ -12,11 +12,7 @@ join
 where
     i.ADDRESS like '서울%'
 group by
-    i.REST_ID,
-    i.REST_NAME,
-    i.FOOD_TYPE,
-    i.FAVORITES,
-    i.ADDRESS
+    i.REST_ID
 order by
     SCORE desc,
     i.FAVORITES desc

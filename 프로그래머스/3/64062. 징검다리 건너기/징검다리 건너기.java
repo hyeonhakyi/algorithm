@@ -4,12 +4,16 @@ class Solution {
     public int solution(int[] stones, int k) {
         int answer = 0;
         
-        int left = 1;
-        int right = 200_000_000;
+        int left = 0;
+        int right = 0;
+        for(int s : stones){
+            right = Math.max(right,s);
+        }
+        
         while(left <= right){
             int mid = (left + right) / 2;
             
-            if(canCover(stones,k,mid)){
+            if(canCross(mid,stones,k)){
                 answer = mid;
                 left = mid + 1;
             }else{
@@ -18,20 +22,20 @@ class Solution {
         }
         
         return answer;
-    }//main end
+    }//solution end
     
-    private static boolean canCover(int[] stones, int k,int people){
-        int count = 0;
+    private static boolean canCross(int mid,int[] stones,int k){
+        int kCnt = 0;
         for(int s : stones){
-            if(s - people < 0){
-                count++;
-                if(count >= k){
+            if(s - mid < 0){
+                kCnt++;
+                if(kCnt >= k){
                     return false;
                 }
             }else{
-                count = 0;
+                kCnt = 0;
             }
         }
         return true;
-    }//canCover end
+    }//canCross end
 }//class end

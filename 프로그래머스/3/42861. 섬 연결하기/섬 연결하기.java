@@ -3,7 +3,6 @@ import java.util.*;
 class Node implements Comparable<Node>{
     int idx;
     int weight;
-
     public Node(int idx,int weight){
         this.idx = idx;
         this.weight = weight;
@@ -11,46 +10,48 @@ class Node implements Comparable<Node>{
     
     @Override
     public int compareTo(Node o){
-        return this.weight - o.weight;
+        return Integer.compare(this.weight,o.weight);
     }
-}
+}//Node end
 
 class Solution {
     static List<Node>[] list;
     static boolean[] visited;
     public int solution(int n, int[][] costs) {
         list = new ArrayList[n];
-        visited = new boolean[n];
         
         for(int i = 0; i < n; i++){
             list[i] = new ArrayList<>();
         }
         
-        for(int[] cost : costs){
-            int s = cost[0];
-            int e = cost[1];
-            int w = cost[2];
+        for(int[] c : costs){
+            int s = c[0];
+            int e = c[1];
+            int w = c[2];
             
             list[s].add(new Node(e,w));
             list[e].add(new Node(s,w));
         }
         
-        int answer = bfs(1);
+        visited = new boolean[n];
+        
+        int answer = dijkstra();
         
         return answer;
-    }//main end
+    }//solution end
     
-    private static int bfs(int idx){
+    private static int dijkstra(){
         PriorityQueue<Node> q = new PriorityQueue<>();
-        q.offer(new Node(idx,0));
+        q.offer(new Node(0,0));
         int sum = 0;
         
         while(!q.isEmpty()){
             Node now = q.poll();
-            if(visited[now.idx]) continue;
+            
+            if (visited[now.idx]) continue;   // 수정: 꺼냈을 때 방문 체크
             visited[now.idx] = true;
             sum += now.weight;
-                        
+            
             for(Node next : list[now.idx]){
                 if(!visited[next.idx]){
                     q.offer(new Node(next.idx,next.weight));
@@ -58,5 +59,5 @@ class Solution {
             }
         }
         return sum;
-    }//bfs end
+    }//dijkstra end
 }//class end

@@ -9,4 +9,4 @@ join
 where
     e1.PARENT_ID is null
 order by
-    e3.ID 
+    e3.ID

@@ -5,15 +5,22 @@ class Solution {
         long answer = 0;
         
         long left = 1;
-        long right = (long) 1_000_000_000 * (long) 1_000_000_000;
+        long right = 0;
+        
+        for(int i : times){
+            right = Math.max(i,right);
+        }
+        
+        right *= n;
         
         while(left <= right){
-            long mid = (left + right) / 2;
-            
+            long mid = (left + right) / (long) 2;
             long sum = 0;
             for(int i : times){
                 sum += mid / i;
-                if(sum >= n) break;
+                if(sum >= n){
+                    break;
+                }
             }
             
             if(sum >= n){
@@ -25,5 +32,5 @@ class Solution {
         }
         
         return answer;
-    }//main end
+    }//solution end
 }//class end

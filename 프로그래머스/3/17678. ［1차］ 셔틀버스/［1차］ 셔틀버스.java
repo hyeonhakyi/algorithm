@@ -1,44 +1,50 @@
-import java.util.Arrays;
+import java.util.*;
+
 class Solution {
-    private int time_to_minute(String time){
-        String[] time_split = time.split(":");
-        int h = Integer.valueOf(time_split[0]);
-        int m = Integer.valueOf(time_split[1]);
-        return h * 60 + m;
-    }
-
-    private String minute_to_time(int minute){
-        String h = String.format("%02d",minute/60);
-        String m = String.format("%02d",minute%60);
-        return h + ":" + m;
-    }
     public String solution(int n, int t, int m, String[] timetable) {
-        int[] minutetable = new int[timetable.length];
-        for(int i = 0; i < minutetable.length; i++){
-            minutetable[i] = time_to_minute(timetable[i]);
+        int[] crew = new int[timetable.length];
+        
+        for(int i = 0; i < timetable.length; i++){
+            crew[i] = toMinute(timetable[i]);
         }
-        Arrays.sort(minutetable);
-
+        
+        Arrays.sort(crew);
+        
+        int idx = 0;
         int answer = 0;
-        int index = 0;
-        int busCnt = 0;
-        int busTime = time_to_minute("09:00");
-
-        while(n > 0){
-            while(index + busCnt < minutetable.length && busCnt < m && minutetable[index + busCnt] <= busTime){
-                busCnt++;
+        for(int i = 0; i < n; i++){
+            int busTime = 9 * 60 + (i * t);
+            int count = 0;
+            int prevTime = -1;
+            
+            while(idx < crew.length && busTime >= crew[idx] && count < m){
+                prevTime = crew[idx];
+                idx++;
+                count++;
             }
-
-            if(busCnt < m) {
-                answer = busTime;
-            }else{
-                answer = minutetable[index + busCnt -1] - 1;
+            
+            if(i == n - 1){
+                if(count < m){
+                    answer = busTime;
+                }else{
+                    answer = prevTime - 1;
+                }   
             }
-            index += (busCnt);
-            busCnt = 0;
-            busTime += t;
-            n--;
         }
-        return minute_to_time(answer);
-    }
-}
+        
+        return toTime(answer);
+    }//solution end
+    
+    private static int toMinute(String time){
+        String[] split = time.split(":");
+        int hour = Integer.parseInt(split[0]) * 60;
+        int minute = Integer.parseInt(split[1]);
+        return hour + minute;
+    }//toMinute end
+    
+    private static String toTime(int value){
+        int time = value / 60;
+        int minute = value % 60;
+        return String.format("%02d:%02d",time,minute);
+    }//toTime end
+}//class end

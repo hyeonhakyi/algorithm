@@ -2,28 +2,29 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] a) {
+        int n = a.length;
+        
+        int[] leftMin = new int[n];
+        int[] rightMin = new int[n];
+        
+        leftMin[0] = a[0];
+        for(int i = 1; i < n; i++){
+            leftMin[i] = Math.min(leftMin[i - 1],a[i]);
+        }
+        
+        rightMin[n - 1] = a[n - 1];
+        for(int i = n - 2; i >= 0; i--){
+            rightMin[i] = Math.min(rightMin[i + 1],a[i]);
+        }
+        
         int answer = 0;
-        int[] leftMin = new int[a.length];
-        int[] rightMin = new int[a.length];
         
-        int min = Integer.MAX_VALUE;
-        for(int i = 0; i < a.length; i++){
-            min = Math.min(min,a[i]);
-            leftMin[i] = min;
-        }
-        
-        min = Integer.MAX_VALUE;
-        for(int i = a.length - 1; i >= 0; i--){
-            min = Math.min(min,a[i]);
-            rightMin[i] = min;
-        }
-        
-        for(int i = 0; i < a.length; i++){
-            if(a[i] <= leftMin[i] || a[i] <= rightMin[i] ){
+        for(int i = 0; i < n; i++){
+            if(a[i] <= leftMin[i] || a[i] <= rightMin[i]){
                 answer++;
             }
         }
         
         return answer;
-    }//main end
+    }//solution end
 }//class end

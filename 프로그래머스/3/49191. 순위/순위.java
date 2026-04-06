@@ -3,41 +3,44 @@ import java.util.*;
 class Solution {
     public int solution(int n, int[][] results) {
         int answer = 0;
-        int[][] check = new int[n+1][n+1];
         
-        for(int[] r : results){
-            int a = r[0];
-            int b = r[1];
-            
-            check[a][b] = 1;
-            check[b][a] = -1;
+        int[][] dist = new int[n + 1][n + 1];
+        
+        for(int i = 1; i <= n; i++){
+            Arrays.fill(dist[i],-1);   
         }
         
-        for(int b = 1; b <= n; b++){
-            for(int a = 1; a <= n; a++){
-                for(int c = 1; c <= n; c++){
-                    if(check[a][c] == 1 && check[b][c] == 1){
-                        check[a][c] = 1;
-                        check[c][a] = -1;
-                    }else if(check[a][b] == -1 && check[b][c] == -1){
-                        check[a][c] = -1;
-                        check[c][a] = 1;
+        for(int[] num : results){
+            int a = num[0];
+            int b = num[1];
+            
+            dist[a][b] = 1;
+        }
+        
+        for(int i = 1; i <= n; i++){
+            for(int j = 1; j <= n; j++){
+                for(int k = 1; k <= n; k++){
+                    if(dist[j][i] == 1 && dist[i][k] == 1){
+                        dist[j][k] = 1;
                     }
                 }
             }
         }
         
-        
         for(int i = 1; i <= n; i++){
-            int count = 0;
+            boolean check = true;
             for(int j = 1; j <= n; j++){
                 if(i == j) continue;
-                if(check[i][j] != 0) count++;
+                if(dist[i][j] == -1 && dist[j][i] == -1){
+                    check = false;
+                    continue;
+                }
             }
-            
-            if(count == (n - 1)) answer++;
+            if(check){
+                answer++;
+            }
         }
         
         return answer;
-    }//main end
+    }//solution end
 }//class end

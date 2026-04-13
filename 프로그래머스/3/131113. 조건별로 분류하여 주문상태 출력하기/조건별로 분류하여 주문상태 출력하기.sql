@@ -8,7 +8,6 @@ select
         else '출고미정'
     end as 출고여부
 from
-    FOOD_ORDER
+    FOOD_ORDER 
 order by
     ORDER_ID
-    

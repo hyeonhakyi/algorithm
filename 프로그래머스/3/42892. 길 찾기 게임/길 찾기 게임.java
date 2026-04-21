@@ -1,84 +1,86 @@
 import java.util.*;
 
-class Node implements Comparable<Node>{
-    int num;
+class Node{
     int x;
     int y;
+    int idx;
     Node left;
     Node right;
-    
-    public Node(int num,int x,int y,Node left,Node right){
-        this.num = num;
+    public Node(int x,int y,int idx){
         this.x = x;
         this.y = y;
-        this.left = left;
-        this.right = right;
-    }
-    
-    @Override
-    public int compareTo(Node o){
-        if(this.y == o.y){
-            return this.x - o.x;
-        }
-        return o.y - this.y;
+        this.idx = idx;
     }
 }
 
 class Solution {
-    static int[][] answer;
-    static int idx;
+    static List<Integer> preorderList;
+    static List<Integer> postorderList;
     public int[][] solution(int[][] nodeinfo) {
-        answer = new int[2][nodeinfo.length];
+        int n = nodeinfo.length;
+        Node[] nodes = new Node[n];
         
-        List<Node> list = new ArrayList<>();
-        for(int i = 0; i < nodeinfo.length; i++){
-            list.add(new Node(i + 1,nodeinfo[i][0],nodeinfo[i][1],null,null));
+        for(int i = 0; i < n; i++){
+            nodes[i] = new Node(nodeinfo[i][0],nodeinfo[i][1],i + 1);
+        };
+        
+        Arrays.sort(nodes,(a,b) ->{
+            if(a.y == b.y){
+                return Integer.compare(a.x,b.x);
+            }
+            return Integer.compare(b.y,a.y);
+        });
+        
+        Node root = nodes[0];
+        
+        for(int i = 1; i < n; i++){
+            insert(root,nodes[i]);
         }
         
-        Collections.sort(list);
+        preorderList = new ArrayList<>();
+        postorderList = new ArrayList<>();
         
-        Node root = list.get(0);
-        for(int i = 1; i < nodeinfo.length; i++){
-            insertNode(root,list.get(i));
-        }
-        
-        idx = 0;
         preorder(root);
-        idx = 0;
         postorder(root);
         
+        int[][] answer = new int[2][n];
+        for(int i = 0; i < n; i++){
+            answer[0][i] = preorderList.get(i);
+            answer[1][i] = postorderList.get(i);
+        }
+        
         return answer;
-    }//main end
+    }//solution end
     
-    private static void insertNode(Node parents,Node child){
-        if(parents.x > child.x){
-            if(parents.left == null){
-                parents.left = child;
+    private static void insert(Node parent,Node child){
+        if(child.x < parent.x){
+            if(parent.left == null){
+                parent.left = child;
             }else{
-                insertNode(parents.left,child);
+                insert(parent.left,child);
             }
         }else{
-            if(parents.right == null){
-                parents.right = child;
+            if(parent.right == null){
+                parent.right = child;
             }else{
-                insertNode(parents.right,child);
+                insert(parent.right,child);
             }
         }
-    }//insertNode nend
+    }//insert end
     
-    private static void preorder(Node root){
-        if(root != null){
-            answer[0][idx++] = root.num;
-            preorder(root.left);
-            preorder(root.right);
-        }
+    private static void preorder(Node node){
+        if(node == null) return;
+        
+        preorderList.add(node.idx);
+        preorder(node.left);
+        preorder(node.right);
     }//preorder end
     
-    private static void postorder(Node root){
-        if(root != null){
-            postorder(root.left);
-            postorder(root.right);
-            answer[1][idx++] = root.num;
-        }
+    private static void postorder(Node node){
+        if(node == null) return;
+        
+        postorder(node.left);
+        postorder(node.right);
+        postorderList.add(node.idx);
     }//postorder end
 }//class end

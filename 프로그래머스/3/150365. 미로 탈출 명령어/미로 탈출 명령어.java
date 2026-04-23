@@ -1,37 +1,38 @@
 import java.util.*;
 
 class Solution {
+    static int[] dx = {1, 0, 0, -1};
+    static int[] dy = {0, -1, 1, 0};
+    static char[] dirChar = {'d', 'l', 'r', 'u'};
     public String solution(int n, int m, int x, int y, int r, int c, int k) {
-        int dist = Math.abs(r - x) + Math.abs(c - y);
-        if(dist > k || (dist - k) % 2 != 0) return "impossible" ;
-                
-        char[] moveChar = {'d','l','r','u'};
-        int[] dx = {1,0,0,-1};
-        int[] dy = {0,-1,1,0};
+        int distance = Math.abs(x - r) + Math.abs(y - c);
         
-        int cx = x;
-        int cy = y;
-        int remain = k;
-        StringBuilder sb = new StringBuilder();
+        if(distance > k || (k - distance) % 2 != 0){
+            return "impossible";
+        }
+        
+        StringBuilder answer = new StringBuilder();
+        int nowX = x;
+        int nowY = y;
+        
         for(int i = 0; i < k; i++){
             for(int d = 0; d < 4; d++){
-                int nx = cx + dx[d];
-                int ny = cy + dy[d];
+                int nx = nowX + dx[d];
+                int ny = nowY + dy[d];
                 
-                if(nx < 1 || ny < 1 || nx > n || ny > m) continue;
-                
-                int need = Math.abs(r - nx) + Math.abs(c - ny);
-                int left = remain - 1;
-                if(left >= need && (left - need) % 2 == 0){
-                    sb.append(moveChar[d]);
-                    cx = nx;
-                    cy = ny;
-                    remain = left;
-                    break;
+                if(nx >= 1 && nx <= n && ny >= 1 && ny <= m){
+                    int remainDist = Math.abs(nx - r) + Math.abs(ny - c);
+                    
+                    if(remainDist <= (k - 1 - i)){
+                        nowX = nx;
+                        nowY = ny;
+                        answer.append(dirChar[d]);
+                        break;
+                    }
                 }
             }
         }
         
-        return sb.toString();
-    }
-}
+        return answer.toString();
+    }//solution end
+}//class end

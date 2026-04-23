@@ -1,7 +1,7 @@
-with base as (
-    select
+with base as(
+    select 
         id,
-        percent_rank() over (order by SIZE_OF_COLONY desc) as per
+        percent_rank() over (order by SIZE_OF_COLONY desc ) as per
     from
         ECOLI_DATA
 )
@@ -14,7 +14,7 @@ select
         when per <= 0.75 then 'MEDIUM'
         else 'LOW'
     end as COLONY_NAME
-from 
+from
     base
 order by
-    ID
+    id

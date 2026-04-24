@@ -2,25 +2,26 @@ import java.util.*;
 
 class Solution {
     public String solution(String s) {
-        StringBuilder sb = new StringBuilder();
-        boolean check = true;
+        StringBuilder answer = new StringBuilder();
         
-        for(int i = 0; i < s.length(); i++){
-            char c = s.charAt(i);
-            
+        String str = s.toLowerCase();
+        
+        boolean isFirst = true;
+        
+        for(char c : str.toCharArray()){
             if(c == ' '){
-                sb.append(c);
-                check = true;
+                answer.append(c);
+                isFirst = true;
             }else{
-                if(check){
-                    sb.append(Character.toUpperCase(c));
-                    check = false;
+                if(isFirst){
+                    answer.append(Character.toUpperCase(c));
+                    isFirst = false;
                 }else{
-                    sb.append(Character.toLowerCase(c));
+                    answer.append(c);
                 }
             }
         }
         
-        return sb.toString();
-    }
-}
+        return answer.toString();
+    }//solution end
+}//class end

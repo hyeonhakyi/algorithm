@@ -2,27 +2,32 @@ import java.util.*;
 
 class Solution {
     boolean solution(String s) {
+        boolean answer = true;
         
         Stack<Character> stack = new Stack<>();
         
-        for(int i = 0; i < s.length(); i++){
-            char c = s.charAt(i);
-            
-            if(c == '('){
-                stack.push(c);
-            }else if(c == ')'){
-                if(!stack.isEmpty()){
-                    stack.pop();
-                }else{
+        char[] arr = s.toCharArray();
+        
+        for(int i = 0; i < arr.length; i++){
+            if(arr[i] == ')'){
+                if(stack.isEmpty()){
                     return false;
+                }else{
+                    if(stack.peek() == '('){
+                        stack.pop();
+                    }else{
+                        return false;
+                    }
                 }
+            }else{
+                stack.push(arr[i]);
             }
         }
         
         if(!stack.isEmpty()){
-             return false;
-        }else{
-            return true;
+            return false;
         }
-    }
-}
+        
+        return answer;
+    }//solution end
+}//class end

@@ -1,22 +1,27 @@
+import java.util.*;
+
 class Solution {
     public int[] solution(String s) {
-        int[] answer = new int[2];
+        int cnt = 0;
+        int totalRemove = 0;
         
         while(!s.equals("1")){
-            char[] arr = s.toCharArray();
+            int originalLength = s.length();
             
-            for(int i = 0; i < s.length(); i++){
-                if("1".equals(String.valueOf(arr[i]))){
-                    continue;
-                }else{
-                    answer[1]++;
+            int oneCnt = 0;
+            for(int i = 0; i < originalLength; i++){
+                if(s.charAt(i) == '1'){
+                    oneCnt++;
                 }
             }
             
-            s = Integer.toBinaryString(s.replaceAll("0","").length());
-            answer[0]++;
+            totalRemove += (originalLength - oneCnt);
+            
+            s = Integer.toBinaryString(oneCnt);
+            
+            cnt++;
         }
         
-        return answer;
-    }
-}
+        return new int[]{cnt,totalRemove};
+    }//solution end
+}//class end

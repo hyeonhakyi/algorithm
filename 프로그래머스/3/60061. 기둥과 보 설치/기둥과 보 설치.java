@@ -1,83 +1,113 @@
 import java.util.*;
 
 class Solution {
-    static boolean[][] pillar,beam;
-    static int N;
+    static boolean[][] piller;
+    static boolean[][] beam;
+    static int size;
     public int[][] solution(int n, int[][] build_frame) {
-        N = n;
+        size = n;
         
-        pillar = new boolean[n + 3][n + 3];
-        beam = new boolean[n + 3][n + 3];
-                
-        for(int[] i : build_frame){
-            int x = i[0];
-            int y = i[1];
-            int a = i[2]; // 0: 기둥, 1: 보
-            int b = i[3]; // 0: 삭제, 1: 설치
+        piller = new boolean[n + 2][n + 2];
+        beam = new boolean[n + 2][n + 2];
+        
+        for(int[] commend : build_frame){
+            int x = commend[0];
+            int y = commend[1];
+            int type = commend[2];
+            int remove = commend[3];
             
-            if(b == 1){
-                if(a == 0){
-                    pillar[x][y] = true;
-                    if(!isAllAvailable()) pillar[x][y] = false;
+            if(remove == 1){
+                if(type == 0){
+                    piller[x][y] = true;
+                    
+                    if(!isVaild()){
+                        piller[x][y] = false;
+                    }
                 }else{
                     beam[x][y] = true;
-                    if(!isAllAvailable()) beam[x][y] = false;
+                    
+                    if(!isVaild()){
+                        beam[x][y] = false;
+                    }
                 }
             }else{
-                if(a == 0){
-                    pillar[x][y] = false;
-                    if(!isAllAvailable()) pillar[x][y] = true;
+                if(type == 0){
+                    piller[x][y] = false;
+                    
+                    if(!isVaild()){
+                        piller[x][y] = true;
+                    }
                 }else{
                     beam[x][y] = false;
-                    if(!isAllAvailable()) beam[x][y] = true;
+                    
+                    if(!isVaild()){
+                        beam[x][y] = true;
+                    }
                 }
-            }
+            }        
         }
         
         List<int[]> list = new ArrayList<>();
-        for(int i = 0; i <= N; i++){
-            for(int j = 0; j <= N; j++){
-                if(pillar[i][j]) list.add(new int[]{i,j,0});
-                if(beam[i][j]) list.add(new int[]{i,j,1});
+        
+        for(int i = 0; i <= size; i++){
+            for(int j = 0; j <= size; j++){
+                if(piller[i][j]){
+                    list.add(new int[]{i,j,0});
+                }
+                
+                if(beam[i][j]){
+                    list.add(new int[]{i,j,1});
+                }                
             }
         }
         
-        list.sort((o1,o2) -> {
-            if(o1[0] != o2[0]) return o1[0] - o2[0];
-            if(o1[1] != o2[1]) return o1[1] - o2[1];
-            return o1[2] - o2[2];
+        list.sort((a, b) -> {
+            if(a[0] != b[0]){
+                return Integer.compare(a[0], b[0]);
+            }
+            if(a[1] != b[1]){
+                return Integer.compare(a[1], b[1]);
+            }
+            return Integer.compare(a[2], b[2]);
         });
         
         int[][] answer = new int[list.size()][3];
-        for(int i = 0; i < list.size(); i++){
+
+        for (int i = 0; i < list.size(); i++) {
             answer[i] = list.get(i);
         }
-        
+
         return answer;
-    }//main end
+    }//solution end
     
-    static boolean isAllAvailable(){
-        for(int i = 0; i <= N; i++){
-            for(int j = 0; j <= N; j++){
-                if(pillar[i][j] && !canPlacePiller(i,j)) return false;
-                if(beam[i][j] && !canPlaceBeam(i,j)) return false;
+    private static boolean isVaild(){
+        for(int i = 0; i <= size; i++){
+            for(int j = 0; j <= size; j++){
+                if(piller[i][j] && !canPiller(i,j)){
+                    return false;
+                }
+                
+                if(beam[i][j] && !canBeam(i,j)){
+                    return false;
+                }
             }
         }
         return true;
-    }//isAllAvailable end
+    }//isValud end
     
-    static boolean canPlacePiller(int x,int y){
+    private static boolean canPiller(int x,int y){
         if(y == 0) return true;
-        if(y >= 0 && pillar[x][y-1]) return true;
-        if(beam[x][y]) return true;
+        if(piller[x][y - 1]) return true;
         if(x > 0 && beam[x - 1][y]) return true;
+        if(beam[x][y]) return true;
         return false;
-    }//canPlacePiller end
+    }//canPiller end
     
-    static boolean canPlaceBeam(int x,int y){
-        if(y > 0 && pillar[x][y - 1]) return true;
-        if(y > 0 && pillar[x + 1][y - 1]) return true;
-        if(x > 0 && beam[x - 1][y] && beam[x + 1][y]) return true;
+    private static boolean canBeam(int x,int y){
+        if(y > 0 && piller[x][y - 1]) return true;
+        if(y > 0 && piller[x + 1][y - 1]) return true;
+        if(x > 0 && beam[x + 1][y] && beam[x - 1][y]) return true;
+        
         return false;
-    }//canPlaceBeam end
-}
+    }
+}//class end

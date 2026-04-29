@@ -1,11 +1,11 @@
 select
-    distinct cc.CAR_ID
+    distinct c.CAR_ID
 from
-    CAR_RENTAL_COMPANY_CAR as cc
+    CAR_RENTAL_COMPANY_CAR as c
 join
-    CAR_RENTAL_COMPANY_RENTAL_HISTORY as rh on cc.CAR_ID = rh.CAR_ID
+    CAR_RENTAL_COMPANY_RENTAL_HISTORY as h on c.CAR_ID = h.CAR_ID
 where
-    cc.CAR_TYPE like '세단'
-    and date_format(rh.START_DATE,'%Y-%m-%d') like '2022-10%'
+    c.CAR_TYPE like '세단'
+    and date_format(h.START_DATE,'%Y-%m-%d') like '2022-10%'
 order by
-    cc.CAR_ID desc 
+    c.CAR_ID desc

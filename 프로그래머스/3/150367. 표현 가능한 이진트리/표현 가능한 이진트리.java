@@ -5,18 +5,11 @@ class Solution {
         int[] answer = new int[numbers.length];
         
         for(int i = 0; i < numbers.length; i++){
-            String bin = Long.toBinaryString(numbers[i]);
+            String binary = Long.toBinaryString(numbers[i]);
             
-            int len = bin.length();
-            int fullLen = 1;
-        
-            while(fullLen < len){
-                fullLen = fullLen * 2 + 1;
-            }
+            String fullBinary = makeFullBinary(binary);
             
-            String arr = "0".repeat(fullLen - len) + bin;
-            
-            if(dfs(arr,0,fullLen - 1)){
+            if(check(fullBinary,0,fullBinary.length() - 1,true)){
                 answer[i] = 1;
             }else{
                 answer[i] = 0;
@@ -24,21 +17,40 @@ class Solution {
         }
         
         return answer;
-    }//main end
+    }//solution end
     
-    private static boolean dfs(String arr,int left,int right){
-        if(left == right) return true;
-        
-        int mid = (left + right) / 2;
-        char root = arr.charAt(mid);
-        
-        int leftMid = (left + mid - 1) / 2;
-        int rightMid = (right + mid + 1) / 2;
-
-        if(root == '0'){
-            if(arr.charAt(leftMid) == '1' || arr.charAt(rightMid) == '1') return false;
+    private static String makeFullBinary(String binary){
+        int len = binary.length();
+        int fullLen = 1;
+        while(fullLen < len){
+            fullLen = fullLen * 2 + 1;
         }
         
-        return dfs(arr,left,mid - 1) && dfs(arr,mid + 1,right);
-    }//dfs end
+        StringBuilder sb = new StringBuilder();
+        
+        for(int i = 0; i < fullLen - len; i++){
+            sb.append("0");
+        }
+        
+        sb.append(binary);
+        
+        return sb.toString();
+    }//makeFullBinary end
+    
+    private static boolean check(String binary,int left,int right,boolean prev){
+        if (left > right) return true;
+        
+        int mid = (left + right) / 2;
+        char root = binary.charAt(mid);
+        
+        if(!prev && root == '1'){
+            return false;
+        }
+        boolean currentRoot = false;
+        if(root == '1'){
+            currentRoot = true;
+        }
+        
+        return check(binary, left, mid - 1, currentRoot) && check(binary, mid + 1, right, currentRoot);
+    }//check end
 }//class end

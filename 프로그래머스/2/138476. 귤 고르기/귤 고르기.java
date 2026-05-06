@@ -1,27 +1,29 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int k, int[] tangerine) {
-        int answer = 0;
-        
-        HashMap<Integer, Integer> map = new HashMap<>();
+    public int solution(int k, int[] tangerine) {        
+        HashMap<Integer,Integer> map = new HashMap<>();
         
         for(int i : tangerine){
-            map.put(i, map.getOrDefault(i,0) + 1);
+            map.put(i,map.getOrDefault(i,0) + 1);
         }
         
-        List<Integer> list = new ArrayList<>(map.keySet());
-        list.sort((o1,o2) -> map.get(o2) - map.get(o1));
+        List<Integer> counts = new LinkedList(map.values());
         
-        for(int i : list){
-            if(k <= 0){
+        counts.sort(Collections.reverseOrder());
+        
+        int sum = 0;
+        int answer = 0;
+        
+        for(int count : counts){
+            sum += count;
+            answer++;
+            
+            if(sum >= k){
                 break;
-            }else{
-                k -= map.get(i);
-                answer++;
             }
         }
         
         return answer;
-    }
-}
+    }//solution end
+}//class end

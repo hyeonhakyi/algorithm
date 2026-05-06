@@ -5,8 +5,7 @@ from
 join
     USED_GOODS_FILE as f on b.BOARD_ID = f.BOARD_ID
 where
-    b.VIEWS in (select max(VIEWS)
-               from USED_GOODS_BOARD
-               )
+    (b.VIEWS) in (select max(VIEWS)
+               from USED_GOODS_BOARD)
 order by
-    f.FILE_ID desc 
+    f.FILE_ID desc

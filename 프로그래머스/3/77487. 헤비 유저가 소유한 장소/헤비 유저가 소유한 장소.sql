@@ -1,7 +1,5 @@
 select
-    ID,
-    NAME,
-    HOST_ID
+    *
 from
     PLACES 
 where

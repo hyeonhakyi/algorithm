@@ -1,3 +1,5 @@
+import java.util.*;
+
 class Solution {
     public int solution(int[] arr) {
         int answer = arr[0];
@@ -7,18 +9,18 @@ class Solution {
         }
         
         return answer;
-    }
+    }//solution end
     
-    // 최대 공약수
-    public static int gcd(int a, int b){
-        if(a % b == 0){
-            return b;
-        }
-        return gcd(b, a % b);
-    }
-    
-    // 최소 공배수
-    public static int lcm(int a, int b){
+    private static int lcm(int a,int b){
         return a * b / gcd(a,b);
-    }
-}
+    }//lcm end
+    
+    private static int gcd(int a,int b){
+        while(b != 0){
+            int temp = a % b;
+            a = b;
+            b = temp;
+        }
+        return a;
+    }//gcd end
+}//class end

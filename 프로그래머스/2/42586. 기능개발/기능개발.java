@@ -2,38 +2,35 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        Queue<Integer> q = new LinkedList<>();
-        Stack<Integer> answer = new Stack<>();
+        List<Integer> result = new ArrayList<>();
         
-        for(int i = 0; i < progresses.length; i++){
-            if((100 - progresses[i]) % speeds[i] == 0){
-                q.offer((100 - progresses[i]) / speeds[i]);
-            }else{
-                q.offer((100 - progresses[i]) / speeds[i] +1);
-            }
-        }
-        
-        int now = q.poll();
+        int n = progresses.length;
+        int currentDay = getDay(progresses[0],speeds[0]);
         int count = 1;
         
-        while(!q.isEmpty()){
-            if(now >= q.peek()){
+        for(int i = 1; i < n; i++){
+            int day = getDay(progresses[i],speeds[i]);
+            
+            if(day <= currentDay){
                 count++;
-                q.poll();
             }else{
-                answer.add(count);
-                now = q.poll();
+                result.add(count);
+                currentDay = day;
                 count = 1;
             }
         }
         
-        answer.add(count);
-        int[] in = new int[answer.size()];
+        result.add(count);
         
-        for(int i = 0; i < answer.size(); i++){
-            in[i] = answer.get(i);
+        int[] answer = new int[result.size()];
+        for(int i = 0; i < result.size(); i++){
+            answer[i] = result.get(i);
         }
         
-        return in;
-    }
-}
+        return answer;
+    }//solution end
+    
+    private static int getDay(int progresse,int speed){
+        return (100 - progresse + speed - 1) / speed;
+    }//getDay end
+}//class end

@@ -1,56 +1,75 @@
+import java.util.*;
+
 class Solution {
-    public static int[] weak_append;
-    public static int answer; 
+    static int[] arrWeak;
+    static boolean[] visited;
+    static int[] personDist;
+    static int answer;
+    static int weakLen;
     public int solution(int n, int[] weak, int[] dist) {
         answer = Integer.MAX_VALUE;
-        weak_append = new int[weak.length*2];
-        int i = 0;
-        while(i < weak.length){
-            weak_append[i] = weak[i];
-            weak_append[i + weak.length] = weak[i++]+n;
+        weakLen = weak.length;
+        arrWeak = new int[weakLen * 2];
+        personDist = new int[dist.length];
+        visited = new boolean[dist.length];
+        
+        for(int i = 0; i < weakLen; i++){
+            arrWeak[i] = weak[i];
+            arrWeak[i + weakLen] = weak[i] + n;
         }
         
-        for(int k = 0; k < weak.length; k++){
-            dfs(k,0,dist,new boolean[dist.length],new int[dist.length]);
-        }
-        
+        permutation(dist,0);
         
         if(answer == Integer.MAX_VALUE){
             return -1;
+        }else{
+            return answer;
         }
-        return answer;
-    }//main end
+    }//solution end
     
-    public void dfs(int start,int depth, int[] dist, boolean[] visited, int[] permuted){
-        if(depth == dist.length){
-            answer = Math.min(answer, check(start,start+weak_append.length/2,permuted));
-                return;
+    private static void permutation(int[] person,int depth){
+        if(depth == person.length){
+            check();
+            return;
         }
         
-        for(int i = 0; i < dist.length; i++){
+        for(int i = 0; i < person.length; i++){
             if(visited[i]){
                 continue;
             }
+            
             visited[i] = true;
-            permuted[depth] = dist[i];
-            dfs(start,depth+1,dist,visited,permuted);
+            
+            personDist[depth] = person[i];
+            permutation(person,depth + 1);
+            
             visited[i] = false;
         }
-    }//dfs end
+    }//permutation end
     
-    public int check(int start,int end,int[] permuted){
-        int friend = 1;
-        int pos = weak_append[start] + permuted[friend-1];
-        
-        for(int i = start; i < end; i++){
-            if(pos < weak_append[i]){
-                friend++;
-                if(friend > permuted.length){
-                    return Integer.MAX_VALUE;
+    private static void check(){
+        for(int start = 0; start < weakLen; start++){
+            int friendsCount = 1;
+            int coverEnd = arrWeak[start] + personDist[friendsCount - 1];
+            
+            for(int i = start; i < start + weakLen; i++){
+                int nextWeak = arrWeak[i];
+                
+                if(nextWeak > coverEnd){
+                    friendsCount++;
+                    
+                    if(friendsCount > personDist.length){
+                        break;
+                    }
+                
+                    coverEnd = nextWeak + personDist[friendsCount - 1];
                 }
-                pos = weak_append[i] + permuted[friend - 1];
+            }
+            
+            if(friendsCount <= personDist.length){
+                answer = Math.min(friendsCount,answer);
             }
         }
-        return friend;   
-    }
-}
+        return;
+    }//check end
+}//class end

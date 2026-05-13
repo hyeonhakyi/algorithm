@@ -2,27 +2,27 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int n, String[] words) {
-        int[] answer = new int[2];
-        
-        List<String> list = new ArrayList<>();
-        list.add(words[0]);
-        
-        for(int i = 1; i < words.length; i++){
-            if(list.contains(words[i]) || same(words[i],list.get(list.size() - 1))){
-                answer[0] = i % n + 1;
-                answer[1] = i / n + 1;
-                break;
+        Set<String> set = new HashSet<>();
+        set.add(words[0]);
+
+        for (int i = 1; i < words.length; i++) {
+            String prev = words[i - 1];
+            String now = words[i];
+
+            boolean isDuplicate = set.contains(now);
+
+            boolean isWrongChain = prev.charAt(prev.length() - 1) != now.charAt(0);
+
+            if (isDuplicate || isWrongChain) {
+                int person = (i % n) + 1;
+                int turn = (i / n) + 1;
+
+                return new int[]{person, turn};
             }
-            list.add(words[i]);
+
+            set.add(now);
         }
 
-        return answer;
-    }
-    
-    static boolean same(String word1,String word2){
-        if(word1.charAt(0) == word2.charAt(word2.length() - 1)){
-            return false;
-        }
-        return true;
-    }
-}
+        return new int[]{0, 0};
+    }//solution end
+}//class end

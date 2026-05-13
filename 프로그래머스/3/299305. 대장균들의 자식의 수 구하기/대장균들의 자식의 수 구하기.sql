@@ -7,5 +7,5 @@ left join
     ECOLI_DATA as e2 on e1.ID = e2.PARENT_ID
 group by
     e1.ID
-order by
+order by    
     e1.ID

@@ -7,12 +7,11 @@ from
 join
     FISH_NAME_INFO as n on i.FISH_TYPE = n.FISH_TYPE
 where
-    (i.FISH_TYPE,i.LENGTH) in (select FISH_TYPE, max(LENGTH)
-                              from FISH_INFO
-                              group by FISH_TYPE)
+    (i.FISH_TYPE,i.LENGTH) in (select FISH_TYPE,max(LENGTH)
+                       from FISH_INFO
+                       group by FISH_TYPE)
 group by
     i.ID,
-    n.FISH_NAME,
-    i.LENGTH
+    n.FISH_NAME
 order by
     i.ID

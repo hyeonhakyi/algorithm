@@ -2,38 +2,41 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] a) {
-        int answer = -1;
+        int n = a.length;
         
-        HashMap<Integer, Integer> map = new HashMap<>();
-        
-        for(int i = 0; i < a.length; i++){
-            if(!map.containsKey(a[i])){
-                map.put(a[i],1);
-            }else{
-                map.put(a[i],map.get(a[i]) + 1);
-            }
+        if(n < 2){
+            return 0;
         }
         
-        for(int key : map.keySet()){
-            if(map.get(key) <= answer){
+        int[] count = new int[n];
+        
+        for(int num : a){
+            count[num]++;
+        }
+        
+        int maxCount = 0;
+        
+        for(int x = 0; x < n; x++){
+            if(count[x] <= maxCount){
                 continue;
             }
             
-            int count = 0;
-            for(int i = 0; i < a.length - 1; i++){
-                if(a[i] != key && a[i + 1] != key){
-                    continue;
-                }
-                
+            int pairCount = 0;
+            
+            for(int i = 0; i < n - 1; i++){
                 if(a[i] == a[i + 1]){
                     continue;
                 }
                 
-                count++;
-                i++;
+                if(a[i] == x || a[i + 1] == x){
+                    pairCount++;
+                    i++;
+                }
             }
-            answer = Math.max(answer,count);
+            
+            maxCount = Math.max(maxCount,pairCount);
         }
-        return answer * 2;
-    }
-}
+        
+        return maxCount * 2;
+    }//solution end
+}//class end

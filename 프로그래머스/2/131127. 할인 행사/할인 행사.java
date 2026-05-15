@@ -1,35 +1,35 @@
 import java.util.*;
 
 class Solution {
+    static int answer;
     public int solution(String[] want, int[] number, String[] discount) {
-        int answer = 0;
+        answer = 0;
         
-        HashMap<String, Integer> map = new HashMap<>();
-        
-        for(int i = 0; i < want.length; i++){
-            map.put(want[i],number[i]);
+        int totalDay = 0;
+        for(int i : number){
+            totalDay += i;
         }
         
-        for(int j = 0; j < discount.length - 9; j++){
-            int idx = 0;
-            Map<String,Integer> disMap = new HashMap<String,Integer>();
+        for(int i = 0; i <= discount.length - totalDay; i++){
+            Map<String,Integer> map = new HashMap<>();
             
-            for(int i = 0; i < 10; i++){
-                disMap.put(discount[i + j], disMap.getOrDefault(discount[i + j],0) + 1);
+            for(int j = i; j < i + totalDay; j++){
+                map.put(discount[j],map.getOrDefault(discount[j],0) + 1);
             }
-            
-            for(Map.Entry<String,Integer> entry : map.entrySet()){
-                if(disMap.containsKey(entry.getKey()) && entry.getValue() <= disMap.get(entry.getKey())){
-                    idx++;
-                }
-            }
-            
-            if(idx == want.length){
-                answer++;
+            if(check(map,want,number)){
+                        answer++;
             }
         }
         
-      
         return answer;
-    }
-}
+    }//solution end
+    
+    private static boolean check(Map<String,Integer> map,String[] want,int[] number){
+        for(int i = 0; i < want.length; i++){
+            if(map.getOrDefault(want[i], 0) != number[i]){
+                return false;
+            }
+        }
+        return true;
+    }//check end
+}//class end

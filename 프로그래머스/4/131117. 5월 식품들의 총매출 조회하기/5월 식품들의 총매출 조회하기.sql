@@ -14,4 +14,3 @@ group by
 order by
     TOTAL_SALES desc,
     p.PRODUCT_ID
-    

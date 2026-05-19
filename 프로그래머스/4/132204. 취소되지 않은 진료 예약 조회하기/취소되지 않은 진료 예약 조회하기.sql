@@ -1,7 +1,7 @@
 select
     a.APNT_NO,
     p.PT_NAME,
-    p.PT_NO,
+    a.PT_NO,
     a.MCDP_CD,
     d.DR_NAME,
     a.APNT_YMD
@@ -12,7 +12,8 @@ join
 join
     DOCTOR as d on a.MDDR_ID = d.DR_ID
 where
-    date_format(a.APNT_YMD,'%Y-%m-%d') like '2022-04-13'
+    a.APNT_YMD like '2022-04-13%'
+    and a.MCDP_CD like 'CS'
     and a.APNT_CNCL_YN like 'N'
     and a.APNT_CNCL_YMD is null
 order by

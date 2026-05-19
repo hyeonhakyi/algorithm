@@ -4,25 +4,25 @@ class Solution {
     public int solution(int[] scoville, int K) {
         int answer = 0;
         
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        PriorityQueue<Long> q = new PriorityQueue<>();
         
         for(int i : scoville){
-            pq.offer(i);
+            q.offer((long) i);
         }
         
-        while(pq.peek() < K){
-            if(pq.size() == 1){
+        while(!q.isEmpty() && q.peek() < K){
+            answer++;
+            
+            if (q.size() < 2) {
                 return -1;
             }
             
-            int fir = pq.poll();
-            int sec = pq.poll();
-            int sum = fir + (sec * 2);
-            pq.offer(sum);
+            long first = q.poll();
+            long second = q.poll();
             
-            answer++;
+            q.offer(first + (second * 2));
         }
         
         return answer;
-    }
-}
+    }//solution end
+}//class end

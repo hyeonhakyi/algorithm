@@ -5,15 +5,17 @@ class Solution {
         int answer = 0;
         
         Arrays.sort(citations);
-        for(int i = 0; i < citations.length; i++){
-            int h = citations.length - i;
-            if(citations[i] >= h){
-                answer = h;
+        
+        int n = citations.length;
+        for(int i = 0; i < n; i++){
+            int len = n - i;
+            
+            if(citations[i] >= len){
+                answer = len;
                 break;
             }
         }
         
-        
         return answer;
-    }
-}
+    }//solution end
+}//class end

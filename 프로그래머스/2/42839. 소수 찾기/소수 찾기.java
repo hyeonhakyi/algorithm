@@ -1,53 +1,59 @@
 import java.util.*;
 
 class Solution {
-    static ArrayList<Integer> arr = new ArrayList<>();
-    static boolean[] check = new boolean[7];
-    
+    static char[] arr;
+    static int maxLen;
+    static int answer;
+    static Set<Integer> set;
+    static boolean[] visited;
     public int solution(String numbers) {
-        int answer = 0;
+        maxLen = numbers.length();
+        arr = numbers.toCharArray();
+        visited = new boolean[maxLen];
+        set = new HashSet<>();
         
-        for(int i = 0; i < numbers.length(); i++){
-            dfs(numbers,"",i+1);
-        }
+        dfs(new StringBuilder());
         
-        for(int i = 0; i < arr.size(); i++){
-            if(prime(arr.get(i))){
-                answer++;
-            }
-        }
-        return answer;
+        return set.size();
     }//solution end
-    
-    private static void dfs(String str, String temp, int m){
-        if(temp.length() == m){
-            int num = Integer.parseInt(temp);
-            if(!arr.contains(num)){
-                arr.add(num);
+    private static void dfs(StringBuilder sb){
+        if(sb.length() > 0){
+            int num = Integer.parseInt(sb.toString());
+            
+            if(check(num)){
+                set.add(num);
             }
         }
         
-        for(int i = 0; i < str.length(); i++){
-            if(!check[i]){
-                check[i] = true;
-                temp += str.charAt(i);
-                dfs(str, temp, m);
-                check[i] = false;
-                temp = temp.substring(0, temp.length()-1);
-            }
+        if(sb.length() == maxLen){
+            return;
         }
-    }
+        
+        for(int i = 0; i < maxLen; i++){
+            if(visited[i]){
+                continue;
+            }
+            
+            visited[i] = true;
+            sb.append(arr[i]);
+            
+            dfs(sb);
+            
+            sb.deleteCharAt(sb.length() - 1);
+            visited[i] = false;
+        }
+    }//dfs end
     
-    private boolean prime(int n){
-        if(n < 2){
+    private static boolean check(int num){
+        if(num < 2){
             return false;
         }
         
-        for(int i =2 ; i*i <= n; i++){
-            if(n % i ==0){
+        for(int i = 2; i * i <= num; i++){
+            if(num % i == 0){
                 return false;
             }
         }
         return true;
-    }
-}
+    }//check end
+}//class end

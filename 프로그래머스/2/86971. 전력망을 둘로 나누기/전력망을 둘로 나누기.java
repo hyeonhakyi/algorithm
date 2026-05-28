@@ -1,49 +1,62 @@
 import java.util.*;
 
 class Solution {
-    int answer = Integer.MAX_VALUE;
-    ArrayList<Integer>[] g;
+    static List<Integer>[] list;
+    static boolean[] visited;
     public int solution(int n, int[][] wires) {
-        g = new ArrayList[n+1];
+        int answer = Integer.MAX_VALUE;
+        
+        list = new ArrayList[n + 1];
         
         for(int i = 1; i <= n; i++){
-            g[i] = new ArrayList<>();
+            list[i] = new ArrayList<>();
         }
         
-        for(int i = 0; i < wires.length; i++){
-            int s = wires[i][0];
-            int v = wires[i][1];
+        for(int[] wire : wires){
+            int start = wire[0];
+            int end = wire[1];
             
-            g[s].add(v);
-            g[v].add(s);
+            list[start].add(end);
+            list[end].add(start);
         }
         
-        for(int i = 0; i < wires.length; i++){
-            boolean[] visited = new boolean[n + 1];
-            int v1 = wires[i][0];
-            int v2 = wires[i][1];
+        for(int[] wire : wires){
+            int cutA = wire[0];
+            int cutB = wire[1];
             
-            g[v1].remove(Integer.valueOf(v2));
-            g[v2].remove(Integer.valueOf(v1));
+            visited = new boolean[n + 1];
             
-            int cnt = dfs(1,visited);
-            int num = Math.abs(cnt - (n - cnt));
-            answer = Math.min(answer,num);
+            int count = bfs(cutA,cutB);
             
-            g[v1].add(v2);
-            g[v2].add(v1);
+            int other = n - count;
+            
+            answer = Math.min(answer,Math.abs(count - other));
         }
+        
         
         return answer;
-    }
+    }//solution end
     
-    public int dfs(int v, boolean[] visited){
-        visited[v] = true;
-        int cnt = 1;
-        for(int next : g[v]){
-            if(visited[next]) continue;
-            cnt += dfs(next,visited);
+    private static int bfs(int cutA,int cutB){
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(cutA);
+        visited[cutA] = true;
+        int count = 1;
+        
+        while(!q.isEmpty()){
+            int now = q.poll();
+            
+            for(int next : list[now]){
+                if(cutA == now && cutB == next) continue;
+                if(cutA == next && cutB == now) continue;
+                if(visited[next]) continue;
+                
+                visited[next] = true;
+                q.offer(next);
+                count++;
+            }
         }
-        return cnt;
-    }
-}
+        
+        return count;
+    }//dfs end
+}//class end

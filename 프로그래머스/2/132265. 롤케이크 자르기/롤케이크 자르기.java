@@ -4,27 +4,30 @@ class Solution {
     public int solution(int[] topping) {
         int answer = 0;
         
-        Map<Integer, Integer> order = new HashMap<>();
-        Map<Integer, Integer> younger = new HashMap<>();
+        Map<Integer,Integer> right = new HashMap<>();
         
-        for(int i : topping){
-            younger.put(i,younger.getOrDefault(i,0) + 1);
+        Set<Integer> left = new HashSet<>();
+        
+        for(int i = 0; i < topping.length; i++){
+            right.put(topping[i],right.getOrDefault(topping[i],0) + 1);
         }
         
-        for(int i : topping){
-            order.put(i,order.getOrDefault(i,0) + 1);
+        for(int i = 0; i < topping.length - 1; i++){
+            int now = topping[i];
             
-            if(younger.get(i) - 1 == 0){
-                younger.remove(i);
-            }else{
-                younger.put(i,younger.get(i) - 1);
+            left.add(now);
+            
+            right.put(topping[i],right.get(now) - 1);
+            
+            if(right.get(now) == 0){
+                right.remove(now);
             }
             
-            if(order.size() == younger.size()){
+            if(left.size() == right.size()){
                 answer++;
             }
         }
         
         return answer;
-    }
-}
+    }//solution end
+}//class end

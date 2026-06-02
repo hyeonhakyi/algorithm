@@ -4,15 +4,14 @@ class Solution {
     static int answer;
     public int solution(int[] numbers, int target) {
         answer = 0;
-        
         dfs(numbers,target,0,0);
         
         return answer;
-    }
+    }//solution end
     
-    public static void dfs(int[] numbers,int target,int sum,int idx){
+    private static void dfs(int[] numbers,int target,int sum,int idx){
         if(idx == numbers.length){
-            if(target == sum){
+            if(sum == target){
                 answer++;
             }
             return;
@@ -20,5 +19,5 @@ class Solution {
         
         dfs(numbers,target,sum + numbers[idx],idx + 1);
         dfs(numbers,target,sum - numbers[idx],idx + 1);
-    }
-}
+    }//dfs end
+}//class end

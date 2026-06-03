@@ -3,26 +3,27 @@ import java.util.*;
 class Solution {
     public int solution(String name) {
         int answer = 0;
-        int length = name.length();
+        int len = name.length();
         
-        for(int i = 0; i < length; i++){
+        int move = len - 1;
+        
+        for(int i = 0; i < len; i++){
             char c = name.charAt(i);
-            answer += Math.min(c - 'A', 'Z' - c + 1);
-        }
-        
-        int minMovie = length - 1;
-        
-        for(int i = 0; i < length; i++){
+            
+            int up = c - 'A';
+            int down = 'Z' - c + 1;
+            answer += Math.min(up,down);
+            
             int next = i + 1;
             
-            while(next < length && name.charAt(next) == 'A'){
+            while(next < len && name.charAt(next) == 'A'){
                 next++;
             }
             
-            minMovie = Math.min(minMovie, i + i + (length - next));
-            minMovie = Math.min(minMovie,(length - next) * 2 + i);
+            move = Math.min(move,i * 2 + len - next);
+            move = Math.min(move,i + (len - next) * 2);
         }
         
-        return answer + minMovie;
-    }
-}
+        return answer + move;
+    }//solution end
+}//class end

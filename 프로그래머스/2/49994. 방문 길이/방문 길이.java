@@ -3,48 +3,49 @@ import java.util.*;
 class Solution {
     public int solution(String dirs) {
         int answer = 0;
-        
-        Set<String> set = new HashSet<>();
-        
+
         int x = 0;
         int y = 0;
-        
-        for(char c : dirs.toCharArray()){
-            int nextX = x;
-            int nextY = y;
-            
-            switch(c){
-                case 'U':
-                    nextX += 1;
-                    break;
-                case 'D':
-                    nextX -= 1;
-                    break;
-                case 'L':
-                    nextY -= 1;
-                    break;
-                case 'R':
-                    nextY += 1;
-                    break;
+
+        Set<String> visited = new HashSet<>();
+
+        for (int i = 0; i < dirs.length(); i++) {
+            char c = dirs.charAt(i);
+
+            int nx = x;
+            int ny = y;
+
+            if (c == 'U') {
+                ny++;
+            } else if (c == 'D') {
+                ny--;
+            } else if (c == 'L') {
+                nx--;
+            } else if (c == 'R') {
+                nx++;
             }
-            
-            if(nextX < -5 || nextY < -5 || nextX > 5 || nextY > 5) continue;
-            
-            String path1 = x + "," + y + "," + nextX + "," + nextY;
-            String path2 = nextX + "," + nextY + "," + x + "," + y;
-            
-            if(!set.contains(path1) && !set.contains(path2)){
+
+            if (!check(nx, ny)) {
+                continue;
+            }
+
+            String path1 = x + "," + y + "," + nx + "," + ny;
+            String path2 = nx + "," + ny + "," + x + "," + y;
+
+            if (!visited.contains(path1)) {
+                visited.add(path1);
+                visited.add(path2);
                 answer++;
-                
-                set.add(path1);
-                set.add(path2);
             }
-            
-            x = nextX;
-            y = nextY;
+
+            x = nx;
+            y = ny;
         }
-        
-        
+
         return answer;
-    }
-}
+    }//solution end
+
+    private static boolean check(int x, int y) {
+        return x >= -5 && x <= 5 && y >= -5 && y <= 5;
+    }//check end
+}//class end

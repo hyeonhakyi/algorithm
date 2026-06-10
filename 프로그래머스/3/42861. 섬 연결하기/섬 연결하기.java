@@ -3,6 +3,7 @@ import java.util.*;
 class Node implements Comparable<Node>{
     int idx;
     int weight;
+    
     public Node(int idx,int weight){
         this.idx = idx;
         this.weight = weight;
@@ -12,7 +13,7 @@ class Node implements Comparable<Node>{
     public int compareTo(Node o){
         return Integer.compare(this.weight,o.weight);
     }
-}//Node end
+}
 
 class Solution {
     static List<Node>[] list;
@@ -24,23 +25,23 @@ class Solution {
             list[i] = new ArrayList<>();
         }
         
-        for(int[] c : costs){
-            int s = c[0];
-            int e = c[1];
-            int w = c[2];
-            
-            list[s].add(new Node(e,w));
-            list[e].add(new Node(s,w));
-        }
-        
         visited = new boolean[n];
         
-        int answer = dijkstra();
+        for(int i = 0; i < costs.length; i++){
+            int s = costs[i][0];
+            int e = costs[i][1];
+            int v = costs[i][2];
+            
+            list[s].add(new Node(e,v));
+            list[e].add(new Node(s,v));
+        }
+        
+        int answer = dijkstr();
         
         return answer;
     }//solution end
     
-    private static int dijkstra(){
+    private static int dijkstr(){
         PriorityQueue<Node> q = new PriorityQueue<>();
         q.offer(new Node(0,0));
         int sum = 0;
@@ -48,7 +49,7 @@ class Solution {
         while(!q.isEmpty()){
             Node now = q.poll();
             
-            if (visited[now.idx]) continue;   // 수정: 꺼냈을 때 방문 체크
+            if(visited[now.idx]) continue;
             visited[now.idx] = true;
             sum += now.weight;
             
@@ -59,5 +60,5 @@ class Solution {
             }
         }
         return sum;
-    }//dijkstra end
+    }//dijkstr end
 }//class end

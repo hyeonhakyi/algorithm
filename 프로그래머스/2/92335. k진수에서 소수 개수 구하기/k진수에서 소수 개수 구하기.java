@@ -1,34 +1,37 @@
+import java.util.*;
+
 class Solution {
     public int solution(int n, int k) {
         int answer = 0;
-        String temp = "";
         
-        while(n!=0){
-            temp = n % k + temp;
-            n /= k;
-        }
+        String str = Integer.toString(n,k);
         
-        String[] arr = temp.split("0");
+        String[] arr = str.split("0");
         
-        for(String data : arr){
-            if(data.equals(""))continue;
-            long num = Long.parseLong(data);
-            if(isPrime(num)){
+        
+        for(String s : arr){
+            if(s.length() == 0){
+                continue;
+            }
+            
+            long num = Long.parseLong(s);
+            
+            if(check(num)){
                 answer++;
             }
         }
+        
         return answer;
-    }
+    }//solution end
     
-    public boolean isPrime(long a){
-        if(a < 2){
-            return false;
-        }
-        for(int i = 2; i <= Math.sqrt(a); i++){
-            if(a%i==0){
+    private static boolean check(Long num){
+        if(num < 2) return false;
+        
+        for(long i = 2; i * i <= num; i++){
+            if(num % i == 0){
                 return false;
             }
         }
         return true;
-    }
-}
+    }//check end
+}//class end

@@ -2,17 +2,19 @@ import java.util.*;
 
 class Solution {
     public String solution(int n, int t, int m, int p) {
-        String answer = "";
-        String temp = "";
+        StringBuilder total = new StringBuilder();
+        StringBuilder answer = new StringBuilder();
         
-        for(int i = 0; temp.length() < t*m; i++){
-            temp += Integer.toString(i,n);
+        int num = 0;
+        while(total.length() < t * m){
+            total.append(Integer.toString(num,n).toUpperCase());
+            num++;
         }
         
         for(int i = p - 1; answer.length() < t; i += m){
-            answer += temp.charAt(i);
+            answer.append(total.charAt(i));
         }
         
-        return answer.toUpperCase();
-    }
-}
+        return answer.toString();
+    }//solution end
+}//class end

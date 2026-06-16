@@ -1,68 +1,91 @@
+import java.util.*;
+
 class Solution {
-    static int n,m;
-    static int[][] be;
-    static int[][] t;
-    static int ans = Integer.MAX_VALUE;
+    static int n,m,answer;
+    static int[][] arr;
+    static int[][] targetArr;
     public int solution(int[][] beginning, int[][] target) {
         n = beginning.length;
         m = beginning[0].length;
+        arr = new int[n][m];
+        targetArr = new int[n][m];
         
-        be = new int[n][m];
         for(int i = 0; i < n; i++){
-            be[i] = beginning[i].clone();
+            arr[i] = beginning[i].clone();
         }
         
-        t = target;
+        for(int i = 0; i < n; i++){
+            targetArr[i] = target[i].clone();
+        }
+        
+        answer = Integer.MAX_VALUE;
         
         dfs(0,0);
         
-        if(ans == Integer.MAX_VALUE){
+        if(answer == Integer.MAX_VALUE){
             return -1;
-        }else{
-            return ans;
         }
-    }
+        
+        return answer;
+    }//solution end
     
-    static void dfs(int r,int cnt){
-        if(r == n){
-            boolean check = true;
-            for(int i = 0; i < m; i++){
-                int result = col(i);
-                if(result == -1){
-                    check = false;
-                    break;
+    private static void dfs(int row,int count){
+        if(row == n){
+            int[][] temp = copy(arr);
+            int totalCount = count;
+            
+            for(int col = 0; col < m; col++){
+                if(temp[0][col] != targetArr[0][col]){
+                    changeCol(temp,col);
+                    totalCount++;
                 }
-                cnt += result;
             }
             
-            if(check){
-                ans = Math.min(ans,cnt);
+             if (check(temp)) {
+                answer = Math.min(answer, totalCount);
             }
+
             return;
         }
         
-        row(r);
-        dfs(r + 1, cnt + 1);
-        row(r);
+        dfs(row + 1,count);
         
-        dfs(r + 1, cnt);
+        changeRow(arr,row);
+        dfs(row + 1, count + 1);
+        
+        changeRow(arr,row);
     }//dfs end
     
-    static void row(int r){
-        for(int i = 0; i < m; i++){
-            be[r][i] = (be[r][i] + 1) % 2;
-        }
-    }
-    
-    static int col(int c){
-        int result = 0;
+    private static int[][] copy(int[][] arr){
+        int[][] temp = new int[n][m];
+        
         for(int i = 0; i < n; i++){
-            if(be[i][c] == t[i][c]){
-                result++;
+            temp[i] = arr[i].clone();
+        }
+        
+        return temp;
+    }//copy end
+    
+    private static void changeCol(int[][] board, int col){
+        for(int i = 0; i < n; i++){
+            board[i][col] = 1 - board[i][col];
+        }
+    }//changeCol end
+
+    private static void changeRow(int[][] board, int row){
+        for(int i = 0; i < m; i++){
+            board[row][i] = 1 - board[row][i];
+        }
+    }//changeRow end
+    
+    private static boolean check(int[][] temp){
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(temp[i][j] != targetArr[i][j]){
+                    return false;
+                }
             }
         }
-        if(result == n) return 0;
-        else if(result == 0) return 1;
-        else return -1;
-    }//col end
-}
+        return true;
+    }//check end
+}//class end

@@ -9,14 +9,14 @@ class Solution {
         for(int i = 0; i < n; i++){
             if(!visited[i]){
                 answer++;
-                bfs(i,n,computers);
+                bfs(computers,i);
             }
         }
         
         return answer;
     }//solution end
     
-    private static void bfs(int start,int n,int[][] computers){
+    private static void bfs(int[][] computers,int start){
         Queue<Integer> q = new LinkedList<>();
         q.offer(start);
         visited[start] = true;
@@ -24,7 +24,7 @@ class Solution {
         while(!q.isEmpty()){
             int now = q.poll();
             
-            for(int i = 0; i < n; i++){
+            for(int i = 0; i < computers.length; i++){
                 if(computers[now][i] == 1 && !visited[i]){
                     visited[i] = true;
                     q.offer(i);

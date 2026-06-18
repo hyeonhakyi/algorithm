@@ -1,31 +1,41 @@
-import java.util.ArrayList;
+import java.util.*;
 
 class Solution {
     public int[] solution(String msg) {
-        ArrayList<String> dic = new ArrayList<String>();
-        ArrayList<Integer> result = new ArrayList<Integer>();
-
-        for(int i = 0 ; i < 26; i++) {
-            dic.add(String.valueOf((char)('A'+i)));
+        Map<String,Integer> map = new HashMap<>();
+        List<Integer> result = new ArrayList<>();
+        
+        for(int i = 0; i < 26; i++){
+            char c = (char)('A' + i);
+            map.put(String.valueOf(c),i + 1);
         }
-
-        for(int i = 0 ; i < msg.length() ; i++) {
-            for(int j = dic.size()-1 ; j >= 0 ; j--) {
-                if(msg.substring(i).startsWith(dic.get(j))) {
-                    i += dic.get(j).length()-1;
-                    result.add(j+1);
-                if(i+1 < msg.length())
-                    dic.add(dic.get(j)+msg.charAt(i+1));
-                break;
+        
+        int nextIdx = 27;
+        String w = "";
+        
+        for(int i = 0; i < msg.length(); i++){
+            char c = msg.charAt(i);
+            String wc = w + c;
+            
+            if(map.containsKey(wc)){
+                w = wc;
+            }else{
+                result.add(map.get(w));
+                map.put(wc,nextIdx++);
+                w = String.valueOf(c);
             }
         }
-    }
-
-    int[] answer = new int[result.size()];
-
-    for(int i = 0 ; i < result.size() ; i++) 
-        answer[i] = result.get(i);
-
-    return answer;  
-    }
-}
+        
+        if(!w.equals("")){
+            result.add(map.get(w));
+        }
+        
+        int[] answer = new int[result.size()];
+        
+        for(int i = 0; i < result.size(); i++){
+            answer[i] = result.get(i);
+        }
+        
+        return answer;
+    }//solution end
+}//class end

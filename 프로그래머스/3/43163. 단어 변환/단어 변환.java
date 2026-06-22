@@ -1,63 +1,54 @@
-
 import java.util.*;
 
-class Word{
+class Node{
     String word;
-    int dist;
-    public Word(String word,int dist){
+    int count;
+    public Node(String word,int count){
         this.word = word;
-        this.dist = dist;
+        this.count = count;
     }
 }
 
 class Solution {
     public int solution(String begin, String target, String[] words) {
-        boolean check = false;
-        for(String w : words){
-            if(w.equals(target)){
-                check = true;
-                break;
-            }
-        }
+        int answer = 0;
         
-        if(!check){
-            return 0;
-        }
+        answer = bfs(begin,target,words);
         
+        return answer;
+    }//solution end
+    
+    private static int bfs(String begin,String target,String[] words){
+        Queue<Node> q = new LinkedList<>();
+        q.offer(new Node(begin,0));
         boolean[] visited = new boolean[words.length];
-        Queue<Word> q = new LinkedList<>();
-        q.offer(new Word(begin,0));
         
         while(!q.isEmpty()){
-            Word now = q.poll();
+            Node now = q.poll();
             
             if(now.word.equals(target)){
-                return now.dist;
+                return now.count;
             }
             
             for(int i = 0; i < words.length; i++){
-                if(visited[i]) continue;
-                if(diffCheck(now.word,words[i])){
-                    q.offer(new Word(words[i],now.dist + 1));
+                if(!visited[i] && check(now.word,words[i])){
                     visited[i] = true;
+                    q.offer(new Node(words[i],now.count + 1));
                 }
             }
         }
-        
         return 0;
-    }//solution end
+    }//bfs end
     
-    private static boolean diffCheck(String a,String b){
+    private static boolean check(String a,String b){
         int count = 0;
+        
         for(int i = 0; i < a.length(); i++){
             if(a.charAt(i) != b.charAt(i)){
                 count++;
             }
-            
-            if(count > 1){
-                return false;
-            }
         }
-        return true;
-    }//diffCheck end
+        
+        return count == 1;
+    }//check end
 }//class end

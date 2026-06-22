@@ -3,27 +3,20 @@ import java.util.*;
 class Solution {
     public int solution(int[] order) {
         int answer = 0;
-        int[] arr = new int[order.length];
-        
-        for(int i = 0; i < order.length; i++){
-            arr[order[i] - 1] = i;
-        }
         
         Stack<Integer> stack = new Stack<>();
         
-        for(int i = 0; i < order.length; i++){
-            if(arr[i] == answer){
-                answer++;
-            }else{
-                stack.push(arr[i]);
-            }
+        int idx = 0;
+        for(int i = 1; i <= order.length; i++){
+            stack.push(i);
             
-            while(!stack.isEmpty() && stack.peek() == answer){
-                answer++;
+            while(!stack.isEmpty() && stack.peek() == order[idx]){
                 stack.pop();
+                answer++;
+                idx++;
             }
         }
         
         return answer;
-    }
-}
+    }//solution end
+}//class end

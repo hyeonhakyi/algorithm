@@ -1,43 +1,52 @@
 import java.util.*;
 
 class Solution {
-    static List<String> answer;
-    static boolean found;
+    static boolean[] visited;
+    static String[] answer;
+    static boolean finished;
     public String[] solution(String[][] tickets) {
-        Arrays.sort(tickets,(a,b) -> {
-            if(a[0].equals(b[0])){
-                return a[1].compareTo(b[1]);
-            }
+        visited = new boolean[tickets.length];
+        answer = new String[tickets.length + 1];
+        finished = false;
+        
+        Arrays.sort(tickets, (a,b) -> {
+           if(a[0].equals(b[0])){
+               return a[1].compareTo(b[1]);
+           };
             return a[0].compareTo(b[0]);
         });
         
-        boolean[] visited = new boolean[tickets.length];
-        List<String> path = new ArrayList<>();
-        path.add("ICN");
-        dfs("ICN","ICN",tickets,visited,path,0);
+        dfs("ICN",tickets,0,new ArrayList<>());
         
-        return answer.toArray(new String[0]);
+        return answer;
     }//solution end
     
-    private static void dfs(String now,String start,String[][] tickets,boolean[] visited,List<String> path,int count){
-        if(found) return;
+    private static void dfs(String now,String[][] tickets,int count,List<String> list){
+        if(finished){
+            return;
+        }
         
-        if(count == tickets.length){
-            answer = new ArrayList<>(path);
-            found = true;
+        list.add(now);
+        
+        if(tickets.length == count){
+            for(int i = 0; i < list.size(); i++){
+                answer[i] = list.get(i);
+            }
+            
+            finished = true;
             return;
         }
         
         for(int i = 0; i < tickets.length; i++){
             if(!visited[i] && tickets[i][0].equals(now)){
                 visited[i] = true;
-                path.add(tickets[i][1]);
                 
-                dfs(tickets[i][1],start,tickets,visited,path,count + 1);
+                dfs(tickets[i][1],tickets,count + 1,list);
                 
-                path.remove(path.size() - 1);
                 visited[i] = false;
             }
         }
-    }//dfs end 
+        
+        list.remove(list.size() - 1);
+    }//dfs end
 }//class end

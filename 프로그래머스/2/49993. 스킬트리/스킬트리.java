@@ -5,20 +5,30 @@ class Solution {
         int answer = 0;
         
         for(int i = 0; i < skill_trees.length; i++){
-            skill_trees[i] = skill_trees[i].replaceAll("[^" + skill + "]","");
-            boolean check = false;
+            StringBuilder sb = new StringBuilder();
             for(int j = 0; j < skill_trees[i].length(); j++){
-                if(skill.charAt(j) != skill_trees[i].charAt(j)){
-                    check = true;
-                    continue;
+                char str = skill_trees[i].charAt(j);
+                if(check(str,skill)){
+                    sb.append(String.valueOf(str));
                 }
             }
-            if(!check){
+            
+            if(skill.startsWith(sb.toString())){
                 answer++;
             }
         }
         
-        
         return answer;
-    }
-}
+    }//solution end
+    
+    private static boolean check(char str,String target){
+        for(int i = 0; i < target.length(); i++){
+            char tar = target.charAt(i);
+            
+            if(str == tar){
+                return true;
+            }
+        }
+        return false;
+    }//check end
+}//class end

@@ -2,67 +2,75 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] fees, String[] records) {
-        int[] answer = {};
-        Map<String, Integer> map1 = new HashMap<String, Integer>();
-        Map<String, Integer> map2 = new HashMap<String, Integer>();
-
-        int baseTime = fees[0];
-        int baseFee = fees[1];
-        int partTime = fees[2];
-        int partFee = fees[3];
-
-        for(String record : records){
-            String[] temp = record.split(" ");
-            int time = getRealTime(temp[0]);
-            String car = temp[1];
-            String io = temp[2];
-
-            if(io.equals("IN")){
-                map1.put(car,time);
+        Map<String,Integer> inMap = new HashMap<>();
+        Map<String,Integer> totalMap = new HashMap<>();
+        
+        for(int i = 0; i < records.length; i++){
+            String[] record = records[i].split(" ");
+            
+            int time = changeMinute(record[0]);
+            String carNumber = record[1];
+            String type = record[2];
+            
+            if(type.equals("IN")){
+                inMap.put(carNumber,time);
             }else{
-                int carTime1 = map1.get(car);
-                map1.remove(car);
-                if(map2.containsKey(car)){
-                    int carTime2 = map2.get(car);
-                    map2.replace(car, carTime2 + time - carTime1);
-                } else{
-                    map2.put(car, time - carTime1);
-                }
+                int inTime = inMap.get(carNumber);
+                int parkingTime = time - inTime;
+                
+                totalMap.put(carNumber, totalMap.getOrDefault(carNumber,0) + parkingTime);
+                
+                inMap.remove(carNumber);
             }
         }
-
-        int lastTime = 1439;
-        for(String car : map1.keySet()){
-            int carTime1 = map1.get(car);
-            if(map2.containsKey(car)){
-                int carTime2 = map2.get(car);
-                map2.replace(car, carTime2 + lastTime - carTime1);
-            }else {
-                map2.put(car, lastTime - carTime1);
-            }
+        
+        int endTime = changeMinute("23:59");
+        
+        for(String carNumber : inMap.keySet()){
+            int inTime = inMap.get(carNumber);
+            int parkingTime = endTime - inTime;
+            
+            totalMap.put(carNumber, totalMap.getOrDefault(carNumber, 0) + parkingTime);
         }
-
-        Object[] sortKey = map2.keySet().toArray();
-        Arrays.sort(sortKey);
-        answer = new int[sortKey.length];
-
-        for(int i = 0; i < answer.length; i++){
-            int result = baseFee;
-            String car = String.valueOf(sortKey[i]);
-
-            int val = map2.get(car);
-            if(val > baseTime){
-                result = (int) (baseFee + Math.ceil((double)(val - baseTime)/partTime) * partFee);
-            }
-            answer[i] = result;
+        
+        List<String> cars = new ArrayList<>(totalMap.keySet());
+        Collections.sort(cars);
+        
+        int[] answer = new int[cars.size()];
+        
+        for(int i = 0; i < cars.size(); i++){
+            String carNumber = cars.get(i);
+            int totalTime = totalMap.get(carNumber);
+            
+            answer[i] = calculateFee(totalTime,fees);
         }
+        
         return answer;
     }//solution end
+    
+    private static int changeMinute(String time){
+        String[] arr = time.split(":");
+        
+        int hour = Integer.parseInt(arr[0]);
+        int minute = Integer.parseInt(arr[1]);
+        
+        return hour * 60 + minute;
+    }//changeMinute end
+    
+    private static int calculateFee(int totalTime,int[] fees){
+        int basicTime = fees[0];
+        int basicFee = fees[1];
+        int unitTime = fees[2];
+        int unitFee = fees[3];
+        
+        if(totalTime <= basicTime){
+            return basicFee;
+        }
+        
+        int extraTime = totalTime - basicTime;
+        
+        int extraCount = (extraTime + unitTime - 1) / unitTime;
 
-    private int getRealTime(String time){
-        String[] tem = time.split(":");
-        int hour = Integer.parseInt(tem[0]) * 60;
-        int minute = Integer.parseInt(tem[1]);
-        return hour + minute;
-    }//getRealTime end
-}
+        return basicFee + extraCount * unitFee;
+    }
+}//class end

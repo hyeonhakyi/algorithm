@@ -3,22 +3,19 @@ import java.util.*;
 class Solution {
     public int solution(int[] nums) {
         int answer = 0;
-        int max = nums.length/2;
         
-        HashSet<Integer> set = new HashSet<>();
-        for(int num : nums){
-            set.add(num);
+        int len = nums.length / 2;
+        
+        HashMap<Integer,Integer> map = new HashMap<>();
+        
+        for(int i = 0; i < nums.length; i++){
+            map.put(nums[i],map.getOrDefault(nums[i],0) + 1);
         }
         
-        
-        int size = set.size();
-        
-        if(size >= max){
-            answer = max;
+        if(len < map.size()){
+            return len;
         }else{
-            answer = size;
+            return map.size();
         }
-        
-        return answer;
-    }
-}
+    }//solution end
+}//class end

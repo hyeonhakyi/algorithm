@@ -2,51 +2,52 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] queue1, int[] queue2) {
+        int answer = 0;
+        
+        long q1Sum = 0;
+        long q2Sum = 0;
         Queue<Integer> q1 = new LinkedList<>();
         Queue<Integer> q2 = new LinkedList<>();
         
-        long sum1 = 0, sum2 = 0;
-        int n = queue1.length;
-        
-        for(int num1 : queue1){
-            q1.add(num1);
-            sum1 += num1;
+        for(int i : queue1){
+            q1Sum += i;
+            q1.add(i);
         }
         
-        for(int num2 : queue2){
-            q2.add(num2);
-            sum2 += num2;
+        for(int i : queue2){
+            q2Sum += i;
+            q2.add(i);
         }
         
-        long totalSum = sum1 + sum2;
+        long total = q1Sum + q2Sum;
         
-        if(totalSum % 2 != 0){
+        if(total % 2 != 0){
             return -1;
         }
         
-        long target = totalSum / 2;
-        int maxOperation = n * 3;
-        int count = 0;
+        int limit = queue1.length * 4;
+        long target = total / 2;
         
-        while(count <= maxOperation){
-            if(sum1 == target){
-                return count;
-            }else if(sum1 > target){
-                if(!q1.isEmpty()){
-                    int num = q1.poll();
-                    sum1 -= num;
-                    q2.add(num);   
-                }
+        while(answer <= limit){
+            if(target == q1Sum){
+                return answer;
+            }
+            
+            if(q1Sum > target){
+                int num = q1.poll();
+                q1Sum -= num;
+                q2Sum += num;
+                q2.add(num);
             }else{
-                if(!q2.isEmpty()){
-                    int num = q2.poll();
-                    sum1 += num;
-                    q1.add(num);   
-                }
-            }    
-            count++;
+                int num = q2.poll();
+                q2Sum -= num;
+                q1Sum += num;
+                q1.add(num);
+            }
+            
+            answer++;
         }
         
         return -1;
-    }
-}
+    }//solution end
+}//class end

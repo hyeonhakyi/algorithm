@@ -2,7 +2,7 @@ import java.util.*;
 
 class Solution {
     public int solution(int bridge_length, int weight, int[] truck_weights) {
-        int time = 0;
+        int answer = 0;
         
         Queue<Integer> q = new LinkedList<>();
         
@@ -12,6 +12,7 @@ class Solution {
         
         int totalWeight = 0;
         int idx = 0;
+        int time = 0;
         
         while(idx < truck_weights.length){
             time++;

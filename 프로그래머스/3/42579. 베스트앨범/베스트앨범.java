@@ -1,24 +1,24 @@
 import java.util.*;
 
 class Node implements Comparable<Node>{
-    int play;
+    int count;
     int idx;
-    public Node(int play,int idx){
-        this.play = play;
+    public Node(int count,int idx){
+        this.count = count;
         this.idx = idx;
     }
     
     @Override
     public int compareTo(Node o){
-        if(o.play == this.play){
+        if(this.count == o.count){
             return Integer.compare(this.idx,o.idx);
         }
-        return Integer.compare(o.play,this.play);
+        return Integer.compare(o.count,this.count);
     }
 }
 
 class Solution {
-    public int[] solution(String[] genres, int[] plays) {        
+    public int[] solution(String[] genres, int[] plays) {
         HashMap<String,Integer> totalMap = new HashMap<>();
         HashMap<String,List<Node>> songMap = new HashMap<>();
         
@@ -32,7 +32,7 @@ class Solution {
             songMap.get(genre).add(new Node(play,i));
         }
         
-        List<String> genreList = new ArrayList<>(totalMap.keySet());
+        List<String> genreList = new ArrayList(totalMap.keySet());
         
         genreList.sort((a,b) -> totalMap.get(b) - totalMap.get(a));
         
@@ -43,7 +43,6 @@ class Solution {
             Collections.sort(songs);
             
             int count = 0;
-            
             for(Node song : songs){
                 answerList.add(song.idx);
                 count++;

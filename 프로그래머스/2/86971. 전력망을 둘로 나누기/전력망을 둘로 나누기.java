@@ -2,10 +2,11 @@ import java.util.*;
 
 class Solution {
     static List<Integer>[] list;
-    static boolean[] visited;
+    static int answer;
+    static int N;
     public int solution(int n, int[][] wires) {
-        int answer = Integer.MAX_VALUE;
-        
+        answer = Integer.MAX_VALUE;
+        N = n;
         list = new ArrayList[n + 1];
         
         for(int i = 1; i <= n; i++){
@@ -13,48 +14,48 @@ class Solution {
         }
         
         for(int[] wire : wires){
-            int start = wire[0];
-            int end = wire[1];
-            
-            list[start].add(end);
-            list[end].add(start);
+            int s = wire[0];
+            int e = wire[1];
+        
+            list[s].add(e);
+            list[e].add(s);
         }
         
         for(int[] wire : wires){
-            int cutA = wire[0];
-            int cutB = wire[1];
+            int s = wire[0];
+            int e = wire[1];
             
-            visited = new boolean[n + 1];
+            int count = bfs(s,e);
             
-            int count = bfs(cutA,cutB);
-            
-            int other = n - count;
-            
-            answer = Math.min(answer,Math.abs(count - other));
+            int other = Math.abs(count - n);
+            answer = Math.min(answer,Math.abs(other - count));
         }
-        
         
         return answer;
     }//solution end
     
-    private static int bfs(int cutA,int cutB){
-        Queue<Integer> q = new LinkedList<>();
-        q.offer(cutA);
-        visited[cutA] = true;
+    private static int bfs(int a,int b){
+        Queue<Integer> q = new LinkedList();
+        q.offer(1);
+        boolean[] visited = new boolean[N + 1];
+        visited[1] = true;
+        
         int count = 1;
         
         while(!q.isEmpty()){
             int now = q.poll();
             
             for(int next : list[now]){
-                if(cutA == now && cutB == next) continue;
-                if(cutA == next && cutB == now) continue;
-                if(visited[next]) continue;
+                if((now == a && next == b) || (now == b && next == a)){
+                    continue;
+                }
                 
-                visited[next] = true;
-                q.offer(next);
-                count++;
-            }
+                if(!visited[next]){
+                    visited[next] = true;
+                    q.offer(next);
+                    count++;
+                }
+            }   
         }
         
         return count;

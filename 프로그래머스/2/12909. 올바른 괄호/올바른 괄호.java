@@ -6,10 +6,10 @@ class Solution {
         
         Stack<Character> stack = new Stack<>();
         
-        char[] arr = s.toCharArray();
-        
-        for(int i = 0; i < arr.length; i++){
-            if(arr[i] == ')'){
+        for(int i = 0; i < s.length(); i++){
+            char str = s.charAt(i);
+            
+            if(str == ')'){
                 if(stack.isEmpty()){
                     return false;
                 }else{
@@ -20,7 +20,7 @@ class Solution {
                     }
                 }
             }else{
-                stack.push(arr[i]);
+                stack.push(str);
             }
         }
         

@@ -3,7 +3,6 @@ import java.util.*;
 class Node{
     int value;
     int idx;
-    
     public Node(int value,int idx){
         this.value = value;
         this.idx = idx;
@@ -36,9 +35,9 @@ class Solution {
             }else{
                 answer++;
                 
-                if(now.idx == location){
-                    return answer;
-                }
+               if(now.idx == location){
+                   return answer;
+               }
             }
         }
         

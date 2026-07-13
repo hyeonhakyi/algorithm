@@ -1,48 +1,51 @@
+import java.util.*;
+
 class Solution {
     public int solution(int[] arrayA, int[] arrayB) {
-        int gcdA = getGCD(arrayA);
-        int gcdB = getGCD(arrayB);
-        int maxA = 0;
-        int maxB = 0;
+        int gcdA = find(arrayA);
+        int gcdB = find(arrayB);
         
-        if(isVaild(gcdA,arrayB)){
-            maxA = gcdA;
-        }else{
-            maxA = 0;
-        }
-    
-        if(isVaild(gcdB,arrayA)){
-            maxB = gcdB;
-        }else{
-            maxB = 0;
+        int answerA = 0;
+        int answerB = 0;
+        
+        if(check(gcdA,arrayB)){
+            answerA = gcdA;
         }
         
-        return Math.max(maxB,maxA);
-    }
+        if(check(gcdB,arrayA)){
+            answerB = gcdB;
+        }
+        
+        return Math.max(answerA,answerB);
+    }//solution end
     
-    private int getGCD(int[] arr){
-        int gcd = arr[0];
+    private static int find(int[] arr){
+        int result = arr[0];
+        
         for(int i = 1; i < arr.length; i++){
-            gcd = gcd(gcd,arr[i]);
+            result = gcd(result,arr[i]);
         }
-        return gcd;
-    }//getGCD end
+        
+        return result;
+    }//find end
     
-    private int gcd(int a,int b){
+    private static int gcd(int a,int b){
         while(b != 0){
-            int temp = b;
-            b = a % b;
-            a = temp;
+            int temp = a % b;
+            a = b;
+            b = temp;
         }
+        
         return a;
     }//gcd end
     
-    private boolean isVaild(int num,int[] array){
-        for(int i:array){
-            if(i % num == 0){
+    private static boolean check(int target,int[] arr){
+        for(int i : arr){
+            if(i % target == 0){
                 return false;
             }
         }
+        
         return true;
-    }//isValid end
-}
+    }//check end
+}//class end

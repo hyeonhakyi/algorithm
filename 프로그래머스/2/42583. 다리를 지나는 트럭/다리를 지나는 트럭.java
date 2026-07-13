@@ -10,24 +10,25 @@ class Solution {
             q.offer(0);
         }
         
-        int totalWeight = 0;
+        int totalSum = 0;
         int idx = 0;
-        int time = 0;
-        
         while(idx < truck_weights.length){
-            time++;
+            totalSum -= q.poll();
             
-            totalWeight -= q.poll();
-            
-            if(totalWeight + truck_weights[idx] <= weight){
+            answer++;
+            if(totalSum + truck_weights[idx] <= weight){
+                totalSum += truck_weights[idx];
                 q.offer(truck_weights[idx]);
-                totalWeight += truck_weights[idx];
                 idx++;
             }else{
                 q.offer(0);
             }
         }
         
-        return time + bridge_length;
+        while(q.isEmpty()){
+            answer++;
+        }
+        
+        return answer + bridge_length;
     }//solution end
 }//class end

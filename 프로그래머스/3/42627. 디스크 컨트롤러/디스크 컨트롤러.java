@@ -24,8 +24,6 @@ class Node implements Comparable<Node>{
 
 class Solution {
     public int solution(int[][] jobs) {
-        int n = jobs.length;
-        
         Arrays.sort(jobs, (a, b) -> {
             if (a[0] == b[0]) {
                 return Integer.compare(a[1], b[1]);
@@ -34,11 +32,11 @@ class Solution {
         });
         
         PriorityQueue<Node> q = new PriorityQueue<>();
-        
+        int n = jobs.length;
         int time = 0;
-        int total = 0;   
-        int idx = 0;   
-        int count = 0;   
+        int total = 0;
+        int idx = 0;
+        int count = 0;
         while(count < n){
             while(idx < n && jobs[idx][0] <= time){
                 q.offer(new Node(idx,jobs[idx][0],jobs[idx][1]));

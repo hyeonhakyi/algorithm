@@ -12,43 +12,53 @@ class Node{
 }
 
 class Solution {
-    static char[][] arr;
     static int[] dx = {-1,1,0,0};
     static int[] dy = {0,0,-1,1};
-    static int n,m,sx,sy;
+    static char[][] arr;
+    static int n,m,answer,sx,sy,ex,ey;
     public int solution(String[] board) {
-        int answer = 0;
+        answer = 0;
         n = board.length;
-        m = board[0].length();
+        m = board[0].length(); 
         arr = new char[n][m];
         
         for(int i = 0; i < n; i++){
             arr[i] = board[i].toCharArray();
+        }
+        
+        for(int i = 0; i < n; i++){
             for(int j = 0; j < m; j++){
                 if(arr[i][j] == 'R'){
                     sx = i;
                     sy = j;
+                }else if(arr[i][j] == 'G'){
+                    ex = i;
+                    ey = j;
                 }
             }
         }
         
-        answer = bfs();
+        bfs();
         
-        return answer;
-    }
+        if(answer == 0){
+            return -1;
+        }else{
+            return answer;
+        }
+    }//solution end
     
-    public int bfs(){
+    private static void bfs(){
         Queue<Node> q = new LinkedList<>();
         boolean[][] visited = new boolean[n][m];
         
         q.offer(new Node(sx,sy,0));
         visited[sx][sy] = true;
-        
         while(!q.isEmpty()){
             Node now = q.poll();
             
-            if(arr[now.x][now.y] == 'G'){
-                return now.cnt;
+            if(now.x == ex && now.y == ey){
+                answer = now.cnt;
+                return;
             }
             
             for(int d = 0; d < 4; d++){
@@ -56,26 +66,25 @@ class Solution {
                 int ny = now.y;
                 
                 while(true){
-                    int tx = nx + dx[d];
-                    int ty = ny + dy[d];
+                    int nextx = nx + dx[d];
+                    int nexty = ny + dy[d];
                     
-                    if(!check(tx,ty)) break;
-                    if(arr[tx][ty] == 'D') break;
+                    if(!check(nextx,nexty)) break;
+                    if(arr[nextx][nexty] == 'D') break;
                     
-                    nx = tx;
-                    ny = ty;
+                    nx = nextx;
+                    ny = nexty;
                 }
                 
-                if(!visited[nx][ny]){
-                    visited[nx][ny] = true;
-                    q.offer(new Node(nx,ny,now.cnt + 1));
-                }
+                if(visited[nx][ny]) continue;
+                visited[nx][ny] = true;
+                q.offer(new Node(nx,ny,now.cnt + 1));
             }
         }
-        return -1;
-    }
+        return;
+    }//bfs end
     
-    public boolean check(int x,int y){
-        return x >= 0 && x < n && y >=0 && y < m;
-    }
-}
+    private static boolean check(int x,int y){
+        return x >= 0 && x < n && y >= 0 && y < m;
+    }//check end
+}//class end

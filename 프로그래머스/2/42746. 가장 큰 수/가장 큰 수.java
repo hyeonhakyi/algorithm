@@ -16,12 +16,12 @@ class Solution {
             return "0";
         }
         
-        StringBuilder sb = new StringBuilder();
+        StringBuilder answer = new StringBuilder();
         
         for(String s : arr){
-            sb.append(s);
+            answer.append(s);
         }
         
-        return sb.toString();
+        return answer.toString();
     }//solution end
 }//class end

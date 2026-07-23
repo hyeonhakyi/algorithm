@@ -1,55 +1,59 @@
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.ArrayList;
+import java.util.*;
 
 class Solution {
-    static HashMap<String,Integer> map; 
-    public static void combi(String str,StringBuilder sb,int idx, int cnt, int n){
-       if(cnt == n) {
-           map.put(sb.toString(),map.getOrDefault(sb.toString(),0)+1);
-           return;
-        }
+    public String[] solution(String[] orders, int[] course) {
+        List<String> answerList = new ArrayList<>();
         
-        for(int i = idx ; i<str.length();i++){
-            sb.append(str.charAt(i));
-            combi(str,sb,i+1,cnt+1,n);
-            sb.delete(cnt,cnt+1);
-        }
-    }
-    
-    public ArrayList<String> solution(String[] orders, int[] course) {
-        ArrayList<String> answer = new ArrayList<>();
-        
-        for(int i =0;i<orders.length;i++){
-            char[] charArr = orders[i].toCharArray();
-            Arrays.sort(charArr);
-            orders[i] = String.valueOf(charArr);
-        }
-        
-        for(int i =0;i<course.length;i++){
-            map = new HashMap<>();
-            int max = Integer.MIN_VALUE;   
-            for(int j =0;j<orders.length;j++){
-                StringBuilder sb = new StringBuilder(); 
-                if(course[i]<=orders[j].length())
-                    combi(orders[j],sb,0,0,course[i]);                               
+        for(int target : course){
+            HashMap<String,Integer> map = new HashMap<>();
+            
+            for(String order : orders){
+                if(order.length() < target){
+                    continue;
+                }
+                
+                char[] arr = order.toCharArray();
+                
+                Arrays.sort(arr);
+                
+                combination(arr,0,target,new StringBuilder(),map);
             }
             
-            for(Entry<String,Integer> entry : map.entrySet()){
-                    max = Math.max(max,entry.getValue());
-                   
-            }
-      
-            for(Entry<String,Integer> entry : map.entrySet()){
-                    if(max >=2 && entry.getValue() == max)
-                        answer.add(entry.getKey());
-            }
-        }
-        Collections.sort(answer);
+            int maxCount = 0;
         
-        return answer;
-    }
-}
+            for(int count : map.values()){
+                if(count >= 2){
+                    maxCount = Math.max(maxCount,count);
+                }
+            }
+        
+            for(String menu : map.keySet()){
+                if(map.get(menu) == maxCount && maxCount >= 2){
+                    answerList.add(menu);
+                }
+            }   
+        }
+        
+        Collections.sort(answerList);
+        
+        return answerList.toArray(new String[0]);
+    }//solution end
+    
+    private static void combination(char[] arr,int start,int target,StringBuilder sb,HashMap<String,Integer> map){
+        if(sb.length() == target){
+            String menu = sb.toString();
+            
+            map.put(menu,map.getOrDefault(menu, 0) + 1);
+            
+            return;
+        }
+        
+        for(int i = start; i < arr.length; i++){
+            sb.append(arr[i]);
+            
+            combination(arr,i + 1, target,sb,map);
+            
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }//combination end
+}//class end

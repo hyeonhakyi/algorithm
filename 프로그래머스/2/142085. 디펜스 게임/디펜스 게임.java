@@ -2,25 +2,20 @@ import java.util.*;
 
 class Solution {
     public int solution(int n, int k, int[] enemy) {
-        int answer = 0;
+        PriorityQueue<Integer> q = new PriorityQueue<>();
         
-        PriorityQueue<Integer> q = new PriorityQueue<>((a,b) -> b - a);
-        
-        for(int i : enemy){
-            q.offer(i);
-            n -= i;
+        for(int i = 0; i < enemy.length; i++){
+            q.offer(enemy[i]);
             
-            if(n < 0){
-                if(k > 0){
-                    n += q.poll();
-                    k--;
-                }else{
-                    break;
+            if(q.size() > k){
+                n -= q.poll();
+                
+                if(n < 0){
+                    return i;
                 }
             }
-            answer++;
         }
         
-        return answer;
-    }
-}
+        return enemy.length;
+    }//solution end
+}//class end

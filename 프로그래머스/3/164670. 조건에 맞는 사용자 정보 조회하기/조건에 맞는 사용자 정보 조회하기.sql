@@ -11,7 +11,6 @@ group by
     u.USER_ID,
     u.NICKNAME
 having
-    count(b.WRITER_ID) >= 3
+    count(*) >= 3
 order by
     u.USER_ID desc
-    

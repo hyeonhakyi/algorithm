@@ -8,4 +8,4 @@ select
 from
     ECOLI_DATA 
 order by
-    ID ASC
+    ID

@@ -1,38 +1,57 @@
 import java.util.*;
 
 class Solution {
+    static int[] first = new int[]{1,2,3,4,5};
+    static int[] second = new int[]{2,1,2,3,2,4,2,5};
+    static int[] third = new int[]{3,3,1,1,2,2,4,4,5,5};
     public int[] solution(int[] answers) {
-        int[] fir = {1,2,3,4,5};
-        int[] sec = {2,1,2,3,2,4,2,5};
-        int[] thir = {3,3,1,1,2,2,4,4,5,5};
-        int[] score = {0,0,0};
+        List<Integer> list = find(answers);
         
-        for(int i = 0; i < answers.length; i++){
-            if(answers[i] == fir[i%5]){
-                score[0]++;
-            }
-            if(answers[i] == sec[i%8]){
-                score[1]++;
-            }
-            if(answers[i] == thir[i%10]){
-                score[2]++;
-            }
-        }
+        Collections.sort(list);
         
-        int max = Math.max(score[0],Math.max(score[1],score[2]));
+        int[] answer = new int[list.size()];
         
-        List<Integer> ans = new ArrayList<>();
-        for(int i = 0; i < score.length; i++){
-            if(max == score[i]){
-                ans.add(i+1);
-            }
-        }
-        
-        int[] answer = new int[ans.size()];
-        for(int i = 0; i < ans.size(); i++){
-            answer[i] = ans.get(i);
+        for(int i = 0; i < list.size(); i++){
+            answer[i] = list.get(i);
         }
         
         return answer;
-    }
-}
+    }//solution end
+    
+    private static List<Integer> find(int[] answers){
+        List<Integer> list = new ArrayList<>();
+        int fir = 0;
+        int sec = 0;
+        int th = 0;
+        
+        for(int i = 0; i < answers.length; i++){
+            if(first[i % first.length] == answers[i]){
+                fir++;
+            }
+            
+            if(second[i % second.length] == answers[i]){
+                sec++;
+            }
+            
+            if(third[i % third.length] == answers[i]){
+                th++;
+            }
+        }
+        
+        int max = Math.max(fir,Math.max(sec,th));
+        
+        if(fir == max){
+            list.add(1);
+        }
+        
+        if(sec == max){
+            list.add(2);
+        }
+        
+        if(th == max){
+            list.add(3);
+        }
+        
+        return list;
+    }//find end
+}//class end

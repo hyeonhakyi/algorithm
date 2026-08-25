@@ -3,15 +3,15 @@ import java.util.*;
 class Solution {
     boolean solution(String s) {
         boolean answer = true;
-        
+
         Stack<Character> stack = new Stack<>();
         
         for(int i = 0; i < s.length(); i++){
-            char str = s.charAt(i);
+            char c = s.charAt(i);
             
-            if(str == ')'){
-                if(stack.isEmpty()){
-                    return false;
+            if(!stack.isEmpty()){
+                if(c == '('){
+                    stack.push(c);
                 }else{
                     if(stack.peek() == '('){
                         stack.pop();
@@ -20,8 +20,9 @@ class Solution {
                     }
                 }
             }else{
-                stack.push(str);
+                stack.push(c);
             }
+            
         }
         
         if(!stack.isEmpty()){

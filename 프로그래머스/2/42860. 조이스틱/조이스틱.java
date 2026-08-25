@@ -3,19 +3,19 @@ import java.util.*;
 class Solution {
     public int solution(String name) {
         int answer = 0;
-        int len = name.length();
         
+        int len = name.length();
         int move = len - 1;
         
         for(int i = 0; i < len; i++){
-            char c = name.charAt(i);
+            char num = name.charAt(i);
             
-            int up = c - 'A';
-            int down = 'Z' - c + 1;
+            int up = num - 'A';
+            int down = 'Z' - num + 1;
+            
             answer += Math.min(up,down);
             
             int next = i + 1;
-            
             while(next < len && name.charAt(next) == 'A'){
                 next++;
             }

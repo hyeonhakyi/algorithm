@@ -5,14 +5,14 @@ class Solution {
         StringBuilder sb = new StringBuilder();
         
         for(int i = 0; i < number.length(); i++){
-            char now = number.charAt(i);
+            char num = number.charAt(i);
             
-            while(k > 0 && sb.length() > 0 && sb.charAt(sb.length() - 1) < now){
+            while(k > 0 && sb.length() > 0 && sb.charAt(sb.length() - 1) < num){
                 sb.deleteCharAt(sb.length() - 1);
                 k--;
             }
             
-            sb.append(now);
+            sb.append(num);
         }
         
         while(k > 0){

@@ -7,10 +7,12 @@ class Solution{
         Arrays.sort(A);
         Arrays.sort(B);
         
+        int len = B.length - 1;
+        
         for(int i = 0; i < A.length; i++){
-            answer += (A[i] * B[B.length - i - 1]);
+            answer += (A[i] * B[len--]);
         }
-
+        
         return answer;
     }//solution end
 }//class end

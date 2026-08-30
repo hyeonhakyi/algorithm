@@ -1,5 +1,5 @@
 select
-    count(*) as FISH_COUNT,
+    count(ID) as FISH_COUNT,
     max(LENGTH) as MAX_LENGTH,
     FISH_TYPE
 from

@@ -1,7 +1,9 @@
 select
-    *
+    ID,
+    NAME,
+    HOST_ID
 from
-    PLACES 
+    PLACES
 where
     HOST_ID in (select HOST_ID
                from PLACES

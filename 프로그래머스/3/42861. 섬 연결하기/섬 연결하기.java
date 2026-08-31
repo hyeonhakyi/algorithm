@@ -26,22 +26,19 @@ class Solution {
         }
         
         visited = new boolean[n];
-        
-        for(int i = 0; i < costs.length; i++){
-            int s = costs[i][0];
-            int e = costs[i][1];
-            int v = costs[i][2];
+        for(int[] cost : costs){
+            int s = cost[0];
+            int e = cost[1];
+            int w = cost[2];
             
-            list[s].add(new Node(e,v));
-            list[e].add(new Node(s,v));
+            list[s].add(new Node(e,w));
+            list[e].add(new Node(s,w));
         }
         
-        int answer = dijkstr();
-        
-        return answer;
+        return dijkstra();
     }//solution end
     
-    private static int dijkstr(){
+    private static int dijkstra(){
         PriorityQueue<Node> q = new PriorityQueue<>();
         q.offer(new Node(0,0));
         int sum = 0;
@@ -59,6 +56,7 @@ class Solution {
                 }
             }
         }
+        
         return sum;
-    }//dijkstr end
+    }//dijkstra end
 }//class end

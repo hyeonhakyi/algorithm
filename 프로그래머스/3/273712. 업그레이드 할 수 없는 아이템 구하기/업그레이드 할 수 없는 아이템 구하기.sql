@@ -1,12 +1,12 @@
 select
-    i.ITEM_ID,
-    i.ITEM_NAME,
-    i.RARITY
+    ITEM_ID,
+    ITEM_NAME,
+    RARITY
 from
-    ITEM_INFO as i
+    ITEM_INFO 
 where
-    i.ITEM_ID not in (select PARENT_ITEM_ID
-                 from ITEM_TREE 
-                 where PARENT_ITEM_ID is not null)
+    ITEM_ID not in (select PARENT_ITEM_ID
+               from ITEM_TREE  
+               where PARENT_ITEM_ID is not null)
 order by
-    i.ITEM_ID desc
+    ITEM_ID desc

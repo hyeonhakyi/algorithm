@@ -1,12 +1,9 @@
 import java.util.*;
 
 class Solution {
-    static int n,answer;
-    static boolean[] visited;
+    static int answer;
     public int solution(int[] numbers, int target) {
         answer = 0;
-        n = numbers.length;
-        visited = new boolean[n];
         
         dfs(numbers,target,0,0);
         
@@ -14,7 +11,7 @@ class Solution {
     }//solution end
     
     private static void dfs(int[] numbers,int target,int idx,int sum){
-        if(idx == n){
+        if(idx == numbers.length){
             if(sum == target){
                 answer++;
             }

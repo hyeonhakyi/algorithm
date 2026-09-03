@@ -1,9 +1,9 @@
 select
     CATEGORY,
-    PRICE as MAX_PRICE,
+    PRICE,
     PRODUCT_NAME
 from
-    FOOD_PRODUCT 
+    FOOD_PRODUCT
 where
     (CATEGORY,PRICE) in (select CATEGORY,max(PRICE)
                         from FOOD_PRODUCT
@@ -12,4 +12,4 @@ where
 group by
     CATEGORY
 order by
-    MAX_PRICE desc
+    PRICE desc

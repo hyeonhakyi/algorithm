@@ -12,23 +12,21 @@ class Node{
 }
 
 class Solution {
-    static int answer;
-    static int n,m;
     static int[] dx = {-1,1,0,0};
     static int[] dy = {0,0,-1,1};
+    static int n,m;
     public int solution(int[][] maps) {
-        answer = -1;
+        int answer = 0;
         n = maps.length;
         m = maps[0].length;
-        
-        bfs(maps);
+        answer = bfs(maps);
         
         return answer;
     }//solution end
     
-    private static void bfs(int[][] maps){
+    private static int bfs(int[][] maps){
         Queue<Node> q = new LinkedList<>();
-        q.offer(new Node(0,0,1));
+        q.offer(new Node(0,0,0));
         boolean[][] visited = new boolean[n][m];
         visited[0][0] = true;
         
@@ -36,8 +34,7 @@ class Solution {
             Node now = q.poll();
             
             if(now.x == n - 1 && now.y == m - 1){
-                answer = now.cnt;
-                return;
+                return now.cnt + 1;
             }
             
             for(int d = 0; d < 4; d++){
@@ -47,11 +44,12 @@ class Solution {
                 if(!check(nx,ny)) continue;
                 if(visited[nx][ny]) continue;
                 if(maps[nx][ny] == 0) continue;
-                
                 q.offer(new Node(nx,ny,now.cnt + 1));
                 visited[nx][ny] = true;
             }
         }
+        
+        return -1;
     }//bfs end
     
     private static boolean check(int x,int y){

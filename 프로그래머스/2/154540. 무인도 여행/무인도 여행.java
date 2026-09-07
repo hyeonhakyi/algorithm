@@ -10,46 +10,45 @@ class Node{
 }
 
 class Solution {
-    static int n,m;
     static int[] dx = {-1,1,0,0};
     static int[] dy = {0,0,-1,1};
-    static ArrayList<Integer> list;
-    static char[][] arr;
     static boolean[][] visited;
+    static char[][] arr;
+    static int n,m;
+    static List<Integer> answerList = new ArrayList<>();
     public int[] solution(String[] maps) {
-        list = new ArrayList<>();
+        int[] answer = {};
         n = maps.length;
         m = maps[0].length();
         arr = new char[n][m];
         visited = new boolean[n][m];
         
-        for(int i = 0; i < maps.length; i++){
+        for(int i = 0; i < n; i++){
             arr[i] = maps[i].toCharArray();
         }
         
         for(int i = 0; i < n; i++){
             for(int j = 0; j < m; j++){
-                if(arr[i][j] != 'X' && !visited[i][j]){
-                    list.add(bfs(i,j));
+                if(!visited[i][j] && arr[i][j] != 'X'){
+                    bfs(i,j);
                 }
             }
         }
         
-        if(list.size() == 0){
-            return new int[] {-1};
+        if(answerList.size() == 0){
+            return new int[]{-1};
         }else{
-            int[] answer = new int[list.size()];
-            for(int i = 0; i < list.size(); i++){
-                answer[i] = list.get(i);
+            answer = new int[answerList.size()];
+            
+            Collections.sort(answerList);
+            for(int i = 0; i < answerList.size(); i++){
+                answer[i] = answerList.get(i);
             }
-            
-            Arrays.sort(answer);
-            
             return answer;
         }
-    }//main end
+    }//solution end
     
-    private static int bfs(int x,int y){
+    private static void bfs(int x,int y){
         Queue<Node> q = new LinkedList<>();
         q.offer(new Node(x,y));
         visited[x][y] = true;
@@ -66,16 +65,16 @@ class Solution {
                 if(visited[nx][ny]) continue;
                 if(arr[nx][ny] == 'X') continue;
                 
+                sum += arr[nx][ny] - '0';
                 q.offer(new Node(nx,ny));
                 visited[nx][ny] = true;
-                sum += arr[nx][ny] - '0';
             }
         }
         
-        return sum;
+        answerList.add(sum);
     }//bfs end
     
-    private static boolean check(int x,int y){
+    private static boolean check(int x, int y){
         return x >= 0 && x < n && y >= 0 && y < m;
     }//check end
 }//class end

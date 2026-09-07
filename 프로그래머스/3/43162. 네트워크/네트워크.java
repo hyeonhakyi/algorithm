@@ -1,11 +1,19 @@
 import java.util.*;
 
+class Node{
+    int x;
+    int y;
+    public Node(int x,int y){
+        this.x = x;
+        this.y = y;
+    }
+}
+
 class Solution {
     static boolean[] visited;
     public int solution(int n, int[][] computers) {
         int answer = 0;
         visited = new boolean[n];
-        
         for(int i = 0; i < n; i++){
             if(!visited[i]){
                 answer++;

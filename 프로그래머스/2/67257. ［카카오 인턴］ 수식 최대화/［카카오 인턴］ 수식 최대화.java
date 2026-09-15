@@ -1,50 +1,72 @@
 import java.util.*;
 
 class Solution {
+    static char[][] operates = {{'+','*','-'},
+                               {'+','-','*'},
+                               {'-','+','*'},
+                               {'-','*','+'},
+                               {'*','-','+'},
+                               {'*','+','-'}};
     public long solution(String expression) {
-        long answer = Long.MIN_VALUE;
-        String op[][] = { { "+", "-", "*" }, { "+", "*", "-" }, { "-", "*", "+" }, 
-                         { "-", "+", "*" }, { "*", "-", "+" }, { "*", "+", "-" } };
+        long answer = 0;
         
-        ArrayList<String> list = new ArrayList<>();
+        List<Long> numbers = new ArrayList<>();
+        List<Character> operate = new ArrayList<>();
         
-        int start = 0;
+        StringBuilder sb = new StringBuilder();
         for(int i = 0; i < expression.length(); i++){
-            if(expression.charAt(i) == '+' || expression.charAt(i) == '-' || expression.charAt(i) == '*'){
-                list.add(expression.substring(start,i));
-                list.add(expression.charAt(i) + "");
-                start = i + 1;
+            char str = expression.charAt(i);
+            
+            if(str == '-' || str == '*' || str == '+'){
+                numbers.add(Long.parseLong(sb.toString()));
+                sb.setLength(0);
+                operate.add(str);
+            }else{
+                sb.append(str);
             }
         }
-        list.add(expression.substring(start));
         
-        for(int i = 0; i < op.length; i++){
-            ArrayList<String> sub_list = new ArrayList<>(list);
-            for(int j = 0; j < 3; j++){
-                for(int k = 0; k < sub_list.size(); k++){
-                    if(op[i][j].equals(sub_list.get(k))){
-                        sub_list.set(k - 1, calc(sub_list.get(k-1), sub_list.get(k), sub_list.get(k + 1)));
-                        sub_list.remove(k);
-                        sub_list.remove(k);
-                        k--;
+        numbers.add(Long.parseLong(sb.toString()));
+        
+        for(char[] oper : operates){
+            List<Long> num = new ArrayList<>(numbers);
+            List<Character> op = new ArrayList<>(operate);
+            
+            for(char targetOp : oper){
+                int i = 0;
+                
+                while(i < op.size()){
+                    if(targetOp == op.get(i)){
+                        long left = num.get(i);
+                        long right = num.get(i + 1);
+                        
+                        long result = calculate(left,right,targetOp);
+                        
+                        num.set(i,result);
+                        num.remove(i + 1);
+                    
+                        op.remove(i);
+                    }else{
+                        i++;
                     }
-                }
+                }            
             }
-            answer = Math.max(answer, Math.abs(Long.parseLong(sub_list.get(0))));
+            
+            answer = Math.max(answer, Math.abs(num.get(0)));
         }
         
         return answer;
-    }
+    }//solution end
     
-    private static String calc(String num1, String op, String num2){
-        long n1 = Long.parseLong(num1);
-        long n2 = Long.parseLong(num2);
-        
-        if(op.equals("+")){
-            return n1 + n2 + "";
-        }else if(op.equals("-")){
-            return n1 - n2 + "";
+    private static long calculate(long a,long b,char c){
+        if(c == '-'){
+            return a - b;
         }
-        return n1 * n2 + ""; 
-    }
-}
+        
+        if(c == '+'){
+            return a + b;
+        }
+        
+        return a * b;
+    }//calaulate end
+}//class end

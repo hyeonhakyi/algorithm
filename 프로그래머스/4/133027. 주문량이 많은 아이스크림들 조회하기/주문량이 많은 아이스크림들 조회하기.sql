@@ -1,12 +1,14 @@
-select
-    h.FLAVOR
-from
-    FIRST_HALF as h
-join
-    JULY as j on h.FLAVOR = j.FLAVOR
-group by
-    h.FLAVOR
-having
-    sum(h.TOTAL_ORDER + j.TOTAL_ORDER)
-order by
-    sum(h.TOTAL_ORDER + j.TOTAL_ORDER) desc limit 3
+SELECT
+    f.FLAVOR
+FROM FIRST_HALF AS f
+JOIN (
+    SELECT
+        FLAVOR,
+        SUM(TOTAL_ORDER) AS TOTAL_ORDER
+    FROM JULY
+    GROUP BY FLAVOR
+) AS j
+    ON f.FLAVOR = j.FLAVOR
+ORDER BY
+    f.TOTAL_ORDER + j.TOTAL_ORDER DESC
+LIMIT 3;

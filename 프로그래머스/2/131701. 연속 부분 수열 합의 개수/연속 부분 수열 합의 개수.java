@@ -2,6 +2,7 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] elements) {
+        int answer = 0;
         int n = elements.length;
         int[] arr = new int[n * 2];
         
@@ -12,13 +13,12 @@ class Solution {
         
         Set<Integer> set = new HashSet<>();
         
-        for(int len = 1; len <= n; len++){
-            for(int start = 0; start < n; start++){
-                int sum = 0;
+        for(int start = 0; start < n; start++){
+            int sum = 0;
+            for(int length = 0; length < n; length++){
+                int idx = (start + length) % n;
                 
-                for(int k = 0; k < len; k++){
-                    sum += arr[start + k];
-                }
+                sum += arr[idx];
                 
                 set.add(sum);
             }

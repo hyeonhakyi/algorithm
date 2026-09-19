@@ -1,15 +1,15 @@
 import java.util.*;
 
 class Solution {
-    static boolean[] visited;
     static String[] answer;
     static boolean finished;
+    static boolean[] visited;
     public String[] solution(String[][] tickets) {
         visited = new boolean[tickets.length];
         answer = new String[tickets.length + 1];
         finished = false;
         
-        Arrays.sort(tickets, (a,b) -> {
+        Arrays.sort(tickets,(a,b) -> {
            if(a[0].equals(b[0])){
                return a[1].compareTo(b[1]);
            };

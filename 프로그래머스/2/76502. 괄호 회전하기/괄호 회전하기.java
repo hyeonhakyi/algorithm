@@ -1,53 +1,64 @@
 import java.util.*;
 
 class Solution {
-    static char[] arr;
-    static int n;
     public int solution(String s) {
         int answer = 0;
-        n = s.length();
-        arr = s.toCharArray();
-        
-        for(int i = 0; i < n; i++){
-            if(check(i)){
+
+        for (int i = 0; i < s.length(); i++) {
+
+            // i칸 왼쪽 회전
+            String rotate =
+                s.substring(i) + s.substring(0, i);
+
+            // 회전한 문자열 전체가 올바르면 +1
+            if (check(rotate)) {
                 answer++;
             }
         }
-        
+
         return answer;
     }//solution end
-    
-    private static boolean check(int idx){
-        Stack<Character> stack = new Stack<>();
-        
-        for (int i = 0; i < n; i++) {
-            char now = arr[(idx + i) % n];
 
-            // 수정: 여는 괄호는 무조건 stack에 넣음
-            if (now == '(' || now == '{' || now == '[') {
-                stack.push(now);
+
+    private static boolean check(String str) {
+
+        Stack<Character> stack = new Stack<>();
+
+        for (int i = 0; i < str.length(); i++) {
+
+            char c = str.charAt(i);
+
+            // 여는 괄호
+            if (c == '(' || c == '[' || c == '{') {
+
+                stack.push(c);
+
             } else {
-                // 수정: 닫는 괄호인데 stack이 비어 있으면 잘못된 괄호 문자열
+
+                // 닫는 괄호인데 앞에 여는 괄호가 없음
                 if (stack.isEmpty()) {
                     return false;
                 }
 
-                char top = stack.peek();
-
-                // 수정: 짝이 맞으면 pop
-                if (top == '(' && now == ')') {
-                    stack.pop();
-                } else if (top == '{' && now == '}') {
-                    stack.pop();
-                } else if (top == '[' && now == ']') {
-                    stack.pop();
-                } else {
-                    // 수정: 닫는 괄호와 stack top이 짝이 안 맞으면 false
+                // 짝이 맞지 않는 경우
+                if (c == ')' && stack.peek() != '(') {
                     return false;
                 }
+
+                if (c == ']' && stack.peek() != '[') {
+                    return false;
+                }
+
+                if (c == '}' && stack.peek() != '{') {
+                    return false;
+                }
+
+                // 짝이 맞으면 제거
+                stack.pop();
             }
         }
-        
+
+        // 여는 괄호가 남아있으면 올바르지 않음
         return stack.isEmpty();
     }//check end
-}//class end
+}

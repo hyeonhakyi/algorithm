@@ -3,17 +3,15 @@ import java.util.*;
 class Solution {
     public int solution(int n, int[][] results) {
         int answer = 0;
-        
         int[][] dist = new int[n + 1][n + 1];
         
         for(int i = 1; i <= n; i++){
-            Arrays.fill(dist[i],-1);   
+            Arrays.fill(dist[i],-1);
         }
         
-        for(int[] num : results){
-            int a = num[0];
-            int b = num[1];
-            
+        for(int[] result : results){
+            int a = result[0];
+            int b = result[1];
             dist[a][b] = 1;
         }
         

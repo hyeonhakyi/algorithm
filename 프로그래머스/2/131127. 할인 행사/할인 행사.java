@@ -4,32 +4,33 @@ class Solution {
     public int solution(String[] want, int[] number, String[] discount) {
         int answer = 0;
         
-        int today = 0;
-        for(int i : number){
-            today += i;
+        HashMap<String,Integer> wantMap = new HashMap<>();
+        
+        for(int i = 0; i < want.length; i++){
+            wantMap.put(want[i],number[i]);
         }
         
-        for(int i = 0; i <= discount.length - today; i++){
+        for(int i = 0; i <= discount.length - 10; i++){
             HashMap<String,Integer> map = new HashMap<>();
-            
-            for(int j = i; j < i + today; j++){
+
+            for(int j = i; j < i + 10; j++){
                 map.put(discount[j],map.getOrDefault(discount[j],0) + 1);
             }
             
-            if(check(map,want,number)){
+            boolean check = true;
+            
+            for(String str : wantMap.keySet()){
+                if(map.get(str) != wantMap.get(str)){
+                    check = false;
+                    break;
+                }
+            }
+            
+            if(check){
                 answer++;
             }
         }
-
+        
         return answer;
     }//solution end
-    
-    private static boolean check(HashMap<String,Integer> map,String[] want,int[] number){
-        for(int i = 0; i < want.length; i++){
-           if(map.getOrDefault(want[i],0) != number[i]){
-              return false; 
-            }
-        }
-        return true;
-    }//check end
 }//class end

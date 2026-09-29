@@ -15,23 +15,21 @@ class Solution {
                 char[] arr = order.toCharArray();
                 
                 Arrays.sort(arr);
-                
-                combination(arr,0,target,new StringBuilder(),map);
+                combination(arr,new StringBuilder(),map,target,0);
             }
             
             int maxCount = 0;
-        
-            for(int count : map.values()){
-                if(count >= 2){
-                    maxCount = Math.max(maxCount,count);
+            for(int i : map.values()){
+                if(i >= 2){
+                    maxCount = Math.max(i,maxCount);
                 }
             }
-        
-            for(String menu : map.keySet()){
-                if(map.get(menu) == maxCount && maxCount >= 2){
-                    answerList.add(menu);
+            
+            for(String str : map.keySet()){
+                if(map.get(str) == maxCount && maxCount >= 2){
+                    answerList.add(str);
                 }
-            }   
+            }
         }
         
         Collections.sort(answerList);
@@ -39,11 +37,9 @@ class Solution {
         return answerList.toArray(new String[0]);
     }//solution end
     
-    private static void combination(char[] arr,int start,int target,StringBuilder sb,HashMap<String,Integer> map){
+    private static void combination(char[] arr,StringBuilder sb,HashMap<String,Integer> map,int target,int start){
         if(sb.length() == target){
-            String menu = sb.toString();
-            
-            map.put(menu,map.getOrDefault(menu, 0) + 1);
+            map.put(sb.toString(),map.getOrDefault(sb.toString(),0) + 1);
             
             return;
         }
@@ -51,9 +47,11 @@ class Solution {
         for(int i = start; i < arr.length; i++){
             sb.append(arr[i]);
             
-            combination(arr,i + 1, target,sb,map);
+            combination(arr,sb,map,target,i + 1);
             
             sb.deleteCharAt(sb.length() - 1);
         }
+        
+        return;
     }//combination end
 }//class end

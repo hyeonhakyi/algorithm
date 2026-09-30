@@ -1,41 +1,45 @@
 import java.util.*;
 
-class Node{
+class Node implements Comparable<Node>{
     int idx;
-    int weight;
-    public Node(int idx,int weight){
+    int value;
+    public Node(int idx,int value){
         this.idx = idx;
-        this.weight = weight;
+        this.value = value;
+    }
+    
+    @Override
+    public int compareTo(Node o){
+        return this.value - o.value;
     }
 }
 
 class Solution {
     static List<Node>[] list;
     static int[] dist;
-    static int answer;
     public int solution(int N, int[][] road, int K) {
-        answer = 0;
-        
+        int answer = 0;
         list = new ArrayList[N + 1];
         
         for(int i = 1; i <= N; i++){
             list[i] = new ArrayList<>();
         }
         
-        for(int[] i : road){
-            int s = i[0];
-            int e = i[1];
-            int w = i[2];
-            
-            list[s].add(new Node(e,w));
-            list[e].add(new Node(s,w));
+        dist = new int[N + 1];
+        for(int i = 1; i <= N; i++){
+            Arrays.fill(dist,Integer.MAX_VALUE);
         }
         
-        dist = new int[N + 1];
-        Arrays.fill(dist,Integer.MAX_VALUE);
-        dist[1] = 0;
+        for(int[] ro : road){
+            int a = ro[0];
+            int b = ro[1];
+            int c = ro[2];
+            
+            list[a].add(new Node(b,c));
+            list[b].add(new Node(a,c));
+        }
         
-        bfs(K);
+        bfs();
         
         for(int i = 1; i <= N; i++){
             if(dist[i] <= K){
@@ -46,16 +50,17 @@ class Solution {
         return answer;
     }//solution end
     
-    private static void bfs(int K){
-        Queue<Node> q = new LinkedList<>();
+    private static void bfs(){
+        PriorityQueue<Node> q = new PriorityQueue<>();
         q.offer(new Node(1,0));
+        dist[1] = 0;
         
         while(!q.isEmpty()){
             Node now = q.poll();
             
             for(Node next : list[now.idx]){
-                if(dist[next.idx] > dist[now.idx] + next.weight){
-                    dist[next.idx] = dist[now.idx] + next.weight;
+                if(dist[next.idx] > dist[now.idx] + next.value){
+                    dist[next.idx] = dist[now.idx] + next.value;
                     q.offer(new Node(next.idx,dist[next.idx]));
                 }
             }

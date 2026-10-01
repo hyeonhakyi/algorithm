@@ -5,30 +5,28 @@ class Solution {
         int[] answer = new int[2];
         
         int left = 0;
-        long sum = 0;
-        int start = 0;
-        int end = 0;
+        int total = 0;
         int minLen = Integer.MAX_VALUE;
         
         for(int right = 0; right < sequence.length; right++){
-            sum += sequence[right];
+            total += sequence[right];
             
-            while(sum > k){
-                sum -= sequence[left];
-                left++;
+            while(total > k){
+                total -= sequence[left++];
             }
             
-            if(sum == k){
+            if(total == k){
                 int len = right - left + 1;
                 
-                if(minLen > len){
+                if(len < minLen){
                     minLen = len;
-                    start = left;
-                    end = right;
+                    
+                    answer[0] = left;
+                    answer[1] = right;
                 }
             }
         }
         
-        return new int[]{start,end};
+        return answer;
     }//solution end
 }//class end

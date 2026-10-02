@@ -8,8 +8,9 @@ from
 join
     USED_GOODS_USER as u on b.WRITER_ID = u.USER_ID
 group by
-    u.USER_ID
+    u.USER_ID,
+    u.NICKNAME
 having
-    count(u.USER_ID) >= 3
+    count(*) >= 3
 order by
     u.USER_ID desc

@@ -2,13 +2,12 @@ import java.util.*;
 
 class Solution {
     public long solution(int n, int[] times) {
-        long answer = 0;
+        long answer = Long.MAX_VALUE;
         
         long left = 1;
         long right = 0;
-        
         for(int i : times){
-            right = Math.max(i,right);
+            right = Math.max(right,i);
         }
         
         right *= n;
@@ -17,14 +16,14 @@ class Solution {
             long mid = (left + right) / (long) 2;
             long sum = 0;
             for(int i : times){
-                sum += mid / i;
+                sum += (mid / i);
                 if(sum >= n){
                     break;
                 }
             }
             
             if(sum >= n){
-                answer = mid;
+                answer = Math.min(answer,mid);
                 right = mid - 1;
             }else{
                 left = mid + 1;

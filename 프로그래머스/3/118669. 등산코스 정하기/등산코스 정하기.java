@@ -1,48 +1,48 @@
 import java.util.*;
 
-class Solution {
-    static class Edge{
-        int idx;
-        int weight;
-        public Edge(int idx,int weight){
-            this.idx = idx;
-            this.weight = weight;
-        }
+class Edge{
+    int idx;
+    int weight;
+    public Edge(int idx,int weight){
+        this.idx = idx;
+        this.weight = weight;
+    }
+}
+
+class Node implements Comparable<Node>{
+    int idx;
+    int weight;
+    public Node(int idx,int weight){
+        this.idx = idx;
+        this.weight = weight;
     }
     
-    static class Node implements Comparable<Node>{
-        int idx;
-        int intensity;
-        public Node(int idx,int intensity){
-            this.idx = idx;
-            this.intensity = intensity;
-        }
-        
-        @Override
-        public int compareTo(Node o){
-            return Integer.compare(this.intensity,o.intensity);
-        }
+    @Override
+    public int compareTo(Node o){
+        return Integer.compare(this.weight,o.weight);
     }
+}
+
+class Solution {
     static List<Edge>[] list;
-    static boolean[] isGate;
-    static boolean[] isSummits;
+    static boolean[] gate;
+    static boolean[] summit;
     public int[] solution(int n, int[][] paths, int[] gates, int[] summits) {
         int[] answer = new int[2];
-        
         list = new ArrayList[n + 1];
-        isGate = new boolean[n + 1];
-        isSummits = new boolean[n + 1];
+        gate = new boolean[n + 1];
+        summit = new boolean[n + 1];
         
         for(int i = 1; i <= n; i++){
             list[i] = new ArrayList<>();
         }
         
-        for(int gate : gates){
-            isGate[gate] = true;
+        for(int i : gates){
+            gate[i] = true;
         }
         
-        for(int summit : summits){
-            isSummits[summit] = true;
+        for(int i : summits){
+            summit[i] = true;
         }
         
         for(int[] path : paths){
@@ -53,59 +53,57 @@ class Solution {
             list[s].add(new Edge(e,w));
             list[e].add(new Edge(s,w));
         }
-
-        int[] dist = djkstra(n,gates);
+        
+        int[] dist = dijkstr(n,gates);
         
         int minSummit = Integer.MAX_VALUE;
-        int minIntensity = Integer.MAX_VALUE;
+        int minSummitValue = Integer.MAX_VALUE;
         
         Arrays.sort(summits);
         
-        for(int summit : summits){
-            if(dist[summit] < minIntensity){
-                minIntensity = dist[summit];
-                minSummit = summit;
+        for(int i : summits){
+            if(minSummitValue > dist[i]){
+                minSummitValue = dist[i];
+                minSummit = i;
+                answer[0] = minSummit;
+                answer[1] = minSummitValue;
             }
         }
         
-        return new int[] {minSummit,minIntensity};
-    }//soliution end
+        return answer;
+    }//solution end
     
-    private static int[] djkstra(int n,int[] gates){
+    private static int[] dijkstr(int n,int[] gates){
         PriorityQueue<Node> q = new PriorityQueue<>();
         int[] dist = new int[n + 1];
-        Arrays.fill(dist,Integer.MAX_VALUE);
         
-        for(int gate : gates){
-            dist[gate] = 0;
-            q.offer(new Node(gate,0));
+        Arrays.fill(dist,Integer.MAX_VALUE);
+        for(int i : gates){
+            q.offer(new Node(i,0));
+            dist[i] = 0;
         }
         
         while(!q.isEmpty()){
             Node now = q.poll();
             
-            if(now.intensity > dist[now.idx]){
+            if(now.weight > dist[now.idx]){
                 continue;
             }
             
-            if(isSummits[now.idx]){
-                continue;
-            }
+            if(summit[now.idx]) continue;
             
             for(Edge next : list[now.idx]){
-                if(isGate[next.idx]){
-                    continue;
-                }
+                if(gate[next.idx]) continue;
                 
-                int weight = Math.max(next.weight,now.intensity);
+                int weight = Math.max(now.weight,next.weight);
                 
-                if(weight < dist[next.idx]){
-                    q.offer(new Node(next.idx,weight));
+                if(dist[next.idx] > weight){
                     dist[next.idx] = weight;
+                    q.offer(new Node(next.idx,dist[next.idx]));
                 }
             }
         }
         
         return dist;
-    }//djkstra end
+    }//dijkstr end
 }//class end

@@ -1,57 +1,77 @@
 import java.util.*;
 
+class Node implements Comparable<Node>{
+    int idx;
+    int weight;
+    public Node(int idx,int weight){
+        this.idx = idx;
+        this.weight = weight;
+    }
+    
+    @Override
+    public int compareTo(Node o){
+        return Integer.compare(this.weight,o.weight);
+    }
+}
+
 class Solution {
+    static List<Node>[] list;
     static int[] dist;
-    static boolean[] visited;
-    static List<Integer>[] list;
     public int solution(int n, int[][] edge) {
         int answer = 0;
         
         list = new ArrayList[n + 1];
+        
         for(int i = 1; i <= n; i++){
             list[i] = new ArrayList<>();
         }
         
         dist = new int[n + 1];
-        Arrays.fill(dist,-1);
-        dist[1] = 1;
+        Arrays.fill(dist,Integer.MAX_VALUE);
         
-        visited = new boolean[n + 1];
-        visited[1] = true;
-        
-        for(int[] i : edge){
-            int s = i[0];
-            int e = i[1];
-            list[s].add(e);
-            list[e].add(s);
-        }
-        
-        Queue<Integer> q = new LinkedList<>();
-        q.offer(1);
-        
-        while(!q.isEmpty()){
-            int now = q.poll();
+        for(int[] ver : edge){
+            int s = ver[0];
+            int e = ver[1];
             
-            for(int next : list[now]){
-                if(!visited[next]){
-                    dist[next] = dist[now] + 1;
-                    q.offer(next);
-                    visited[next] = true;
-                }
-            }
+            list[s].add(new Node(e,1));
+            list[e].add(new Node(s,1));
         }
+        
+        dijkstr();
         
         int max = Integer.MIN_VALUE;
-        for(int i : dist){
-            max = Math.max(max,i);
+        
+        for(int i = 1; i <= n; i++){
+            max = Math.max(max,dist[i]);
         }
         
-        for(int i : dist){
-            if(i == max){
+        for(int i = 1; i <= n; i++){
+            if(dist[i] == max){
                 answer++;
             }
         }
         
         return answer;
     }//solution end
+    
+    private static void dijkstr(){
+        PriorityQueue<Node> q = new PriorityQueue<>();
+        q.offer(new Node(1,0));
+        dist[1] = 0;
+        while(!q.isEmpty()){
+            Node now = q.poll();
+            
+            if(now.weight > dist[now.idx]) continue;
+            
+            for(Node next : list[now.idx]){
+                int nextWeight = dist[now.idx] + next.weight;
+                
+                if(dist[next.idx] > nextWeight){
+                    dist[next.idx] = nextWeight;
+                    q.offer(new Node(next.idx,dist[next.idx]));
+                }
+            }
+        }
+        return;
+    }//dijkstr end
 }//class end

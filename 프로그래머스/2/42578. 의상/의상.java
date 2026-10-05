@@ -6,11 +6,8 @@ class Solution {
         
         HashMap<String,Integer> map = new HashMap<>();
         
-        for(String[] cloth : clothes){
-            String str1 = cloth[0];
-            String str2 = cloth[1];
-            
-            map.put(str2,map.getOrDefault(str2,0) + 1);
+        for(String[] clothe : clothes){
+            map.put(clothe[1],map.getOrDefault(clothe[1],0) + 1);
         }
         
         for(String str : map.keySet()){

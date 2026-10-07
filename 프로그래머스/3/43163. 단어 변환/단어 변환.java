@@ -1,45 +1,45 @@
 import java.util.*;
 
-class Node{
+class Word{
     String word;
-    int cnt;
-    public Node(String word,int cnt){
+    int count;
+    public Word(String word,int count){
         this.word = word;
-        this.cnt = cnt;
+        this.count = count;
     }
 }
 
 class Solution {
+    static boolean[] visited;
     public int solution(String begin, String target, String[] words) {
         int answer = 0;
-        
+        visited = new boolean[words.length];
         answer = bfs(begin,target,words);
         
         return answer;
     }//solution end
     
     private static int bfs(String start,String target,String[] words){
-        Queue<Node> q = new LinkedList<>();
-        q.offer(new Node(start,0));
-        boolean[] visited = new boolean[words.length];
+        Queue<Word> q = new LinkedList<>();
+        q.offer(new Word(start,0));
         
         while(!q.isEmpty()){
-            Node now = q.poll();
+            Word now = q.poll();
             
             if(now.word.equals(target)){
-                return now.cnt;
+                return now.count;
             }
             
             for(int i = 0; i < words.length; i++){
                 if(visited[i]) continue;
-                if(check(now.word,words[i])){
-                    q.offer(new Node(words[i],now.cnt + 1));
-                    visited[i] = true;
-                }
+                if(!check(words[i],now.word)) continue;
+                
+                visited[i] = true;
+                q.offer(new Word(words[i],now.count + 1));
             }
         }
         return 0;
-    }//bfs end
+    }//dfs end
     
     private static boolean check(String a,String b){
         int count = 0;
@@ -47,11 +47,12 @@ class Solution {
             if(a.charAt(i) != b.charAt(i)){
                 count++;
             }
-            
-            if(count > 1){
-                return false;
-            }
         }
-        return true;
+        
+        if(count == 1){
+            return true;
+        }else{
+            return false;
+        }
     }//check end
 }//class end

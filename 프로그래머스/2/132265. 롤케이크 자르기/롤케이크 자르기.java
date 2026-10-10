@@ -3,27 +3,27 @@ import java.util.*;
 class Solution {
     public int solution(int[] topping) {
         int answer = 0;
+        int n = topping.length;
         
-        Map<Integer,Integer> right = new HashMap<>();
-        
-        Set<Integer> left = new HashSet<>();
-        
-        for(int i = 0; i < topping.length; i++){
-            right.put(topping[i],right.getOrDefault(topping[i],0) + 1);
+        Set<Integer> fir = new HashSet<>();
+        HashMap<Integer,Integer> sec = new HashMap<>();
+            
+        for(int i = 0; i < n; i++){
+            sec.put(topping[i],sec.getOrDefault(topping[i],0) + 1);
         }
         
-        for(int i = 0; i < topping.length - 1; i++){
-            int now = topping[i];
+        for(int i = 0; i < n - 1; i++){
+            int num = topping[i];
             
-            left.add(now);
+            fir.add(num);
             
-            right.put(topping[i],right.get(now) - 1);
+            sec.put(num,sec.get(num) - 1);
             
-            if(right.get(now) == 0){
-                right.remove(now);
+            if(sec.get(num) == 0){
+                sec.remove(num);
             }
             
-            if(left.size() == right.size()){
+            if(fir.size() == sec.size()){
                 answer++;
             }
         }

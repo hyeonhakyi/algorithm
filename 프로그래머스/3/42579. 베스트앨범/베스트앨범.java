@@ -1,15 +1,15 @@
 import java.util.*;
 
-class Node implements Comparable<Node>{
+class Music implements Comparable<Music>{
     int count;
     int idx;
-    public Node(int count,int idx){
+    public Music(int count,int idx){
         this.count = count;
         this.idx = idx;
     }
     
     @Override
-    public int compareTo(Node o){
+    public int compareTo(Music o){
         if(this.count == o.count){
             return Integer.compare(this.idx,o.idx);
         }
@@ -19,36 +19,39 @@ class Node implements Comparable<Node>{
 
 class Solution {
     public int[] solution(String[] genres, int[] plays) {
-        HashMap<String,Integer> totalMap = new HashMap<>();
-        HashMap<String,List<Node>> songMap = new HashMap<>();
+        List<Music> list = new ArrayList<>();
         
-        for(int i = 0; i < genres.length; i++){
-            String genre = genres[i];
-            int play = plays[i];
-            
-            totalMap.put(genre,totalMap.getOrDefault(genre,0) + play);
-            
-            songMap.putIfAbsent(genre,new ArrayList<>());
-            songMap.get(genre).add(new Node(play,i));
+        for(int i = 0; i < plays.length; i++){
+            list.add(new Music(plays[i],i)); 
         }
         
-        List<String> genreList = new ArrayList(totalMap.keySet());
+        Collections.sort(list);
         
-        genreList.sort((a,b) -> totalMap.get(b) - totalMap.get(a));
+        Map<String,Integer> map = new HashMap<>();
+        
+        for(int i = 0; i < plays.length; i++){
+            map.put(genres[i],map.getOrDefault(genres[i],0) + plays[i]);
+        }
+        
+        List<String> genresList = new ArrayList<>(map.keySet());
+        
+        genresList.sort((a,b) ->
+            Integer.compare(map.get(b),map.get(a))
+        );
         
         List<Integer> answerList = new ArrayList<>();
         
-        for(String genre : genreList){
-            List<Node> songs = songMap.get(genre);
-            Collections.sort(songs);
-            
+        for(String genre : genresList){
             int count = 0;
-            for(Node song : songs){
-                answerList.add(song.idx);
-                count++;
+            
+            for(Music music : list){
+                if(genres[music.idx].equals(genre)){
+                    count++;
+                    answerList.add(music.idx);
+                    
+                }
                 
                 if(count == 2){
-                    count = 0;
                     break;
                 }
             }

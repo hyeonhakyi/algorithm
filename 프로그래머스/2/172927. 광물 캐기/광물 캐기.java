@@ -2,62 +2,54 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] picks, String[] minerals) {
-        int pick = picks[0] + picks[1] + picks[2];
-        int total = Math.min(minerals.length,pick * 5);
+        int answer = 0;
         
-        List<int[]> list = new ArrayList<>();
-        int d = 0;
-        int i = 0;
-        int s = 0;
-        int cnt = 0;
-        for(int idx = 0; idx < total; idx++){
-            String m = minerals[idx];
-            
-            if("diamond".equals(m)){
-                d++;
-            }else if("iron".equals(m)){
-                i++;
-            }else{
-                s++;
+        int pickCount = picks[0] + picks[1] + picks[2];
+        
+        int limit = Math.min(minerals.length,pickCount * 5);
+        
+        List<int[]> groups = new ArrayList<>();
+        
+        for(int i = 0; i < limit; i += 5){
+            int[] count = new int[3];
+            for(int j = i; j < i + 5 && j < limit; j++){
+                if(minerals[j].equals("diamond")){
+                    count[0]++;
+                }else if(minerals[j].equals("iron")){
+                    count[1]++;
+                }else{
+                    count[2]++;
+                }
             }
-            cnt++;
             
-            if(cnt == 5){
-                list.add(new int[]{d,i,s});
-                d = i = s = 0;
-                cnt = 0;
-            }
+            groups.add(count);
         }
         
-        if(cnt > 0){
-            list.add(new int[]{d,s,i});
-        }
-        
-        list.sort((a,b) -> {
-            int A = a[0] * 25 + a[1] * 5 + a[2];
-            int B = b[0] * 25 + b[1] * 5 + b[2];
-            return Integer.compare(B,A);
+        groups.sort((a,b) ->{
+           if(a[0] != b[0]){
+               return Integer.compare(b[0],a[0]);
+           }
+            return Integer.compare(b[1],a[1]);
         });
         
-            
-        int dia = picks[0];
-        int iro = picks[1];
-        int sto = picks[2];
-        
-        int answer = 0;
-        for(int[] a : list){
-            if(dia > 0){
-                dia--;
-                answer += a[0] + a[1] + a[2];
-            }else if(iro > 0){
-                iro--;
-                answer += a[0]*5 + a[1] + a[2];
-            }else if(sto > 0){
-                sto--;
-                answer += a[0]*25 + a[1]*5 + a[2];
+        int idx = 0;
+        for(int i = 0; i < 3; i++){
+            while(picks[i] > 0 && idx < groups.size()){
+                int[] group = groups.get(idx);
+                
+                if(i == 0){
+                    answer += group[0] + group[1] + group[2];
+                }else if(i == 1){
+                    answer += (group[0] * 5) + group[1] + group[2];
+                }else{
+                    answer += (group[0] * 25) + (group[1] * 5) + group[2];
+                }
+                
+                picks[i]--;
+                idx++;
             }
         }
         
         return answer;
-    }
-}
+    }//solution end
+}//class end

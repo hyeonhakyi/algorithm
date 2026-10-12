@@ -2,7 +2,10 @@ import java.util.*;
 
 class Solution {
     public int[] solution(String[] operations) {
+        int[] answer = {};
+        
         TreeMap<Integer,Integer> map = new TreeMap<>();
+        
         for(int i = 0; i < operations.length; i++){
             String[] arr = operations[i].split(" ");
             String type = arr[0];
@@ -12,21 +15,24 @@ class Solution {
                 map.put(num,map.getOrDefault(num,0) + 1);
             }else{
                 if(map.isEmpty()) continue;
+                
                 if(num == -1){
-                    int key = map.firstKey();
-                    int cnt = map.get(key);
+                    int first = map.firstKey();
+                    int cnt = map.get(first);
+                    
                     if(cnt == 1){
-                        map.remove(key);
+                        map.remove(first);
                     }else{
-                        map.put(key,cnt - 1);
+                        map.put(first,cnt - 1);
                     }
                 }else{
-                    int key = map.lastKey();
-                    int cnt = map.get(key);
+                    int last = map.lastKey();
+                    int cnt = map.get(last);
+                    
                     if(cnt == 1){
-                        map.remove(key);
+                        map.remove(last);
                     }else{
-                        map.put(key,cnt - 1);
+                        map.put(last,cnt - 1);
                     }
                 }
             }
@@ -37,6 +43,5 @@ class Solution {
         }else{
             return new int[]{map.lastKey(),map.firstKey()};
         }
-        
     }//solution end
 }//class end

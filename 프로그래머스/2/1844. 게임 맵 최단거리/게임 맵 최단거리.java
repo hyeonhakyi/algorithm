@@ -19,6 +19,7 @@ class Solution {
         int answer = 0;
         n = maps.length;
         m = maps[0].length;
+        
         answer = bfs(maps);
         
         return answer;
@@ -48,11 +49,10 @@ class Solution {
                 visited[nx][ny] = true;
             }
         }
-        
         return -1;
     }//bfs end
     
     private static boolean check(int x,int y){
         return x >= 0 && x < n && y >= 0 && y < m;
     }//check end
-}//class end
+}//calss end

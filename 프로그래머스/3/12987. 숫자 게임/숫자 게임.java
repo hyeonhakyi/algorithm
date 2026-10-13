@@ -7,16 +7,16 @@ class Solution {
         Arrays.sort(A);
         Arrays.sort(B);
         
+        int aIdx = 0;
+        int bIdx = 0;
         
-        int i = 0;
-        int j = 0;
-        while(i < A.length && j < B.length){
-            if(B[j] > A[i]){
+        while(bIdx != B.length){
+            if(A[aIdx] < B[bIdx]){
                 answer++;
-                i++;
-                j++;
+                aIdx++;
+                bIdx++;
             }else{
-                j++;
+                bIdx++;
             }
         }
         

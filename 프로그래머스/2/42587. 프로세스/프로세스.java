@@ -1,11 +1,11 @@
 import java.util.*;
 
 class Node{
-    int value;
     int idx;
-    public Node(int value,int idx){
-        this.value = value;
+    int pri;
+    public Node(int idx,int pri){
         this.idx = idx;
+        this.pri = pri;
     }
 }
 
@@ -16,7 +16,7 @@ class Solution {
         Queue<Node> q = new LinkedList<>();
         
         for(int i = 0; i < priorities.length; i++){
-            q.offer(new Node(priorities[i],i));
+            q.offer(new Node(i,priorities[i]));
         }
         
         while(!q.isEmpty()){
@@ -24,7 +24,7 @@ class Solution {
             
             boolean check = false;
             for(Node next : q){
-                if(next.value > now.value){
+                if(next.pri > now.pri){
                     check = true;
                     break;
                 }
@@ -35,9 +35,9 @@ class Solution {
             }else{
                 answer++;
                 
-               if(now.idx == location){
-                   return answer;
-               }
+                if(now.idx == location){
+                    return answer;
+                }
             }
         }
         

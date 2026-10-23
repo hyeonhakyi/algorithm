@@ -1,113 +1,75 @@
 import java.util.*;
 
 class Solution {
-    static boolean[][] piller;
-    static boolean[][] beam;
-    static int size;
+
     public int[][] solution(int n, int[][] build_frame) {
-        size = n;
-        
-        piller = new boolean[n + 2][n + 2];
-        beam = new boolean[n + 2][n + 2];
-        
-        for(int[] commend : build_frame){
-            int x = commend[0];
-            int y = commend[1];
-            int type = commend[2];
-            int remove = commend[3];
-            
-            if(remove == 1){
-                if(type == 0){
-                    piller[x][y] = true;
-                    
-                    if(!isVaild()){
-                        piller[x][y] = false;
-                    }
-                }else{
-                    beam[x][y] = true;
-                    
-                    if(!isVaild()){
-                        beam[x][y] = false;
-                    }
-                }
-            }else{
-                if(type == 0){
-                    piller[x][y] = false;
-                    
-                    if(!isVaild()){
-                        piller[x][y] = true;
-                    }
-                }else{
-                    beam[x][y] = false;
-                    
-                    if(!isVaild()){
-                        beam[x][y] = true;
-                    }
-                }
-            }        
+
+        boolean[][][] arr = new boolean[n + 1][n + 1][2];
+
+        for (int[] frame : build_frame) {
+            int x = frame[0];
+            int y = frame[1];
+            int a = frame[2];
+            int b = frame[3];
+
+            // 설치 = true, 삭제 = false
+            arr[x][y][a] = (b == 1);
+
+            // 규칙을 위반하면 명령 취소
+            if (!isValid(arr, n)) {
+                arr[x][y][a] = (b == 0);
+            }
         }
-        
+
         List<int[]> list = new ArrayList<>();
-        
-        for(int i = 0; i <= size; i++){
-            for(int j = 0; j <= size; j++){
-                if(piller[i][j]){
-                    list.add(new int[]{i,j,0});
-                }
-                
-                if(beam[i][j]){
-                    list.add(new int[]{i,j,1});
-                }                
-            }
-        }
-        
-        list.sort((a, b) -> {
-            if(a[0] != b[0]){
-                return Integer.compare(a[0], b[0]);
-            }
-            if(a[1] != b[1]){
-                return Integer.compare(a[1], b[1]);
-            }
-            return Integer.compare(a[2], b[2]);
-        });
-        
-        int[][] answer = new int[list.size()][3];
 
-        for (int i = 0; i < list.size(); i++) {
-            answer[i] = list.get(i);
+        // x → y → a 순서로 정렬된 결과
+        for (int x = 0; x <= n; x++) {
+            for (int y = 0; y <= n; y++) {
+                for (int a = 0; a < 2; a++) {
+
+                    if (arr[x][y][a]) {
+                        list.add(new int[]{x, y, a});
+                    }
+                }
+            }
         }
 
-        return answer;
-    }//solution end
-    
-    private static boolean isVaild(){
-        for(int i = 0; i <= size; i++){
-            for(int j = 0; j <= size; j++){
-                if(piller[i][j] && !canPiller(i,j)){
-                    return false;
-                }
-                
-                if(beam[i][j] && !canBeam(i,j)){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }//isValud end
-    
-    private static boolean canPiller(int x,int y){
-        if(y == 0) return true;
-        if(piller[x][y - 1]) return true;
-        if(x > 0 && beam[x - 1][y]) return true;
-        if(beam[x][y]) return true;
-        return false;
-    }//canPiller end
-    
-    private static boolean canBeam(int x,int y){
-        if(y > 0 && piller[x][y - 1]) return true;
-        if(y > 0 && piller[x + 1][y - 1]) return true;
-        if(x > 0 && beam[x + 1][y] && beam[x - 1][y]) return true;
-        
-        return false;
+        return list.toArray(new int[list.size()][]);
     }
-}//class end
+
+    // 모든 구조물이 규칙을 만족하는지 확인
+    private static boolean isValid(boolean[][][] arr, int n) {
+
+        for (int x = 0; x <= n; x++) {
+            for (int y = 0; y <= n; y++) {
+
+                // 기둥 검사
+                if (arr[x][y][0]) {
+
+                    boolean valid =
+                        y == 0 ||
+                        (y > 0 && arr[x][y - 1][0]) ||
+                        arr[x][y][1] ||
+                        (x > 0 && arr[x - 1][y][1]);
+
+                    if (!valid) return false;
+                }
+
+                // 보 검사
+                if (arr[x][y][1]) {
+
+                    boolean valid =
+                        (y > 0 && arr[x][y - 1][0]) ||
+                        (y > 0 && x < n && arr[x + 1][y - 1][0]) ||
+                        (x > 0 && x < n &&
+                         arr[x - 1][y][1] && arr[x + 1][y][1]);
+
+                    if (!valid) return false;
+                }
+            }
+        }
+
+        return true;
+    }
+}

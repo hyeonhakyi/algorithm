@@ -1,61 +1,72 @@
 import java.util.*;
 
-class Node implements Comparable<Node>{
+class Job {
     int idx;
     int start;
-    int end;
-    public Node(int idx,int start,int end){
+    int duration;
+
+    public Job(int idx, int start, int duration) {
         this.idx = idx;
         this.start = start;
-        this.end = end;
-    }
-        
-    @Override
-    public int compareTo(Node o){
-        if(o.end == this.end){
-            if(o.start == this.start){
-                return Integer.compare(this.idx,o.idx);
-            }
-            return Integer.compare(this.start,o.start);
-        }
-        return Integer.compare(this.end,o.end);
+        this.duration = duration;
     }
 }
 
 class Solution {
     public int solution(int[][] jobs) {
-        Arrays.sort(jobs, (a, b) -> {
-            if (a[0] == b[0]) {
-                return Integer.compare(a[1], b[1]);
-            }
-            return Integer.compare(a[0], b[0]);
-        });
-        
-        PriorityQueue<Node> q = new PriorityQueue<>();
         int n = jobs.length;
+
+        Job[] arr = new Job[n];
+
+        for (int i = 0; i < n; i++) {
+            arr[i] = new Job(i, jobs[i][0], jobs[i][1]);
+        }
+
+        // 1. 요청 시각 기준 정렬
+        Arrays.sort(arr, (a, b) ->
+            Integer.compare(a.start, b.start)
+        );
+
+        // 2. 소요 시간 기준 우선순위 큐
+        PriorityQueue<Job> pq = new PriorityQueue<>((a, b) -> {
+            if (a.duration != b.duration) {
+                return Integer.compare(a.duration, b.duration);
+            }
+
+            if (a.start != b.start) {
+                return Integer.compare(a.start, b.start);
+            }
+
+            return Integer.compare(a.idx, b.idx);
+        });
+
         int time = 0;
-        int total = 0;
         int idx = 0;
+        int total = 0;
         int count = 0;
-        while(count < n){
-            while(idx < n && jobs[idx][0] <= time){
-                q.offer(new Node(idx,jobs[idx][0],jobs[idx][1]));
+
+        while (count < n) {
+
+            // 3. 현재 시간까지 요청된 작업 추가
+            while (idx < n && arr[idx].start <= time) {
+                pq.offer(arr[idx]);
                 idx++;
             }
-            
-            if(q.isEmpty()){
-                time = jobs[idx][0];
-            }else{
-                Node now = q.poll();
-                
-                time += now.end;
-                
+
+            // 4. 대기 중인 작업이 있다면 실행
+            if (!pq.isEmpty()) {
+                Job now = pq.poll();
+
+                time += now.duration;
                 total += time - now.start;
-                
+
                 count++;
+            } else {
+                // 5. 대기 작업이 없다면 다음 요청 시각으로 이동
+                time = arr[idx].start;
             }
         }
-        
+
         return total / n;
-    }//solution end
-}//class end
+    }
+}

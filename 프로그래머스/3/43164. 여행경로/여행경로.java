@@ -1,27 +1,26 @@
 import java.util.*;
 
 class Solution {
-    static String[] answer;
     static boolean finished;
     static boolean[] visited;
+    static String[] answer;
     public String[] solution(String[][] tickets) {
+        finished = false;
         visited = new boolean[tickets.length];
         answer = new String[tickets.length + 1];
-        finished = false;
-        
         Arrays.sort(tickets,(a,b) -> {
            if(a[0].equals(b[0])){
                return a[1].compareTo(b[1]);
-           };
+           }
             return a[0].compareTo(b[0]);
         });
         
-        dfs("ICN",tickets,0,new ArrayList<>());
+        dfs("ICN",0,new ArrayList<>(),tickets);
         
         return answer;
     }//solution end
     
-    private static void dfs(String now,String[][] tickets,int count,List<String> list){
+    private static void dfs(String now,int count,List<String> list,String[][] tickets){
         if(finished){
             return;
         }
@@ -41,7 +40,7 @@ class Solution {
             if(!visited[i] && tickets[i][0].equals(now)){
                 visited[i] = true;
                 
-                dfs(tickets[i][1],tickets,count + 1,list);
+                dfs(tickets[i][1],count + 1,list,tickets);
                 
                 visited[i] = false;
             }

@@ -2,23 +2,25 @@ import java.util.*;
 
 class Solution {
     static int answer;
+    static boolean[] visited;
     public int solution(int[] numbers, int target) {
         answer = 0;
-        
+        visited = new boolean[numbers.length];
         dfs(numbers,target,0,0);
         
         return answer;
     }//solution end
     
-    private static void dfs(int[] numbers,int target,int idx,int sum){
+    private static void dfs(int[] numbers,int target,int sum,int idx){
         if(idx == numbers.length){
             if(sum == target){
                 answer++;
             }
-            return;
+            return; 
         }
         
-        dfs(numbers,target,idx + 1,sum + numbers[idx]);
-        dfs(numbers,target,idx + 1,sum - numbers[idx]);
+        
+        dfs(numbers,target,sum + numbers[idx],idx + 1);
+        dfs(numbers,target,sum - numbers[idx],idx + 1);
     }//dfs end
 }//class end

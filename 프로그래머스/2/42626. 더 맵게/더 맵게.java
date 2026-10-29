@@ -5,7 +5,6 @@ class Solution {
         int answer = 0;
         
         PriorityQueue<Integer> q = new PriorityQueue<>();
-        
         for(int i : scoville){
             q.offer(i);
         }
@@ -20,7 +19,8 @@ class Solution {
             int first = q.poll();
             int second = q.poll();
             
-            q.offer(first + (second * 2));
+            int num = first + (second * 2);
+            q.offer(num);
         }
         
         return answer;

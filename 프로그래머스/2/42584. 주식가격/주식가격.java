@@ -2,10 +2,10 @@ import java.util.*;
 
 class Node{
     int idx;
-    int value;
-    public Node(int idx,int value){
+    int num;
+    public Node(int idx,int num){
         this.idx = idx;
-        this.value = value;
+        this.num = num;
     }
 }
 
@@ -16,17 +16,18 @@ class Solution {
         Stack<Node> stack = new Stack<>();
         
         for(int i = 0; i < prices.length; i++){
-            while(!stack.isEmpty() && stack.peek().value > prices[i]){
-                Node node = stack.pop();
-                answer[node.idx] = i - node.idx;
+            while(!stack.isEmpty() && stack.peek().num > prices[i]){
+                Node now = stack.pop();
+                int time = i - now.idx;
+                answer[now.idx] = time;
             }
             
-            stack.add(new Node(i,prices[i]));
+            stack.push(new Node(i,prices[i]));
         }
         
         while(!stack.isEmpty()){
-            Node node = stack.pop();
-            answer[node.idx] = prices.length - 1 - node.idx;
+            Node now = stack.pop();
+            answer[now.idx] = prices.length - now.idx - 1;
         }
         
         return answer;

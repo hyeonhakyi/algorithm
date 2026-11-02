@@ -1,72 +1,72 @@
 import java.util.*;
 
-class Job {
+class Node implements Comparable<Node> {
     int idx;
     int start;
-    int duration;
+    int during;
 
-    public Job(int idx, int start, int duration) {
+    public Node(int idx, int start, int during) {
         this.idx = idx;
         this.start = start;
-        this.duration = duration;
+        this.during = during;
+    }
+
+    @Override
+    public int compareTo(Node o) {
+        if (this.during != o.during) {
+            return Integer.compare(this.during, o.during);
+        }
+
+        if (this.start != o.start) {
+            return Integer.compare(this.start, o.start);
+        }
+
+        return Integer.compare(this.idx, o.idx);
     }
 }
 
 class Solution {
     public int solution(int[][] jobs) {
-        int n = jobs.length;
 
-        Job[] arr = new Job[n];
+        List<Node> list = new ArrayList<>();
 
-        for (int i = 0; i < n; i++) {
-            arr[i] = new Job(i, jobs[i][0], jobs[i][1]);
+        for (int i = 0; i < jobs.length; i++) {
+            int start = jobs[i][0];
+            int during = jobs[i][1];
+
+            list.add(new Node(i, start, during));
         }
 
-        // 1. 요청 시각 기준 정렬
-        Arrays.sort(arr, (a, b) ->
+        list.sort((a, b) ->
             Integer.compare(a.start, b.start)
         );
 
-        // 2. 소요 시간 기준 우선순위 큐
-        PriorityQueue<Job> pq = new PriorityQueue<>((a, b) -> {
-            if (a.duration != b.duration) {
-                return Integer.compare(a.duration, b.duration);
-            }
+        PriorityQueue<Node> q = new PriorityQueue<>();
 
-            if (a.start != b.start) {
-                return Integer.compare(a.start, b.start);
-            }
-
-            return Integer.compare(a.idx, b.idx);
-        });
-
-        int time = 0;
         int idx = 0;
+        int time = 0;
         int total = 0;
         int count = 0;
-
-        while (count < n) {
-
-            // 3. 현재 시간까지 요청된 작업 추가
-            while (idx < n && arr[idx].start <= time) {
-                pq.offer(arr[idx]);
+        
+        while (count < jobs.length) {
+            while (idx < jobs.length && list.get(idx).start <= time) {
+                q.offer(list.get(idx));
                 idx++;
             }
 
-            // 4. 대기 중인 작업이 있다면 실행
-            if (!pq.isEmpty()) {
-                Job now = pq.poll();
+            if (!q.isEmpty()) {
+                Node now = q.poll();
 
-                time += now.duration;
+                time += now.during;
+
                 total += time - now.start;
 
                 count++;
             } else {
-                // 5. 대기 작업이 없다면 다음 요청 시각으로 이동
-                time = arr[idx].start;
+                time = list.get(idx).start;
             }
         }
 
-        return total / n;
+        return total / jobs.length;
     }
 }

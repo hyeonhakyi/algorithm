@@ -1,6 +1,6 @@
 select
-    i.ANIMAL_ID,
-    i.NAME
+    o.ANIMAL_ID,
+    o.NAME
 from
     ANIMAL_INS as i
 join
